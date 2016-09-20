@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -ex  #uncomment just for debugging
 
-echo -e "Copying Files from the scanner computer from dropbox and on the cluster. \nHow are you running this script? \n1. On a local machine, with write access to Dropbox-Aguirre-Brainard-Lab/TOME_data/ and with write access to the cluster folder /data/jag/TOME \n2. On the cluster, and I can remote in a machine with write access to Dropbox-Aguirre-Brainard-Lab/TOME_data\n3. On the cluster, and I don't have access to Dropbox.\n4. None of the above."
+echo -e "Copying Files from the scanner computer from dropbox and on the cluster. \nHow are you running this script? \n1. On a local machine, with write access to Dropbox-Aguirre-Brainard-Lab/TOME_data/ and with the cluster mounted (local path /data/jag/TOME) \n2. On the cluster, and I can remote in a machine with write access to Dropbox-Aguirre-Brainard-Lab/TOME_data\n3. On the cluster, and I don't have access to Dropbox.\n4. None of the above."
 read start
 
 case $start in
@@ -22,12 +22,11 @@ case $start in
 	# ssh into cluster
 	echo "Connecting to the cluster. Enter your cluster username:"
 	read clusterUser
-	ssh -t -t -Y clusterUser@chead <<- 'ONCLUSTER'
 	# make folders on the cluster
 	echo "Creating folders on the cluster..."
-	mkdir -p /data/jag/TOME/$subjName
+	mkdir /data/jag/TOME/$subjName
 	if [ ! -d /data/jag/TOME/$subjName/$sessionDate ]; then
-		mkdir /data/jag/TOME/$subjName/$sessionDate
+		ssh $clusterUser@chead "mkdir /data/jag/TOME/$subjName/$sessionDate"
 	else
 		echo "This session date already exists. How do you want to rename the existing session folder (e.g. 022912a)?"
 		read renameExisting
@@ -41,22 +40,22 @@ case $start in
 	read pulseOxFiles
 	echo "Copying PulseOx files on the cluster..."
 	mkdir /data/jag/TOME/$subjName/$sessionDate/PulseOx
-	scp aguirrelab@rico:/mnt/disk_c/MedCom/log/Physio/$pulseOxFiles*PULS.log /data/jag/TOME/$subjName/$sessionDate/PulseOx/
+	scp aguirrelab@rico:/mnt/disk_c/MedCom/log/Physio/$pulseOxFiles*PULS.log $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/PulseOx/
 	echo "PulseOx files copied on the cluster."
 	# copy Protocols Files on the cluster
 	echo "Paste the common part (first part) of the Protocol file names and press [ENTER]. (Hint: in another terminal window, navigate into /mnt/disk_c/MedCom/User/Aguirre on rico, execute ls -ltr and locate the Protocol files)."
 	read protocolFiles
 	echo "Copying protocol files on the cluster..."
 	mkdir /data/jag/TOME/$subjName/$sessionDate/Protocols
-	scp -r aguirrelab@rico:/mnt/disk_c/MedCom/User/Aguirre/$protocolFiles* /data/jag/TOME/$subjName/$sessionDate/Protocols/
-	scp aguirrelab@rico:/mnt/disk_c/MedCom/MriSiteData/GradientCoil/coeff.grad /data/jag/TOME/$subjName/$sessionDate/Protocols/
+	scp -r aguirrelab@rico:/mnt/disk_c/MedCom/User/Aguirre/$protocolFiles* $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/
+	scp aguirrelab@rico:/mnt/disk_c/MedCom/MriSiteData/GradientCoil/coeff.grad $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/
 	echo "Protocol files copied on the cluster."
 	#copy DICOM files on the cluster
 	echo "Paste the full path to the dicom folder on the scanner computer and press [ENTER]. (Hint: navigate into the dicom folder on rico, execute pwd and paste the output here)."
 	read dicomSource
 	echo "Copying DICOM files on the cluster..."
 	mkdir /data/jag/TOME/$subjName/$sessionDate/DICOMS
-	scp aguirrelab@rico:$dicomSource/* /data/jag/TOME/$subjName/$sessionDate/DICOMS/
+	scp aguirrelab@rico:$dicomSource/* $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/DICOMS/
 	echo "DICOMs copied on the cluster."
 	echo "All files copied from the scanner to the cluster."
 	echo "Do you want to write the README.md file now?[y/n]"
@@ -65,7 +64,7 @@ case $start in
 		echo "The README file will be created and opened. Write and save its content, and close gedit GUI to continue with this script."
 		read -rsp $'Press enter to continue...\n'
 		touch /data/jag/TOME/$subjName/$sessionDate/README.md
-		gedit /data/jag/TOME/$subjName/$sessionDate/README.md
+		open -e /data/jag/TOME/$subjName/$sessionDate/README.md
 	else
 		echo "Remember to write the README file as soon as possible!"
 	fi
@@ -80,7 +79,6 @@ case $start in
 		scp /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/Stimuli/* /data/jag/TOME/$subjName/$sessionDate/Stimuli/
 	fi
 	echo "Protocol files copied on the cluster."
-	ONCLUSTER
 	###### Copying files on Dropbox
 	#copy scanner files on Dropbox
 	echo "Copying scanner files on Dropbox..."
