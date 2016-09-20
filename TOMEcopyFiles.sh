@@ -4,26 +4,25 @@
 echo -e "Copying Files from the scanner computer from dropbox and on the cluster. \nHow are you running this script? \n1. On a local machine, with write access to Dropbox-Aguirre-Brainard-Lab/TOME_data/ and with write access to the cluster folder /data/jag/TOME \n2. On the cluster, and I can remote in a machine with write access to Dropbox-Aguirre-Brainard-Lab/TOME_data\n3. On the cluster, and I don't have access to Dropbox.\n4. None of the above."
 read start
 
-if [ "$start" == "4" ]; then
-	echo "This script will not work in your current setting. Please copy all files manually."
-	exit 1
-else
-#enter subject and session details
+case $start in
+"4") echo "This script will not work in your current setting. Please copy all files manually."
+	 exit 1
+	 ;;
+
+###### LOCALLY, CLUSTER AND DROPBOX ACCESS	
+"1")
+	#enter subject and session details
 	echo "Enter subject name (TOME_3xxx):"
 	read subjName
 	echo "Enter session date (mmddyy) :"
 	read sessionDate
 	echo "Enter session number (1, 2 or 3):"
 	read sessionNum
-fi
-
-###### LOCALLY, CLUSTER AND DROPBOX ACCESS	
-if [ "$start" == "1" ]; then	
-	###### Copying files on the cluster
+	# Copying files on the cluster
 	# ssh into cluster
 	echo "Connecting to the cluster. Enter your cluster username:"
 	read clusterUser
-	ssh -Y clusterUser@chead << ONCLUSTER
+	ssh -Y clusterUser@chead <<- ONCLUSTER
 	# make folders on the cluster
 	echo "Creating folders on the cluster..."
 	mkdir -p /data/jag/TOME/$subjName
@@ -37,7 +36,6 @@ if [ "$start" == "1" ]; then
 		read sessionDate
 		mkdir /data/jag/TOME/$subjName/$sessionDate
 	fi
-	
 	# copy Pulse ox files on the cluster
 	echo "Paste the common part (first part) of the PulseOx file names and press [ENTER]. (Hint: in another terminal window, navigate into /mnt/disk_c/MedCom/log/Physio on rico, execute ls -ltr and locate the PulseOx files)."
 	read pulseOxFiles
@@ -71,7 +69,6 @@ if [ "$start" == "1" ]; then
 	else
 		echo "Remember to write the README file as soon as possible!"
 	fi
-	
 	# copy stimulus files on the cluster (from dropbox)
 	echo "Copying stimulus files on the cluster from dropbox..."
 	mkdir /data/jag/TOME/$subjName/$sessionDate/Stimuli
@@ -83,7 +80,7 @@ if [ "$start" == "1" ]; then
 		scp /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/Stimuli/* /data/jag/TOME/$subjName/$sessionDate/Stimuli/
 	fi
 	echo "Protocol files copied on the cluster."
-	ONCLUSTER	
+	ONCLUSTER
 	###### Copying files on Dropbox
 	#copy scanner files on Dropbox
 	echo "Copying scanner files on Dropbox..."
@@ -119,9 +116,16 @@ if [ "$start" == "1" ]; then
 			scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/README.md /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/
 		fi
 	fi
-
+;;
 ###### ON CLUSTER, DROPBOX ACCESS
-elif [ "$start" == "2" ]; then	
+"2")	
+#enter subject and session details
+	echo "Enter subject name (TOME_3xxx):"
+	read subjName
+	echo "Enter session date (mmddyy) :"
+	read sessionDate
+	echo "Enter session number (1, 2 or 3):"
+	read sessionNum
 # make folders on the cluster
 	echo "Creating folders on the cluster..."
 	mkdir -p /data/jag/TOME/$subjName
@@ -173,43 +177,51 @@ elif [ "$start" == "2" ]; then
 	# copy stimulus files on the cluster (from dropbox)
 	echo "Enter your remote adress to copy files on dropbox (e.g. you@170.xxx.xx.xx)"
 	read remoteIP
-	ssh $remoteIP << ACCESS
-	echo "Copying scanner files on Dropbox..."
-	if [ "$sessionNum" == "1" ]; then
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/PulseOx
-		scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/PulseOx/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/PulseOx/
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/Protocols
-		scp -r $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/Protocols/
-		mv /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/coeff.grad /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/
-	elif [ "$sessionNum" == "2" ]; then
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/PulseOx
-		scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/PulseOx/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/PulseOx/
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/Protocols
-		scp -r $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/Protocols/
-		mv /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/coeff.grad /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/
-	elif [ "$sessionNum" == "3" ]; then
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/PulseOx
-		scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/PulseOx/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/PulseOx/
-		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols
-		scp -r $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/
-		mv /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/coeff.grad /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/	
-	fi
-	echo "Scanner files copied on Dropbox."
-	if [ "$readme" == "y" ]; then
+	ssh $remoteIP <<- 'ACCESS'
+		echo "Copying scanner files on Dropbox..."
 		if [ "$sessionNum" == "1" ]; then
-			scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/README.md /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/PulseOx
+			scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/PulseOx/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/PulseOx/
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/Protocols
+			scp -r $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles/Protocols/
+			mv /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/coeff.grad /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/
 		elif [ "$sessionNum" == "2" ]; then
-			scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/README.md /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/PulseOx
+			scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/PulseOx/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/PulseOx/
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/Protocols
+			scp -r $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/ScannerFiles/Protocols/
+			mv /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/coeff.grad /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/
 		elif [ "$sessionNum" == "3" ]; then
-			scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/README.md /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/PulseOx
+			scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/PulseOx/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/PulseOx/
+			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols
+			scp -r $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/Protocols/* /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/
+			mv /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/Protocols/coeff.grad /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/ScannerFiles/	
 		fi
-	fi
-	
+		echo "Scanner files copied on Dropbox."
+		if [ "$readme" == "y" ]; then
+			if [ "$sessionNum" == "1" ]; then
+				scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/README.md /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/
+			elif [ "$sessionNum" == "2" ]; then
+				scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/README.md /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/
+			elif [ "$sessionNum" == "3" ]; then
+				scp $clusterUser@chead:/data/jag/TOME/$subjName/$sessionDate/README.md /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/
+			fi
+		fi
+	ACCESS
+;;	
 ###### CLUSTER, NO DROPBOX	
-elif [ "$start" == "3" ]; then		
+"3")		
+	#enter subject and session details
+	echo "Enter subject name (TOME_3xxx):"
+	read subjName
+	echo "Enter session date (mmddyy) :"
+	read sessionDate
+	echo "Enter session number (1, 2 or 3):"
+	read sessionNum
 	# make folders on the cluster
 	echo "Creating folders on the cluster..."
 	mkdir -p /data/jag/TOME/$subjName
@@ -258,4 +270,7 @@ elif [ "$start" == "3" ]; then
 		echo "Remember to write the README file as soon as possible!"
 	fi
 	echo "No backup has been done on dropbox. Make sure it is done promptly!"
-fi
+;;
+*) exit 1
+;;
+esac
