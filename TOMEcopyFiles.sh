@@ -22,7 +22,7 @@ case $start in
 	# ssh into cluster
 	echo "Connecting to the cluster. Enter your cluster username:"
 	read clusterUser
-	ssh -Y clusterUser@chead <<- ONCLUSTER
+	ssh -t -t -Y clusterUser@chead <<- 'ONCLUSTER'
 	# make folders on the cluster
 	echo "Creating folders on the cluster..."
 	mkdir -p /data/jag/TOME/$subjName
@@ -177,7 +177,7 @@ case $start in
 	# copy stimulus files on the cluster (from dropbox)
 	echo "Enter your remote adress to copy files on dropbox (e.g. you@170.xxx.xx.xx)"
 	read remoteIP
-	ssh $remoteIP <<- 'ACCESS'
+	ssh $remoteIP -t -t <<- 'ACCESS'
 		echo "Copying scanner files on Dropbox..."
 		if [ "$sessionNum" == "1" ]; then
 			mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScannerFiles
