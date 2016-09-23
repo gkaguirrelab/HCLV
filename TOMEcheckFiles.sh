@@ -62,9 +62,9 @@ case $lookHere in
 	for condition in "${cons[@]}"; do
 		echo "   "
 		echo "   "
-		echo "List of all existing subjects in /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/$condition/:"
-		ls /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/$condition/
-		subjs=(/Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/$condition/*)
+		echo "List of all existing subjects in /Users/$USER/Dropbox (Aguirre-Brainard Lab)/TOME_data/$condition/:"
+		ls /Users/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/TOME_data/$condition/
+		subjs=(/Users/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/TOME_data/$condition/*)
 		for subjDir in "${subjs[@]}"; do
 			sessionDirs=("$subjDir"/*)
 				for sessionDate in "${sessionDirs[@]}"; do
