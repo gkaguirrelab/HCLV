@@ -118,7 +118,7 @@ case $start in
 				scp /data/jag/TOME/$subjName/$sessionDate/README.md $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/
 			fi
 		fi
-		echo "Copying ScanChecklists on Dropbox"
+		echo "Copying HCLV-dataCollection.pdf on Dropbox"
 		if [ "$sessionNum" == "1" ]; then
 			ssh $remoteUser@$remoteIP "mkdir /Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScanChecklists"
 			scp $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_materials/dataCollectionForms/HCLV-dataCollection.pdf $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScanChecklists/
@@ -276,7 +276,7 @@ case $start in
 		echo "This option is not available."
 	;;
 	esac
-	echo "Copying ScanChecklists in the session folder"
+	echo "Copying HCLV-dataCollection.pdf in the session folder"
 	if [ "$sessionNum" == "1" ]; then
 		mkdir /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScanChecklists
 		cp /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_materials/dataCollectionForms/HCLV-dataCollection.pdf /Users/$USER/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/ScanChecklists/
