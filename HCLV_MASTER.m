@@ -95,7 +95,7 @@ params.numRuns = 4;
 params.reconall = 1;
 create_preprocessing_scripts(params);
 %% TOME_3005 - session 1
-params.sessionDir = '/data/jag/TOME/TOME_3003/092316';
+params.sessionDir = '/data/jag/TOME/TOME_3005/092316';
 params.subjectName = 'TOME_3005';
 params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
@@ -105,10 +105,10 @@ params.reconall = 1;
 create_preprocessing_scripts(params);
 %% TOME_3005 - session 2
 
-%%% copy over the MPRAGE directory from TOME_3003 - session 1 %%%
+%%% copy over the MPRAGE directory from TOME_3005 - session 1 %%%
 %%% remove reruns %%%
 
-params.sessionDir = '/data/jag/TOME/TOME_3003/100316';
+params.sessionDir = '/data/jag/TOME/TOME_3005/100316';
 params.subjectName = 'TOME_3005';
 params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
