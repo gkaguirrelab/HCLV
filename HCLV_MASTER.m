@@ -83,7 +83,7 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 10;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
 %% TOME_3004 - session 1
 params.sessionDir = '/data/jag/TOME/TOME_3004/091916';
@@ -92,7 +92,7 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 4;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
 %% TOME_3005 - session 1
 params.sessionDir = '/data/jag/TOME/TOME_3005/092316';
@@ -101,7 +101,7 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 4;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
 %% TOME_3005 - session 2
 
@@ -114,7 +114,7 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 10;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
 
 
