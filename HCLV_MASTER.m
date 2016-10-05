@@ -3,7 +3,6 @@
 %
 %   Written by Andrew S Bock Sep 2016
 
-
 %% Defaults
 % These will not change across runs
 params.despike          = 1;
