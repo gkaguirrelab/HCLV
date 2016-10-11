@@ -75,11 +75,11 @@ case $start in
 	# copy Stimulus files from Dropbox to the cluster
 	echo "Copying Stimuli folder from Dropbox to the cluster..."
 	if [ "$sessionNum" == "1" ]; then
-			scp -r $remoteUser@$remoteIP:/Users/$remoteUser/\ \(Aguirre-Brainard\ Lab\)/TOME_data/session1_restAndStructure/$subjName/$sessionDate/Stimuli/ /data/jag/TOME/$subjName/$sessionDate/
+			scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/Stimuli/ /data/jag/TOME/$subjName/$sessionDate/
 	elif [ "$sessionNum" == "2" ]; then
-			scp -r $remoteUser@$remoteIP:/Users/$remoteUser/\ \(Aguirre-Brainard\ Lab\)/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/Stimuli/ /data/jag/TOME/$subjName/$sessionDate/
+			scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/Stimuli/ /data/jag/TOME/$subjName/$sessionDate/
 	elif [ "$sessionNum" == "3" ]; then
-			scp -r $remoteUser@$remoteIP:/Users/$remoteUser/\ \(Aguirre-Brainard\ Lab\)/TOME_data/session3_OneLight/$subjName/$sessionDate/Stimuli/ /data/jag/TOME/$subjName/$sessionDate/
+			scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/Stimuli/ /data/jag/TOME/$subjName/$sessionDate/
 	fi
 		echo "Stimuli folder copied on the cluster."
 
