@@ -3,7 +3,6 @@
 %
 %   Written by Andrew S Bock Sep 2016
 
-
 %% Defaults
 % These will not change across runs
 params.despike          = 1;
@@ -26,11 +25,14 @@ params.fmem             = 50;
 params.sessionDir       = '/data/jag/TOME/TOME_3001/081916a';
 params.subjectName      = 'TOME_3001';
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = '/data/jet/abock/LOGS';
+params.logDir           = '/data/jag/TOME/LOGS';
 params.jobName          = params.subjectName;
 params.numRuns          = 4;
 params.reconall         = 0; % already ran once
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3001 - session 1
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3001 - session 2
 
 %%% copy over the MPRAGE directory from TOME_3001 - session 1 %%%
@@ -43,6 +45,9 @@ params.jobName = params.subjectName;
 params.numRuns = 10;
 params.reconall = 0;
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3001 - session 2
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3002 - session 1
 params.sessionDir = '/data/jag/TOME/TOME_3002/082616a';
 params.subjectName = 'TOME_3002';
@@ -52,6 +57,9 @@ params.jobName = params.subjectName;
 params.numRuns = 4;
 params.reconall = 0;
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3021 - session 1
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3002 - session 2
 
 %%% copy over the MPRAGE directory from TOME_3002 - session 1 %%%
@@ -64,6 +72,9 @@ params.jobName = params.subjectName;
 params.numRuns = 10;
 params.reconall = 0;
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3002 - session 2
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3003 - session 1
 params.sessionDir = '/data/jag/TOME/TOME_3003/090216';
 params.subjectName = 'TOME_3003';
@@ -73,6 +84,9 @@ params.jobName = params.subjectName;
 params.numRuns = 4;
 params.reconall = 0;
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3003 - session 1
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3003 - session 2
 
 %%% copy over the MPRAGE directory from TOME_3003 - session 1 %%%
@@ -83,8 +97,11 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 10;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3003 - session 2
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3004 - session 1
 params.sessionDir = '/data/jag/TOME/TOME_3004/091916';
 params.subjectName = 'TOME_3004';
@@ -92,8 +109,11 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 4;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3004 - session 1
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3005 - session 1
 params.sessionDir = '/data/jag/TOME/TOME_3005/092316';
 params.subjectName = 'TOME_3005';
@@ -101,8 +121,11 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 4;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
+%% Fix pulse data - TOME_3005 - session 1
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
 %% TOME_3005 - session 2
 
 %%% copy over the MPRAGE directory from TOME_3005 - session 1 %%%
@@ -114,27 +137,8 @@ params.outDir = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir = '/data/jag/TOME/LOGS';
 params.jobName = params.subjectName;
 params.numRuns = 10;
-params.reconall = 1;
+params.reconall = 0;
 create_preprocessing_scripts(params);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%% TOME_3002 - project template
-session_dir = '/data/jag/TOME/TOME_3002/082616b';
-subject_name = 'TOME_3002'; % Freesurfer subject name (may not match job_name)
-project_template(session_dir,subject_name);
+%% Fix pulse data - TOME_3005 - session 2
+create_submit_PulseFix_script(params);
+createPulseFixscript(params);
