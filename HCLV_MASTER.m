@@ -78,8 +78,8 @@ reconall                     = [...
     1 ...
     1 ...
     ];
-%% Create session 1 scripts
-for i = 11:length(sessionDirs)
+%% Create preprocessing scripts
+for i = 1:length(sessionDirs)
     params.sessionDir       = sessionDirs{i};
     params.subjectName      = sessionNames{i};
     params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
