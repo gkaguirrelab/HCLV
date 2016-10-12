@@ -96,3 +96,7 @@ end
 % navigate to the <sessionDir>/preprocessing_scripts directory for each
 % session and submit the appropriate shell script (e.g. sh
 % submit_TOME_3001_all.sh)
+%% Project retinotopic templates
+for i = 1:length(sessionDirs)
+    project_template(sessionDirs{i},sessionNames{i});
+end
