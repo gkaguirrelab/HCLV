@@ -20,6 +20,10 @@ params.localWM          = 1;
 params.anat             = 1;
 params.amem             = 20;
 params.fmem             = 50;
+% for pRF scripts
+hemis                   = {'lh' 'rh'};
+pRFfunc                 = 'wdrf.tf.surf';
+params.sigList          = 0.5:0.1:10;
 %% Subject information
 % Session 1
 sessionDirs                = {...
@@ -99,4 +103,26 @@ end
 %% Project retinotopic templates
 for i = 1:length(sessionDirs)
     project_template(sessionDirs{i},sessionNames{i});
+end
+
+%% make pRF scripts
+params.logDir                   = logDir;
+for i = 2:2:length(sessionDirs)
+    params.scriptDir            = fullfile(sessionDirs{i},'pRFscripts');
+    d = listdir(fullfile(sessionDirs{i},'*tfMRI_RETINO*'),'dirs');
+    s = listdir(fullfile(sessionDirs{i},'Stimuli','tfMRI_RETINO*'),'files');
+    for j = 1:length(d)
+        for k = 1:length(hemis)
+            params.jobName      = sprintf([hemis{k} '.pRF.%02d.sh'],j);
+            tmpInd              = strfind(s,sprintf('%02d',j));
+            stimInd             = find(~cellfun(@isempty,tmpInd));
+            params.stimFile     = fullfile(sessionDirs{i},'Stimuli',s{stimInd});
+            params.inVol        = fullfile(sessionDirs{i},d{j},[pRFfunc '.' hemis{k} '.nii.gz']);
+            params.outDir       = fullfile(sessionDirs{i},d{j});
+            params.outBase      = hemis{k};
+            makePRFscripts(params);
+        end
+    end
+    params.submitName           = 'submit.pRF.sh';
+    makePRFsubmit(params);
 end
