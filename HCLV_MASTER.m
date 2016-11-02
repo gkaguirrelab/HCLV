@@ -119,10 +119,18 @@ for i = 2:2:length(sessionDirs)
             params.stimFile     = fullfile(sessionDirs{i},'Stimuli',s{stimInd});
             params.inVol        = fullfile(sessionDirs{i},d{j},[pRFfunc '.' hemis{k} '.nii.gz']);
             params.outDir       = fullfile(sessionDirs{i},d{j});
-            params.outBase      = hemis{k};
+            params.baseName     = hemis{k};
             makePRFscripts(params);
         end
     end
     params.submitName           = 'submit.pRF.sh';
     makePRFsubmit(params);
+end
+%% Average pRF maps across runs
+for i = 2%:2:length(sessionDirs)
+    for j = 1:length(hemis);
+        params.sessionDir       = sessionDirs{i};
+        params.baseName         = hemis{j};
+        avgPRFmaps(params);
+    end
 end
