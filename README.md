@@ -2,7 +2,7 @@
 Project repository for the Human Connectome Low Vision project
 
 
-# Data Managment shell scripts
+## Data Managment shell scripts
 These shell scripts are useful to copy newly acquired data on the cluster and on dropbox and to check the integrity of data already backed up, both on dropbox and on the cluster.
 
 The "checkFiles" scripts will loop into the data directory and check if every subfolder is organized according to the standard structure and if it contains the appropriate amount/kind of files. If not, a warning message is presented to the user.
@@ -18,3 +18,6 @@ To use the "copyFiles" scripts the following is required:
 - read access to aguirrelab@rico
 - read/write access to /data/jag/TOME on the cluster
 - read/write access to TOME_data on dropbox (on a local machine, or the ability to remote into a machine that has it).
+
+## eyeTracking folder
+Contains the wrapper function to run the eyetracker and save fMRI eyetracking data according to the standard protocol for the Connectome project.
