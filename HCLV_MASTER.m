@@ -24,6 +24,10 @@ params.fmem             = 50;
 hemis                   = {'lh' 'rh'};
 pRFfunc                 = 'wdrf.tf.surf';
 params.sigList          = 0.5:0.1:10;
+% for eye tracking
+[~, tmpName]            = system('whoami');
+userName                = strtrim(tmpName);
+dbDir                   = ['/Users/' userName '/Dropbox-Aguirre-Brainard-Lab'];
 %% Subject information
 % Session 1
 sessionDirs                = {...
@@ -116,6 +120,25 @@ end
 % navigate to the <sessionDir>/preprocessing_scripts directory for each
 % session and submit the appropriate shell script (e.g. sh
 % submit_TOME_3001_all.sh)
+
+%% Eye tracking
+subject                 = 'TOME_3009';
+session                 = '102516';
+dataDir                 = fullfile(dbDir,'tome_data/session2_spatialStimuli');
+thisDir                 = fullfile(dataDir,subject,session,'EyeTracking');
+params.scaleCalVideo    = fullfile(thisDir,'ScaleCalibration_5Mm_102516_170031.avi');
+params.scaleCalOutVideo = fullfile('~','ScaleCalibration_5Mm_102516_170031.avi');
+params.scaleCalOutMat   = fullfile('~','ScaleCalibration_5Mm_102516_170031.mat');
+params.calTargetFile    = fullfile(thisDir,'GazeCal01_LTdat.mat');
+params.gazeCalVideo     = fullfile(thisDir,'GazeCal01.mov');
+params.gazeCalOutVideo  = fullfile('~','GazeCal01.avi');
+params.gazeCalOutMat    = fullfile('~','GazeCal01.mat');
+params.gazeCalVideo     = fullfile(thisDir,'GazeCal01.mov');
+params.fMRIVideo        = fullfile(thisDir,'tfMRI_MOVIE_AP_run01_raw.mov');
+params.fMRIOutVideo     = fullfile('~','tfMRI_MOVIE_AP_run01_raw.avi');
+params.fMRIOutMat       = fullfile('~','tfMRI_MOVIE_AP_run01_raw.mat');
+[pupilSize,gaze]        = calcPupilFMRI(params);
+
 %% Project retinotopic templates
 for i = 1:length(sessionDirs)
     project_template(sessionDirs{i},sessionNames{i});
@@ -123,7 +146,7 @@ end
 
 %% make pRF scripts
 params.logDir                   = logDir;
-for i = 2:2:length(sessionDirs)
+for i = 2:2:10%length(sessionDirs)
     params.scriptDir            = fullfile(sessionDirs{i},'pRFscripts');
     d = listdir(fullfile(sessionDirs{i},'*tfMRI_RETINO*'),'dirs');
     s = listdir(fullfile(sessionDirs{i},'Stimuli','tfMRI_RETINO*'),'files');
