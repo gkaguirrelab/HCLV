@@ -11,110 +11,119 @@ for subjDir in "${subjs[@]}"; do
 	echo "   "
 	echo "   "
 	echo "Checking files in $subjDir ..."
+	
+	# get subjectName
+	subjName="${subjDir: -5}"
+	echo "Subject code = $subjName"
+	
+	# check pdf file
+	for files in "$subjDir"/"$subjName"*.pdf; do
+			if [ ! -e "$files" ]; then
+				echo ">>> MISSING pdf FILE IN:"
+				echo "$subjDir/"
+				break
+			fi
+	done
+	
+	# check Fundus folder
 	if [ ! -d "$subjDir"/Fundus ]; then
 		echo ">>> MISSING Fundus DIRECTORY IN:"
 		echo "$subjDir"
+	else
+		for files in "$subjDir"/Fundus/"$subjName"*.bmp; do
+			if [ ! -e "$files" ]; then
+				echo ">>> MISSING Fundus.bpm FILES IN:"
+				echo "$subjDir/"
+				break
+			fi
+		done
 	fi
 	
-	for files in "$subjDir"/Fundus/*.bmp; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING Fundus.bpm FILES IN:"
-			echo "$subjDir/"
-			break
-		fi
-	done
-	
+	# check HeidelbergSpectralisOCT folder
 	if [ ! -d "$subjDir"/HeidelbergSpectralisOCT ]; then
 		echo ">>> MISSING HeidelbergSpectralisOCT DIRECTORY IN:"
 		echo "$subjDir"
+	else
+		# check HeidelbergSpectralisOCT/OD folder
+		if [ ! -d "$subjDir"/HeidelbergSpectralisOCT/OD ]; then
+			echo ">>> MISSING HeidelbergSpectralisOCT/OD DIRECTORY IN:"
+			echo "$subjDir"
+		else
+			for files in "$subjDir"/HeidelbergSpectralisOCT/OD/"$subjName"*.E2E; do
+				if [ ! -e "$files" ]; then
+					echo ">>> MISSING OD E2E FILES IN:"
+					echo "$subjDir/"
+					break
+				fi
+			done
+	
+			for files in "$subjDir"/HeidelbergSpectralisOCT/OD/"$subjName"*.vol; do
+				if [ ! -e "$files" ]; then
+					echo ">>> MISSING HeidelbergSpectralisOCT/OD vol FILES IN:"
+					echo "$subjDir/"
+					break
+				fi
+			done
+		fi	
+		# check HeidelbergSpectralisOCT/OS folder			
+		if [ ! -d "$subjDir"/HeidelbergSpectralisOCT/OS ]; then
+			echo ">>> MISSING HeidelbergSpectralisOCT/OS DIRECTORY IN:"
+			echo "$subjDir"
+		else
+			for files in "$subjDir"/HeidelbergSpectralisOCT/OS/"$subjName"*.E2E; do
+				if [ ! -e "$files" ]; then
+					echo ">>> MISSING OS E2E FILES IN:"
+					echo "$subjDir/"
+					break
+				fi
+			done
+			for files in "$subjDir"/HeidelbergSpectralisOCT/OS/"$subjName"*.vol; do
+				if [ ! -e "$files" ]; then
+					echo ">>> MISSING HeidelbergSpectralisOCT/OS vol FILES IN:"
+					echo "$subjDir/"
+					break
+				fi
+			done
+		fi	
 	fi
 	
-	if [ ! -d "$subjDir"/HeidelbergSpectralisOCT/OD ]; then
-		echo ">>> MISSING HeidelbergSpectralisOCT/OD DIRECTORY IN:"
-		echo "$subjDir"
-	fi
-	
-	for files in "$subjDir"/HeidelbergSpectralisOCT/OD/*.E2E; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING OD E2E FILES IN:"
-			echo "$subjDir/"
-			break
-		fi
-	done
-	
-	if [ ! -d "$subjDir"/HeidelbergSpectralisOCT/OD/OD-Raw-Vol/ ]; then
-		echo ">>> MISSING HeidelbergSpectralisOCT/OD/OD-Raw-Vol/ DIRECTORY IN:"
-		echo "$subjDir"
-	fi
-	
-	for files in "$subjDir"/HeidelbergSpectralisOCT/OD/OD-Raw-Vol/*.vol; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING OD vol FILES IN:"
-			echo "$subjDir/"
-			break
-		fi
-	done				
-	
-	if [ ! -d "$subjDir"/HeidelbergSpectralisOCT/OS ]; then
-		echo ">>> MISSING HeidelbergSpectralisOCT/OS DIRECTORY IN:"
-		echo "$subjDir"
-	fi
-	
-	for files in "$subjDir"/HeidelbergSpectralisOCT/OS/*.E2E; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING OS E2E FILES IN:"
-			echo "$subjDir/"
-			break
-		fi
-	done
-	
-	if [ ! -d "$subjDir"/HeidelbergSpectralisOCT/OS/OS-Raw-Vol ]; then
-		echo ">>> MISSING HeidelbergSpectralisOCT/OS/OS-Raw-Vol/ DIRECTORY IN:"
-		echo "$subjDir"
-	fi
-	
-	for files in "$subjDir"/HeidelbergSpectralisOCT/OS/OS-Raw-Vol/*.vol; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING OD vol FILES IN:"
-			echo "$subjDir/"
-			break
-		fi
-	done		
-		
+	# check MAIA folder		
 	if [ ! -d "$subjDir"/MAIA ]; then
 		echo ">>> MISSING MAIA DIRECTORY IN:"
 		echo "$subjDir"
+	else
+		for files in "$subjDir"/MAIA/"$subjName"*.png; do
+			if [ ! -e "$files" ]; then
+				echo ">>> MISSING png FILES IN:"
+				echo "$subjDir/MAIA"
+				break
+			fi
+		done
+	
+		for files in "$subjDir"/MAIA/"$subjName"*.tgz; do
+			if [ ! -e "$files" ]; then
+				echo ">>> MISSING MAIA.tgz FILE IN:"
+				echo "$subjDir/MAIA"
+				break
+			fi
+		done
 	fi
 	
-	for files in "$subjDir"/MAIA/*.png; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING png FILES IN:"
-			echo "$subjDir/MAIA"
-			break
-		fi
-	done
-	
-	for files in "$subjDir"/MAIA/*.tgz; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING MAIA.tgz FILE IN:"
-			echo "$subjDir/MAIA"
-			break
-		fi
-	done
-	
-	if [ ! -d "$subjDir"/Optos ]; then
-		echo ">>> MISSING Optos DIRECTORY IN:"
+	# check OptosSLO folder
+	if [ ! -d "$subjDir"/OptosSLO ]; then
+		echo ">>> MISSING OptosSLO DIRECTORY IN:"
 		echo "$subjDir"
-	fi
-	
-	for files in "$subjDir"/Optos/*; do
-		if [ ! -e "$files" ]; then
-			echo ">>> MISSING tif FILES IN:"
-			echo "$subjDir/Optos"
-			break
-		fi
-	done
+	else
+		for files in "$subjDir"/OptosSLO/"$subjName"*; do
+			if [ ! -e "$files" ]; then
+				echo ">>> MISSING tif FILES IN:"
+				echo "$subjDir/OptosSLO"
+				break
+			fi
+		done
+	fi	
 done
+
 echo "   "
 echo "   "
 echo "Check completed!"	
