@@ -83,7 +83,7 @@ case $start in
 	fi
 		echo "Stimuli folder copied on the cluster."
 
-	# copy stimulus files on the cluster (from dropbox)	
+	# copy scanner files on dropbox
 		echo "Copying scanner files on Dropbox..."
 		if [ "$sessionNum" == "1" ]; then
 		echo "Creating folders."
