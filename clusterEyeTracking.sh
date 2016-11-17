@@ -19,7 +19,7 @@ if [ ! -d /data/jag/TOME/$subjName/$sessionDate ]; then
 	echo "Which session do you want to use?"
 	read clusterSessionDate
 else
-	clusterSessionDate=sessionDate
+	clusterSessionDate=$sessionDate
 fi
 
 # create eye tracking folder on the cluster
