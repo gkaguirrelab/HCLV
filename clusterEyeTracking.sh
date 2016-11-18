@@ -61,7 +61,7 @@ fi
 # make eye tracking jobs for every run
 echo "Making eye tracking scripts for all available runs in $subjName/$clusterSessionDate/EyeTracking/ ..."
 
-
+shopt -s nullglob
 runs=(/data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/*_raw.mov)
 for runName in ( "${runs[@]%_raw.mov}" ); do
 	echo "   "
