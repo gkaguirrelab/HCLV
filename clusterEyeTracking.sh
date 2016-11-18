@@ -4,13 +4,18 @@ echo "This script will create the eye tracking scripts for every run in a chosen
 echo "Do you want to submit all eye tracking jobs at the end of this script?[y/n]"
 read submitNow
 
+echo "Do you need to upload the eye tracking files from dropbox?[y/n]"
+read uploadNow
+
 #enter subject and session details
 echo "Enter subject name (TOME_3xxx):"
 read subjName
 echo "Enter session date (mmddyy) :"
 read sessionDate
-echo "Enter session number (1, 2 or 3):"
-read sessionNum
+if [ "$uploadNow" == "y" ]; then
+	echo "Enter session number (1, 2 or 3):"
+	read sessionNum
+fi
 
 # verify if a session folder with this date exists
 if [ ! -d /data/jag/TOME/$subjName/$sessionDate ]; then
@@ -22,46 +27,46 @@ else
 	clusterSessionDate=$sessionDate
 fi
 
-# create eye tracking folder on the cluster
-mkdir /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking
-mkdir /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts
-echo "EyeTracking folders created in $subjName/$clusterSessionDate ."
+# copy files from dropbox (optional)
+if [ "$uploadNow" == "y" ]; then
+	# create eye tracking folder on the cluster
+	mkdir /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking
+	mkdir /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts
+	echo "EyeTracking folders created in $subjName/$clusterSessionDate ."
 
-# enter credentials to remote in machine with write access to Dropbox
-echo "Enter your Username on the remote machine with read permission to TOME_data (e.g. <you>  @170.xxx.xx.xx)"
-read remoteUser
-echo "Enter your the remote machine IP address or alias (e.g. you@ <170.xxx.xx.xx>)"
-read remoteIP
+	# enter credentials to remote in machine with write access to Dropbox
+	echo "Enter your Username on the remote machine with read permission to TOME_data (e.g. <you>  @170.xxx.xx.xx)"
+	read remoteUser
+	echo "Enter your the remote machine IP address or alias (e.g. you@ <170.xxx.xx.xx>)"
+	read remoteIP
 
-# copy eye tracking files from Dropbox to the cluster
-echo "Copying Stimuli folder from Dropbox to the cluster..."
-if [ "$sessionNum" == "1" ]; then
-	scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
-	scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
-elif [ "$sessionNum" == "2" ]; then
-	scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
-	scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
-elif [ "$sessionNum" == "3" ]; then
-	scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
-	scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+	# copy eye tracking files from Dropbox to the cluster
+	echo "Copying eye tracking files from Dropbox to the cluster (will ask password twice)..."
+	if [ "$sessionNum" == "1" ]; then
+		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+	elif [ "$sessionNum" == "2" ]; then
+		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+	elif [ "$sessionNum" == "3" ]; then
+		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+	fi
+	echo "Eye tracking files copied on the cluster."
 fi
-echo "Eye tracking files copied on the cluster."
-
 
 ### No user interaction is required from this point on. ###
 
 
-# make eye tracking jobs for every run (optional: submit them)
+# make eye tracking jobs for every run
 echo "Making eye tracking scripts for all available runs in $subjName/$clusterSessionDate/EyeTracking/ ..."
 
 
 runs=(/data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/*_raw.mov)
-for runVid in "${runs[@]}"; do
+for runName in ( "${runs[@]%_raw.mov}" ); do
 	echo "   "
 	echo "   "
 
-	# get runName
-	runName="${runVid: : -8}"
 	echo "Run Name = $runName"
 	
 	# make "job script" for this run
@@ -80,14 +85,12 @@ EOF
 	echo "Job created."
 done
 
-# submit jobs
+# submit jobs (optional)
 if [ "$submitNow" == "y" ]; then
 	echo "Submitting all jobs..."
-	for runVid in "${runs[@]}"; do
+	for runName in ( "${runs[@]%_raw.mov}" ); do
 		echo "   "
-
-		# get runName
-		runName="${runVid: : -8}"	
+		echo "Run Name = $runName"
 		sh /data/jag/TOME/$subjName/$clusterSessionDate/eyetracking_scripts/submit_$subjName_$runName.sh
 	done
 else
