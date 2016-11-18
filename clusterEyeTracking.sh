@@ -21,7 +21,7 @@ read subjName
 echo "Enter session date (mmddyy) :"
 read sessionDate
 
-if [ "$uploadRawNow" == "y" ] || [ "$uploadReportNow" == "y" ]; then
+if [ "$uploadRawNow" == "y" -o "$uploadReportNow" == "y" ]; then
 	echo "Enter session number (1, 2 or 3):"
 	read sessionNum
 	# enter credentials to remote in machine with read access to Dropbox
