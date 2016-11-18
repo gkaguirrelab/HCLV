@@ -146,7 +146,7 @@ switch sessNum
                             Window2ID = 1;
                             % raw video acquisition
                             rawScriptPath = which('RawVideoRec.scpt');
-                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, 200));
+                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(200)));
                             rawVidStart = GetSecs;
                             LiveTrack_GazeCalibration(viewDist, screenSize, Window1ID, Window2ID,savePath,saveName)
                             repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
@@ -192,7 +192,7 @@ switch sessNum
                             % raw video acquisition
                             rawScriptPath = which('RawVideoRec.scpt');
                             rawVidStart.getSecsPre = GetSecs;
-                            [~, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, 50));
+                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(50)));
                             rawVidStart.getSecsPost = GetSecs;
                             rawVidStart.gDate = str2num(echo2); %not a scalar
                             [targets, dotTimes] = show9Targets(viewDist, screenSize, Window2ID);
@@ -409,7 +409,7 @@ switch sessNum
                             Window2ID = 1;
                             % raw video acquisition
                             rawScriptPath = which('RawVideoRec.scpt');
-                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, 200));
+                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(200)));
                             rawVidStart = GetSecs;
                             LiveTrack_GazeCalibration(viewDist, screenSize, Window1ID, Window2ID,savePath,saveName)
                             repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
@@ -455,7 +455,7 @@ switch sessNum
                             % raw video acquisition
                             rawScriptPath = which('RawVideoRec.scpt');
                             rawVidStart.getSecsPre = GetSecs;
-                            [~, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, 50));
+                            [~, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(50)));
                             rawVidStart.getSecsPost = GetSecs;
                             rawVidStart.gDate = str2num(echo2); %not a scalar
                             [targets, dotTimes] = show9Targets(viewDist, screenSize, Window2ID);
