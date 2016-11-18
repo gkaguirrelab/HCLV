@@ -71,7 +71,7 @@ for runName in "${runs[@]%_raw.mov}"; do
 	echo "Run Name = $runName"
 	
 	# make "job script" for this run
-	jobFile="/data/jag/TOME/$subjName/$clusterSessionDate/eyetracking_scripts/"$subjName"_"$runName".sh"
+	jobFile="/data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/"$subjName"_"$runName".sh"
 	touch $jobFile
 	cat <<EOF >$jobFile
 	#!/bin/bash
@@ -79,9 +79,9 @@ for runName in "${runs[@]%_raw.mov}"; do
 EOF
 		
 	# make "submit job script" for this run
-	submitJobFile="/data/jag/TOME/$subjName/$clusterSessionDate/eyetracking_scripts/submit_"$subjName"_"$runName".sh"
+	submitJobFile="/data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/submit_"$subjName"_"$runName".sh"
 	touch $submitJobFile
-	echo "qsub -l h_vmem=50.2G,s_vmem=50G -e /data/jag/TOME/LOGS -o /data/jag/TOME/LOGS /data/jag/TOME/$subjName/$clusterSessionDate/eyetracking_scripts/"$subjName"_"$runName".sh" > $submitJobFile
+	echo "qsub -l h_vmem=50.2G,s_vmem=50G -e /data/jag/TOME/LOGS -o /data/jag/TOME/LOGS /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/"$subjName"_"$runName".sh" > $submitJobFile
 
 	echo "Job created."
 done
@@ -93,7 +93,7 @@ if [ "$submitNow" == "y" ]; then
 		runName=${runName##*/}
 		echo "   "
 		echo "Run Name = $runName"
-		sh /data/jag/TOME/$subjName/$clusterSessionDate/eyetracking_scripts/submit_$subjName_$runName.sh
+		sh /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/submit_$subjName_$runName.sh
 	done
 else
 	echo "Jobs were not submitted."
