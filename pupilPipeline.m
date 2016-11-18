@@ -20,7 +20,7 @@ function pupilPipeline (params, mainDir)
 % pupilPipeline (params, mainDir)
 
 %% set outDir
-outDir = fullfile(mainDir,params.outputDir, params.projectFolder, ...
+outDir = fullfile(mainDir,params.outputDir, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir);
 
 %% deinterlace
