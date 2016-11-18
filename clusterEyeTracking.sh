@@ -75,7 +75,15 @@ for runName in "${runs[@]%_raw.mov}"; do
 	touch $jobFile
 	cat <<EOF >$jobFile
 	#!/bin/bash
-	matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.sessionDate='$clusterSessionDate';params.runName='$runName';pupilPipeline (params, mainDir);"
+	matlab -nodisplay -nosplash -r 
+	"mainDir='/data/jag';
+	params.subjectName='$subjName';
+	params.sessionDate='$clusterSessionDate';
+	params.runName='$runName';
+	params.outputDir='TOME';
+	params.projectFolder='TOME';
+	params.eyeTrackingDir='EyeTracking';
+	pupilPipeline (params, mainDir);"
 EOF
 		
 	# make "submit job script" for this run
