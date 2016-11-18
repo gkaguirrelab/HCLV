@@ -81,8 +81,8 @@ echo "Making eye tracking scripts for all available runs in $subjName/$clusterSe
 echo "   "
 
 shopt -s nullglob
-runs=(/data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/*_raw.mov)
-for runName in "${runs[@]%_raw.mov}"; do
+runs=(/data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/*_report.mat)
+for runName in "${runs[@]%_report.mat}"; do
 	runName=${runName##*/}
 	echo "   "
 	echo "   "
@@ -115,7 +115,7 @@ done
 # submit jobs (optional)
 if [ "$submitNow" == "y" ]; then
 	echo "Submitting all jobs..."
-	for runName in "${runs[@]%_raw.mov}"; do
+	for runName in "${runs[@]%_report.mat}"; do
 		runName=${runName##*/}
 		echo "   "
 		echo "Run Name = $runName"
