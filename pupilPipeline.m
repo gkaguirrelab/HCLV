@@ -1,6 +1,9 @@
 function pupilPipeline (params, mainDir)
 % This function is a wrapper to run the full pupilTrack pipeline for a
 % single video. 
+% The deinterlace step is optional, as the cluster is not able to process
+% .mov videos. All deinterlaced video should be saved as .avi
+
 % Note: contains internal params for each step where required.
 
 %  Usage:
@@ -11,6 +14,7 @@ function pupilPipeline (params, mainDir)
 % params.subjectName = 'TOME_3000';
 % params.sessionDate = '103116';
 % params.runName = 'tfMRI_FLASH_AP_run01';
+% params.deinterlace = 1;
 % 
 % % project params (fixed)
 % params.outputDir = 'TOME';
@@ -24,8 +28,9 @@ outDir = fullfile(mainDir,params.outputDir, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir);
 
 %% deinterlace
+if params.deinterlace == 1
 deinterlaceVideo (params, mainDir);
-
+end
 %% track with pupilTrack
 params.acqRate = 60;
 params.inVideo = fullfile(outDir,[params.runName '_60hz.avi']);
