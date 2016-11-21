@@ -1,9 +1,48 @@
 % Master script for processing data in the Human Connectome Low Vision
 % (HCLV) project
 %
-%   Written by Andrew S Bock Sep 2016
+% USAGE
+%  This script needs to run LOCALLY, on a machine with write access to
+%  /data/jag/TOME . It will make all necessary scripts  for cluster
+%  preprocessing of the fMRI data and all necessary files for pupil data
+%  processing on the cluster.
+%
+%  The first cell is always to be evaluated, as it contains parameters
+%  and default values for the processing.
 
-%% Defaults
+%  For every newly acquired session, the following cells need to be added
+%  and evaluated:
+
+% % % %% Example subject - session 1 - PREPROCESSING
+% % % params.sessionDir       = '/data/jag/TOME/TOME_3001/081916a';
+% % % params.subjectName      = 'TOME_3001';
+% % % params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
+% % % params.logDir           = logDir;
+% % % params.jobName          = params.subjectName;
+% % % params.numRuns          = 4;
+% % % params.reconall         = 1;
+% % % create_preprocessing_scripts(params);
+
+
+% % % %% Example subject - session 1 - EYE TRACKING
+
+
+
+
+%   Written by Andrew S Bock and Giulia Frazzetta Sep 2016
+
+
+%% Set initial params - EVALUATE ALWAYS BEFORE PROCEEDING
+
+% Get user name
+[~, tmpName]            = system('whoami');
+userName                = strtrim(tmpName);
+% Set Dropbox directory
+dropboxDir                   = ['/Users/' userName '/Dropbox-Aguirre-Brainard-Lab'];
+% Set Cluster dir
+clusterDir = '/data/jag/TOME'; %cluster must be mounted!
+
+% for preprocessing
 logDir                  = '/data/jag/TOME/LOGS';
 params.despike          = 1;
 params.slicetiming      = 0;
@@ -20,45 +59,110 @@ params.localWM          = 1;
 params.anat             = 1;
 params.amem             = 20;
 params.fmem             = 50;
+
 % for pRF scripts
 hemis                   = {'lh' 'rh'};
 pRFfunc                 = 'wdrf.tf.surf';
 params.sigList          = 0.5:0.1:10;
+
 % for eye tracking
-[~, tmpName]            = system('whoami');
-userName                = strtrim(tmpName);
-dbDir                   = ['/Users/' userName '/Dropbox-Aguirre-Brainard-Lab'];
-%% Example subject - session 1 - PREPROCESSING
-params.sessionDir       = '/data/jag/TOME/TOME_3001/081916a';
+params.projectFolder = 'TOME_data';
+params.outputDir = 'TOME_analysis';
+params.eyeTrackingDir = 'EyeTracking';
+
+
+%% TOME_3001 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3001';
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
-params.jobName          = params.subjectName;
+clusterSessionDate = '081916a';
+
 params.numRuns          = 4;
-params.reconall         = 1;
-create_preprocessing_scripts(params);
-%% Example subject - session 1 - EYE TRACKING
+params.reconall         = 1; 
 
-
-%% Example subject - session 1 - RETINOTOPY
-
-
-%% Example subject - session 2 - preprocessing
-
-%%% copy MPRAGE directory from session 1 %%%
-
-params.sessionDir       = '/data/jag/TOME/TOME_3001/081916b';
-params.subjectName      = 'TOME_3001';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
 params.logDir           = logDir;
 params.jobName          = params.subjectName;
-params.numRuns          = 10;
-params.reconall         = 0;
 create_preprocessing_scripts(params);
-%% Example subject - session 2 - EYE TRACKING
+% also run dicom_sort, so that faulty runs can be identified easily
+dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 
 
-%% Example subject - session 2 - RETINOTOPY
+%% TOME_3001 - session 1 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3001';
+params.sessionDate = '081916';
+clusterSessionDate = '081916a';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+for rr = 1 :length(runs) %loop in all video files
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+    else
+        params.runName = runs(rr).name(1:end-4); %calibrations
+    end
+    deinterlaceVideo (params, dropboxDir)
+    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
+        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+end
+
+%% TOME_3001 - session 2 - preprocessing
+
+% copy MPRAGE folder - WRITE THIS BIT %
+
+params.subjectName      = 'TOME_3001';
+clusterSessionDate = '081916b';
+
+params.numRuns          = 10;
+params.reconall         = 0; 
+
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
+params.logDir           = logDir;
+params.jobName          = params.subjectName;
+create_preprocessing_scripts(params);
+% also run dicom_sort, so that faulty runs can be identified easily
+dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
+
+%% TOME_3001 - session 2 - EYE TRACKING
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3001';
+params.sessionDate = '081916';
+clusterSessionDate = '081916b';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+for rr = 1 :length(runs) %loop in all video files
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+    else
+        params.runName = runs(rr).name(1:end-4); %calibrations
+    end
+    deinterlaceVideo (params, dropboxDir)
+    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
+        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
