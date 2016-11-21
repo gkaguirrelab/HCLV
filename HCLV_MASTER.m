@@ -28,6 +28,40 @@ params.sigList          = 0.5:0.1:10;
 [~, tmpName]            = system('whoami');
 userName                = strtrim(tmpName);
 dbDir                   = ['/Users/' userName '/Dropbox-Aguirre-Brainard-Lab'];
+%% Example subject - session 1 - PREPROCESSING
+params.sessionDir       = '/data/jag/TOME/TOME_3001/081916a';
+params.subjectName      = 'TOME_3001';
+params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
+params.logDir           = logDir;
+params.jobName          = params.subjectName;
+params.numRuns          = 4;
+params.reconall         = 1;
+create_preprocessing_scripts(params);
+%% Example subject - session 1 - EYE TRACKING
+
+
+%% Example subject - session 1 - RETINOTOPY
+
+
+%% Example subject - session 2 - preprocessing
+
+%%% copy MPRAGE directory from session 1 %%%
+
+params.sessionDir       = '/data/jag/TOME/TOME_3001/081916b';
+params.subjectName      = 'TOME_3001';
+params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
+params.logDir           = logDir;
+params.jobName          = params.subjectName;
+params.numRuns          = 10;
+params.reconall         = 0;
+create_preprocessing_scripts(params);
+%% Example subject - session 2 - EYE TRACKING
+
+
+%% Example subject - session 2 - RETINOTOPY
+
+
+
 %% Subject information
 % Session 1
 sessionDirs                = {...
