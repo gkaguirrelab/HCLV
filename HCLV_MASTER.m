@@ -403,7 +403,7 @@ for rr = 1 :length(runs) %loop in all video files
 end
 
 
-%% TOME_3004 - session 1 (partial)- PREPROCESSING
+%% TOME_3004 - session 1 (partial)- PREPROCESSING - DONE
 % the last 2 functional runs of this sessions need to be discarded because
 % there is no TR information for eyetracking data.
 
@@ -411,7 +411,7 @@ params.subjectName      = 'TOME_3004';
 clusterSessionDate = '091916';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 0; 
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -443,12 +443,12 @@ for rr = 1 :length(runs) %loop in all video files
         fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
 
-%% TOME_3004 - session 1 (partial)- PREPROCESSING
+%% TOME_3004 - session 1 (partial)- PREPROCESSING - DONE
 % this is a make up session for the previous session 1. It has only 2
 % functional runs.
 
 params.subjectName      = 'TOME_3004';
-clusterSessionDate = '101416';
+clusterSessionDate = '101416b';
 sessionOneDate = '091916';
 
 params.numRuns          = 2;
@@ -476,7 +476,7 @@ warning('Check on README file if some DICOM series needs to be discarded before 
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '101416';
-clusterSessionDate = '101416a';
+clusterSessionDate = '101416b';
 
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
@@ -493,10 +493,10 @@ for rr = 1 :length(runs) %loop in all video files
 end
 
 
-%% TOME_3004 - session 2 - PREPROCESSING
+%% TOME_3004 - session 2 - PREPROCESSING - DONE
 
 params.subjectName = 'TOME_3004';
-clusterSessionDate = '101416b';
+clusterSessionDate = '101416a';
 sessionOneDate = '091916';
     
 
@@ -525,7 +525,7 @@ warning('Check on README file if some DICOM series needs to be discarded before 
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '101416';
-clusterSessionDate = '101416b';
+clusterSessionDate = '101416a';
 
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
@@ -713,7 +713,7 @@ for rr = 1 :length(runs) %loop in all video files
         fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
 
-%% TOME_3008 - session 1 - PREPROCESSING
+%% TOME_3008 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3008';
 clusterSessionDate = '102116';
 
@@ -798,12 +798,12 @@ for rr = 1 :length(runs) %loop in all video files
         fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
 
-%% TOME_3009 - session 1 - PREPROCESSING
+%% TOME_3009 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3009';
 clusterSessionDate = '100716';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 0; 
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -885,7 +885,7 @@ end
 
 %% TOME_3010 - no data collected
 
-%% TOME_3011 - session 1 - PREPROCESSING
+%% TOME_3011 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3011';
 clusterSessionDate = '111116';
 
