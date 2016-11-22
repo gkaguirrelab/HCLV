@@ -119,7 +119,7 @@ if [ "$submitNow" == "y" ]; then
 		runName=${runName##*/}
 		echo "   "
 		echo "Run Name = $runName"
-		sh /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/submit_$subjName_$runName.sh
+		sh /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/submit_"$subjName"_"$runName".sh
 	done
 else
 	echo "Jobs were not submitted."
