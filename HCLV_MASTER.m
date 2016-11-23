@@ -41,7 +41,7 @@
 % runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 % for rr = 1 :length(runs) %loop in all video files
-%     fprintf ('\nProcessing video %d of %d',rr,length(runs))
+%     fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
 %     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
 %         params.runName = runs(rr).name(1:end-8); %runs
 %     else
@@ -50,9 +50,11 @@
 %     deinterlaceVideo (params, dropboxDir)
 % end
 % % copy over all deinterlaced videos
+% fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 % copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
 %     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+% fprintf('done!\n')
 
 %%%%%%%%%%%%%%%%%%%%%%%% SESSION 2 EXAMPLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -93,7 +95,7 @@
 % runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 % for rr = 1 :length(runs) %loop in all video files
-%     fprintf ('\nProcessing video %d of %d',rr,length(runs))
+%     fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
 %     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
 %         params.runName = runs(rr).name(1:end-8); %runs
 %     else
@@ -102,9 +104,11 @@
 %     deinterlaceVideo (params, dropboxDir)
 % end
 % % copy over all deinterlaced videos
+% fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 % copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
 %     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+% fprintf('done!\n')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -176,7 +180,7 @@ clusterSessionDate = '081916a';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -185,9 +189,11 @@ for rr = 1 :length(runs) %loop in all video files
    deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3001 - session 2 - PREPROCESSING - DONE
 
@@ -225,7 +231,7 @@ clusterSessionDate = '081916b';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -234,9 +240,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3002 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3002';
@@ -265,7 +273,7 @@ clusterSessionDate = '082616a';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -274,9 +282,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3002 - session 2 - PREPROCESSING - DONE
 
@@ -314,7 +324,7 @@ clusterSessionDate = '082616b';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -323,9 +333,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3003 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3003';
@@ -344,7 +356,7 @@ create_preprocessing_scripts(params);
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
-%% TOME_3003 - session 1 - DEINTERLACE VIDEO - IN PROGRESS
+%% TOME_3003 - session 1 - DEINTERLACE VIDEO - DONE
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3003';
 params.sessionDate = '090216';
@@ -353,7 +365,7 @@ clusterSessionDate = '090216';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -362,9 +374,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3003 - session 2 - PREPROCESSING - DONE
 
@@ -403,7 +417,7 @@ clusterSessionDate = '091616';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -412,9 +426,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 
 %% TOME_3004 - session 1 (partial)- PREPROCESSING - DONE
@@ -437,7 +453,7 @@ create_preprocessing_scripts(params);
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
-%% TOME_3004 - session 1 (partial) - DEINTERLACE VIDEO
+%% TOME_3004 - session 1 (partial) - DEINTERLACE VIDEO - IN PROGRESS
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '091916';
@@ -446,7 +462,7 @@ clusterSessionDate = '091916';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -455,9 +471,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3004 - session 1 (partial)- PREPROCESSING - DONE
 % this is a make up session for the previous session 1. It has only 2
@@ -497,7 +515,7 @@ clusterSessionDate = '101416b';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -506,9 +524,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3004 - session 2 - PREPROCESSING - DONE
 
@@ -547,7 +567,7 @@ clusterSessionDate = '101416a';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -556,9 +576,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3005 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3005';
@@ -586,7 +608,7 @@ clusterSessionDate = '092316';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -595,9 +617,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3005 - session 2 - PREPROCESSING - DONE
 
@@ -636,7 +660,7 @@ clusterSessionDate = '100316';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -645,9 +669,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3006 - no data collected
 
@@ -677,7 +703,7 @@ clusterSessionDate = '101116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -686,9 +712,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3007 - session 2 - PREPROCESSING - DONE
 
@@ -727,7 +755,7 @@ clusterSessionDate = '101716';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -736,9 +764,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3008 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3008';
@@ -766,7 +796,7 @@ clusterSessionDate = '102116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -775,9 +805,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3008 - session 2 - PREPROCESSING
 
@@ -816,7 +848,7 @@ clusterSessionDate = '103116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -825,9 +857,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3009 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3009';
@@ -855,7 +889,7 @@ clusterSessionDate = '100716';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -864,9 +898,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3009 - session 2 - PREPROCESSING
 
@@ -905,7 +941,7 @@ clusterSessionDate = '102516';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -914,9 +950,11 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
 
 %% TOME_3010 - no data collected
 
@@ -946,7 +984,7 @@ clusterSessionDate = '111116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d',rr,length(runs))
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -955,6 +993,8 @@ for rr = 1 :length(runs) %loop in all video files
     deinterlaceVideo (params, dropboxDir)
 end
 % copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
 copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
