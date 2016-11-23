@@ -18,26 +18,26 @@
 % %% TOME_30XX - session 1 - PREPROCESSING
 % params.subjectName      = 'TOME_30XX';
 % clusterSessionDate = 'mmddyy';
-% 
+%
 % params.numRuns          = 4;
-% params.reconall         = 1; 
-% 
+% params.reconall         = 1;
+%
 % params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 % params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
 % params.logDir           = logDir;
 % params.jobName          = params.subjectName;
 % create_preprocessing_scripts(params);
-% 
+%
 % % also run dicom_sort, so that faulty runs can be identified easily
 % dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 % warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-% 
+%
 % %% TOME_30XX - session 1 - DEINTERLACE VIDEO
 % params.projectSubfolder = 'session1_restAndStructure';
 % params.subjectName = 'TOME_30XX';
 % params.sessionDate = 'mmddyy';
 % clusterSessionDate = 'mmddyy';
-% 
+%
 % runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 % for rr = 1 :length(runs) %loop in all video files
@@ -47,30 +47,30 @@
 %         params.runName = runs(rr).name(1:end-4); %calibrations
 %     end
 %     deinterlaceVideo (params, dropboxDir)
-%     movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-%         params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-%         fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 % end
-
+% % copy over all deinterlaced videos
+% copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+%     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+%     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %%%%%%%%%%%%%%%%%%%%%%%% SESSION 2 EXAMPLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % %% TOME_30XX - session 2 - PREPROCESSING
-% 
+%
 % params.subjectName = 'TOME_30XX';
 % clusterSessionDate = 'mmddyy';
 % sessionOneDate = 'mmddyy';
-%     
-% 
+%
+%
 % params.numRuns          = 10;
-% params.reconall         = 0; 
-% 
+% params.reconall         = 0;
+%
 % params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 % params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
 % params.logDir           = logDir;
 % params.jobName          = params.subjectName;
 % create_preprocessing_scripts(params);
-% 
+%
 % % copy MPRAGE folder from session one
 % MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
 % if exist ('MPRAGEdir','dir')
@@ -78,17 +78,17 @@
 % else
 %     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 % end
-%     
+%
 % % also run dicom_sort, so that faulty runs can be identified easily
 % dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 % warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-% 
+%
 % %% TOME_30XX - session 2 - DEINTERLACE VIDEO
 % params.projectSubfolder = 'session2_spatialStimuli';
 % params.subjectName = 'TOME_30XX';
 % params.sessionDate = 'mmddyy';
 % clusterSessionDate = 'mmddyy';
-% 
+%
 % runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 % for rr = 1 :length(runs) %loop in all video files
@@ -98,10 +98,11 @@
 %         params.runName = runs(rr).name(1:end-4); %calibrations
 %     end
 %     deinterlaceVideo (params, dropboxDir)
-%     movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-%         params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-%         fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 % end
+% % copy over all deinterlaced videos
+% copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+%     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+%     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -143,7 +144,7 @@ params.sigList          = 0.5:0.1:10;
 
 % for eye tracking
 params.projectFolder = 'TOME_data';
-params.outputDir = 'TOME_analysis';
+params.outputDir = 'TOME_processing';
 params.eyeTrackingDir = 'EyeTracking';
 
 
@@ -152,7 +153,7 @@ params.subjectName      = 'TOME_3001';
 clusterSessionDate = '081916a';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -178,21 +179,21 @@ for rr = 1 :length(runs) %loop in all video files
     else
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
-    deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+   deinterlaceVideo (params, dropboxDir)
 end
-
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3001 - session 2 - PREPROCESSING - DONE
 
 params.subjectName = 'TOME_3001';
 clusterSessionDate = '081916b';
 sessionOneDate = '081916a';
-    
+
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -207,7 +208,7 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
@@ -227,17 +228,18 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3002 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3002';
 clusterSessionDate = '082616a';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -250,7 +252,7 @@ dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
 
-%% TOME_3002 - session 1 - DEINTERLACE VIDEO
+%% TOME_3002 - session 1 - DEINTERLACE VIDEO - DONE
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
@@ -265,19 +267,20 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3002 - session 2 - PREPROCESSING - DONE
 
 params.subjectName = 'TOME_3002';
 clusterSessionDate = '082616b';
 sessionOneDate = '082616a';
-    
+
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -292,12 +295,12 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
-%% TOME_3002 - session 2 - DEINTERLACE VIDEO
+%% TOME_3002 - session 2 - DEINTERLACE VIDEO - DONE
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
@@ -312,17 +315,18 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3003 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3003';
 clusterSessionDate = '090216';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -334,7 +338,7 @@ create_preprocessing_scripts(params);
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
-%% TOME_3003 - session 1 - DEINTERLACE VIDEO
+%% TOME_3003 - session 1 - DEINTERLACE VIDEO - IN PROGRESS
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3003';
 params.sessionDate = '090216';
@@ -349,20 +353,21 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3003 - session 2 - PREPROCESSING - DONE
 
 params.subjectName = 'TOME_3003';
 clusterSessionDate = '091616';
 sessionOneDate = '090216';
-    
+
 
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -377,7 +382,7 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
@@ -397,10 +402,11 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 
 %% TOME_3004 - session 1 (partial)- PREPROCESSING - DONE
@@ -411,7 +417,7 @@ params.subjectName      = 'TOME_3004';
 clusterSessionDate = '091916';
 
 params.numRuns          = 4;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -438,10 +444,11 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3004 - session 1 (partial)- PREPROCESSING - DONE
 % this is a make up session for the previous session 1. It has only 2
@@ -452,7 +459,7 @@ clusterSessionDate = '101416b';
 sessionOneDate = '091916';
 
 params.numRuns          = 2;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -487,21 +494,21 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
-
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3004 - session 2 - PREPROCESSING - DONE
 
 params.subjectName = 'TOME_3004';
 clusterSessionDate = '101416a';
 sessionOneDate = '091916';
-    
+
 
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -516,7 +523,7 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
@@ -536,17 +543,18 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3005 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3005';
 clusterSessionDate = '092316';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -573,20 +581,21 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3005 - session 2 - PREPROCESSING - DONE
 
 params.subjectName = 'TOME_3005';
 clusterSessionDate = '100316';
 sessionOneDate = '092316';
-    
+
 
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -601,7 +610,7 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
@@ -621,10 +630,11 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3006 - no data collected
 
@@ -633,7 +643,7 @@ params.subjectName      = 'TOME_3007';
 clusterSessionDate = '101116';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -660,20 +670,21 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3007 - session 2 - PREPROCESSING - DONE
 
 params.subjectName = 'TOME_3007';
 clusterSessionDate = '101716';
 sessionOneDate = '101116';
-    
+
 
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -688,7 +699,7 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
@@ -708,17 +719,18 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3008 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3008';
 clusterSessionDate = '102116';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -745,20 +757,21 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3008 - session 2 - PREPROCESSING
 
 params.subjectName = 'TOME_3008';
 clusterSessionDate = '103116';
 sessionOneDate = '102116';
-    
+
 
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -773,7 +786,7 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
@@ -793,17 +806,18 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3009 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3009';
 clusterSessionDate = '100716';
 
 params.numRuns          = 4;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -830,20 +844,21 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3009 - session 2 - PREPROCESSING
 
 params.subjectName = 'TOME_3009';
 clusterSessionDate = '102516';
 sessionOneDate = '100716';
-    
+
 
 params.numRuns          = 10;
-params.reconall         = 0; 
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -858,7 +873,7 @@ if exist ('MPRAGEdir','dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-    
+
 % also run dicom_sort, so that faulty runs can be identified easily
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
@@ -878,10 +893,11 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 
 %% TOME_3010 - no data collected
 
@@ -890,7 +906,7 @@ params.subjectName      = 'TOME_3011';
 clusterSessionDate = '111116';
 
 params.numRuns          = 4;
-params.reconall         = 1; 
+params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -917,34 +933,8 @@ for rr = 1 :length(runs) %loop in all video files
         params.runName = runs(rr).name(1:end-4); %calibrations
     end
     deinterlaceVideo (params, dropboxDir)
-    movefile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-        params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '*']) , ...
-        fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% copy over all deinterlaced videos
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
