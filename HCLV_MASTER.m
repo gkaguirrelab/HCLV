@@ -41,6 +41,7 @@
 % runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 % for rr = 1 :length(runs) %loop in all video files
+%     fprintf ('\nProcessing video %d of %d',rr,length(runs))
 %     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
 %         params.runName = runs(rr).name(1:end-8); %runs
 %     else
@@ -92,6 +93,7 @@
 % runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 % for rr = 1 :length(runs) %loop in all video files
+%     fprintf ('\nProcessing video %d of %d',rr,length(runs))
 %     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
 %         params.runName = runs(rr).name(1:end-8); %runs
 %     else
@@ -174,6 +176,7 @@ clusterSessionDate = '081916a';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -222,6 +225,7 @@ clusterSessionDate = '081916b';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -261,6 +265,7 @@ clusterSessionDate = '082616a';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -309,6 +314,7 @@ clusterSessionDate = '082616b';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -347,6 +353,7 @@ clusterSessionDate = '090216';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -387,7 +394,7 @@ end
 dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
 warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
-%% TOME_3003 - session 2 - DEINTERLACE VIDEO
+%% TOME_3003 - session 2 - DEINTERLACE VIDEO - IN PROGRESS
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3003';
 params.sessionDate = '091616';
@@ -396,6 +403,7 @@ clusterSessionDate = '091616';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -438,6 +446,7 @@ clusterSessionDate = '091916';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -488,6 +497,7 @@ clusterSessionDate = '101416b';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -537,6 +547,7 @@ clusterSessionDate = '101416a';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -575,6 +586,7 @@ clusterSessionDate = '092316';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -624,6 +636,7 @@ clusterSessionDate = '100316';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -664,6 +677,7 @@ clusterSessionDate = '101116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -713,6 +727,7 @@ clusterSessionDate = '101716';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -751,6 +766,7 @@ clusterSessionDate = '102116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -800,6 +816,7 @@ clusterSessionDate = '103116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -838,6 +855,7 @@ clusterSessionDate = '100716';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -887,6 +905,7 @@ clusterSessionDate = '102516';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
@@ -927,6 +946,7 @@ clusterSessionDate = '111116';
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
 for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
     else
