@@ -2,6 +2,7 @@ function Connectome_EyeTracking
 % Main driver for eyetracking during connectome sessions.
 
 % aug, 4 2016 - GF : written and commented
+% nov, 29 2016 - GF : edit to get only report and RAW video for every run.
 %% Set defaults
 % Get user name
 [~, tmpName] = system('whoami');
@@ -120,12 +121,12 @@ switch sessNum
                             end
                             if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                     exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                                movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
                             elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                     ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                                movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
                             elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                                movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
                             end
                         end
                         fprintf(' >> Done.\n')
@@ -165,17 +166,17 @@ switch sessNum
                         end
                         if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
                         elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
                         elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
                         elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']), 'file')
                             saveNum = GetWithDefault('Insert progressive save number for this aborted run', '04');
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_' saveNum]));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_' saveNum]));
                         end
                     end
                     fprintf(' >> Done.\n')
@@ -183,7 +184,7 @@ switch sessNum
                 % acquire data
                 TTLtrigger = false;
                 GetRawVideo = true;
-                [Report] = LiveTrack_GetReportVideo (TTLtrigger,GetRawVideo,recTime,savePath,saveName);
+                [Report] = LiveTrack_GetReportAndRaw (TTLtrigger,recTime,savePath,saveName);
                 % give some information about the recording
                 [TTLPulses] = CountTTLPulses (Report);
                 fprintf ('\n>>>> Recorded %d TTL pulses.\n', TTLPulses);
@@ -280,17 +281,17 @@ switch sessNum
                         end
                         if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
                         elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
                         elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
                         elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']), 'file')
                             saveNum = GetWithDefault('Insert progressive save number for this aborted run', '04');
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_' saveNum]));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_' saveNum]));
                         end
                     end
                     fprintf(' >> Done. \n')
@@ -298,7 +299,7 @@ switch sessNum
                 % acquire data 
                 TTLtrigger = false;
                 GetRawVideo = true;
-                [Report] = LiveTrack_GetReportVideo (TTLtrigger,GetRawVideo,recTime,savePath,saveName);
+                [Report] = LiveTrack_GetReportAndRaw (TTLtrigger,recTime,savePath,saveName);
                 % give some information about the recording
                 [TTLPulses] = CountTTLPulses (Report);
                 fprintf ('\n>>>> Recorded %d TTL pulses.\n', TTLPulses);
@@ -327,12 +328,12 @@ switch sessNum
                             end
                             if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                     exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                                movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
                             elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                     ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                                movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
                             elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                                movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
                             end
                         end
                         fprintf(' >> Done.\n')
@@ -418,17 +419,17 @@ switch sessNum
                         end
                         if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
                         elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
                         elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
                         elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file') && ...
                                 exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']), 'file')
                             saveNum = GetWithDefault('Insert progressive save number for this aborted run', '04');
-                            copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_' saveNum]));
+                            movefile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_' saveNum]));
                         end
                     end
                     fprintf (' >> Done.\n')
@@ -436,7 +437,7 @@ switch sessNum
                 % acquire data
                 TTLtrigger = false;
                 GetRawVideo = true;
-                [Report] = LiveTrack_GetReportVideo (TTLtrigger,GetRawVideo,recTime,savePath,saveName);
+                [Report] = LiveTrack_GetReportAndRaw (TTLtrigger,recTime,savePath,saveName);
                 % give some information about the recording
                 [TTLPulses] = CountTTLPulses (Report);
                 fprintf ('\n>>>> Recorded %d TTL pulses.\n', TTLPulses);
