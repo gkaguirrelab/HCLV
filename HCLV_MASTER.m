@@ -72,7 +72,7 @@
 %     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 % fprintf('done!\n')
 
-%%%%%%%%%%%%%%%%%%%%%%%% SESSION 2 EXAMPLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% SESSION 2 TEMPLATE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % %% TOME_30XX - session 2 - PREPROCESSING
 %
@@ -190,7 +190,7 @@ params.outputDir = 'TOME_processing';
 params.eyeTrackingDir = 'EyeTracking';
 
 
-%% TOME_3001 - session 1 - PREPROCESSING - DONE
+%% TOME_3001 - session 1 - PREPROCESSING 
 params.subjectName      = 'TOME_3001';
 clusterSessionDate = '081916a';
 
@@ -246,7 +246,7 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
 
-%% TOME_3001 - session 2 - PREPROCESSING - DONE
+%% TOME_3001 - session 2 - PREPROCESSING
 
 params.subjectName = 'TOME_3001';
 clusterSessionDate = '081916b';
@@ -317,7 +317,7 @@ params.subjectName      = 'TOME_3002';
 clusterSessionDate = '082616a';
 
 params.numRuns          = 4;
-params.reconall         = 1;
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -764,7 +764,7 @@ params.subjectName      = 'TOME_3005';
 clusterSessionDate = '092316';
 
 params.numRuns          = 4;
-params.reconall         = 1;
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -886,12 +886,12 @@ fprintf('done!\n')
 
 %% TOME_3006 - no data collected
 
-%% TOME_3007 - session 1 - PREPROCESSING - DONE
+%% TOME_3007 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3007';
 clusterSessionDate = '101116';
 
 params.numRuns          = 4;
-params.reconall         = 1;
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -1016,7 +1016,7 @@ params.subjectName      = 'TOME_3008';
 clusterSessionDate = '102116';
 
 params.numRuns          = 4;
-params.reconall         = 1;
+params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
@@ -1136,7 +1136,7 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
 
-%% TOME_3009 - session 1 - PREPROCESSING - DONE
+%% TOME_3009 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3009';
 clusterSessionDate = '100716';
 
@@ -1319,3 +1319,63 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+
+
+%% TOME_3013 - session 1 - PREPROCESSING
+params.subjectName      = 'TOME_3013';
+clusterSessionDate = '112816';
+
+params.numRuns          = 4;
+params.reconall         = 1;
+
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
+params.logDir           = logDir;
+params.jobName          = params.subjectName;
+create_preprocessing_scripts(params);
+
+% also run dicom_sort, so that faulty runs can be identified easily
+dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
+warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3013';
+params.sessionDate = '112816';
+clusterSessionDate = '112816';
+
+qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,'PreprocessingQA');
+if ~exist ('qaParams.outDir','dir')
+    mkdir (qaParams.outDir)
+end
+tomeQA(qaParams)
+
+%% TOME_30XX - session 1 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3013';
+params.sessionDate = '112816';
+clusterSessionDate = '112816';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+    else
+        params.runName = runs(rr).name(1:end-4); %calibrations
+    end
+    deinterlaceVideo (params, dropboxDir)
+end
+% copy over all deinterlaced videos
+fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
+copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
+    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
+fprintf('done!\n')
+
