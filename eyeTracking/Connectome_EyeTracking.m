@@ -100,51 +100,107 @@ switch sessNum
                 
                 
             case 5 % gaze calibration
-                repeatCal = 'y';
-                while repeatCal == 'y'
-                    savePath = outDir;
-                    saveName = runNames{runNum};
-                    %Check if current file already exists
-                    Files= { ...
-                        '_LTdat.mat' ...
-                        '_LTcal.mat' ...
-                        'MeanError.fig' ...
-                        '.mov' ...
-                        '_rawVidStart.mat'...
-                        };
-                    for ff =1:length(Files)
-                        if exist (fullfile(savePath, [saveName Files{ff}]), 'file')
-                            fprintf('Files for this runs already exist. Copying previous versions to the folder Aborted_runs...\n')
-                            if ~exist (fullfile(savePath, 'Aborted_runs'), 'dir')
-                                mkdir (fullfile(savePath, 'Aborted_runs'))
+                fprintf(['\nCalibration options:\n' ...
+                    '\n1 - LiveTrack' ...
+                    '\n2 - Fixed time dots (pupilCal)' ...
+                    ]);
+                calType = input('\nWhich calibration type? \n');
+                switch calType
+                    case 1
+                        repeatCal = 'y';
+                        while repeatCal == 'y'
+                            savePath = outDir;
+                            saveName = runNames{runNum};
+                            %Check if current file already exists
+                            Files= { ...
+                                '_LTdat.mat' ...
+                                '_LTcal.mat' ...
+                                'MeanError.fig' ...
+                                '.mov' ...
+                                '_rawVidStart.mat'...
+                                };
+                            for ff =1:length(Files)
+                                if exist (fullfile(savePath, [saveName Files{ff}]), 'file')
+                                    fprintf('Files for this runs already exist. Copying previous versions to the folder Aborted_runs...\n')
+                                    if ~exist (fullfile(savePath, 'Aborted_runs'), 'dir')
+                                        mkdir (fullfile(savePath, 'Aborted_runs'))
+                                    end
+                                    if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                                    elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                                    elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                                    end
+                                end
+                                fprintf(' >> Done.\n')
                             end
-                            if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
-                                    exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
-                            elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
-                                    ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
-                            elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
-                            end
+                            fprintf ('\n Make sure that bore lights are on. Press spacebar when ready to calibrate.\n')
+                            pause;
+                            
+                            viewDist = GetWithDefault ('Enter viewing distance in mm:', 1065);
+                            screenSize = 32; % screen size at SC3T
+                            Window1ID = 0;
+                            Window2ID = 1;
+                            % raw video acquisition
+                            rawScriptPath = which('RawVideoRec.scpt');
+                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(200)));
+                            rawVidStart = GetSecs;
+                            LiveTrack_GazeCalibration(viewDist, screenSize, Window1ID, Window2ID,savePath,saveName)
+                            repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
+                            repeatCal = lower(repeatCal);
+                            save(fullfile(savePath,[saveName '_rawVidStart.mat']), 'rawVidStart');
                         end
-                        fprintf(' >> Done.\n')
-                    end
-                    fprintf ('\n Make sure that bore lights are on. Press spacebar when ready to calibrate.\n')
-                    pause;
-                    
-                    viewDist = GetWithDefault ('Enter viewing distance in mm:', 1065);
-                    screenSize = 32; % screen size at SC3T
-                    Window1ID = 0;
-                    Window2ID = 1;
-                    % raw video acquisition
-                    rawScriptPath = which('RawVideoRec.scpt');
-                    [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, 200));
-                    rawVidStart = GetSecs;
-                    LiveTrack_GazeCalibration(viewDist, screenSize, Window1ID, Window2ID,savePath,saveName)
-                    repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
-                    repeatCal = lower(repeatCal);
-                    save(fullfile(savePath,[saveName '_rawVidStart.mat']), 'rawVidStart');
+                    case 2
+                        repeatCal = 'y';
+                        while repeatCal == 'y'
+                            savePath = outDir;
+                            saveName = runNames{runNum};
+                            %Check if current file already exists
+                            Files= { ...
+                                '_pupilCal.mov' ...
+                                '_pupilCal_Info.mat'...
+                                };
+                            
+                            for ff =1:length(Files)
+                                if exist (fullfile(savePath, [saveName Files{ff}]), 'file')
+                                    fprintf('Files for this runs already exist. Copying previous versions to the folder Aborted_runs...\n')
+                                    if ~exist (fullfile(savePath, 'Aborted_runs'), 'dir')
+                                        mkdir (fullfile(savePath, 'Aborted_runs'))
+                                    end
+                                    if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                                    elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                                    elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                                    end
+                                end
+                                fprintf(' >> Done.\n')
+                            end
+                            fprintf ('\n Make sure that bore lights are on. Press spacebar when ready to calibrate.\n')
+                            pause;
+                            
+                            viewDist = GetWithDefault ('Enter viewing distance in mm:', 1065);
+                            screenSize = 32; % screen size at SC3T
+                            Window1ID = 0;
+                            Window2ID = 1;
+                            % raw video acquisition
+                            rawScriptPath = which('RawVideoRec.scpt');
+                            rawVidStart.getSecsPre = GetSecs;
+                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(50)));
+                            rawVidStart.getSecsPost = GetSecs;
+                            rawVidStart.gDate = str2num(echo2); %not a scalar
+                            [targets, dotTimes] = show9Targets(viewDist, screenSize, Window2ID);
+                            repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
+                            repeatCal = lower(repeatCal);
+                            save(fullfile(savePath,[saveName '_pupilCal_Info.mat']), 'rawVidStart','targets','dotTimes');
+                        end
+                        
                 end
             case {1, 2, 3, 4, 6, 7, 8, 9, 10, 11} % data collection
                 recTime = runSecs{runNum};
@@ -295,7 +351,7 @@ switch sessNum
                     end
                     fprintf(' >> Done. \n')
                 end
-                % acquire data 
+                % acquire data
                 TTLtrigger = false;
                 GetRawVideo = true;
                 [Report] = LiveTrack_GetReportVideo (TTLtrigger,GetRawVideo,recTime,savePath,saveName);
@@ -307,52 +363,108 @@ switch sessNum
                 
                 
             case {1, 4, 8, 11} % gaze calibration
-                repeatCal = 'y';
-                while repeatCal == 'y'
-                    savePath = outDir;
-                    saveName = runNames{runNum};
-                    %Check if current file already exists
-                    Files= { ...
-                        '_LTdat.mat' ...
-                        '_LTcal.mat' ...
-                        'MeanError.fig' ...
-                        '.mov' ...
-                        '_rawVidStart.mat' ...
-                        };
-                    for ff =1:length(Files)
-                        if exist (fullfile(savePath, [saveName Files{ff}]), 'file')
-                            fprintf('Files for this runs already exist. Copying previous versions to the folder Aborted_runs...\n')
-                            if ~exist (fullfile(savePath, 'Aborted_runs'), 'dir')
-                                mkdir (fullfile(savePath, 'Aborted_runs'))
+                fprintf(['\nCalibration options:\n' ...
+                    '\n1 - LiveTrack' ...
+                    '\n2 - Fixed time dots (pupilCal)' ...
+                    ]);
+                calType = input('\nWhich calibration type? \n');
+                switch calType
+                    case 1
+                        repeatCal = 'y';
+                        while repeatCal == 'y'
+                            savePath = outDir;
+                            saveName = runNames{runNum};
+                            %Check if current file already exists
+                            Files= { ...
+                                '_LTdat.mat' ...
+                                '_LTcal.mat' ...
+                                'MeanError.fig' ...
+                                '.mov' ...
+                                '_rawVidStart.mat'...
+                                };
+                            for ff =1:length(Files)
+                                if exist (fullfile(savePath, [saveName Files{ff}]), 'file')
+                                    fprintf('Files for this runs already exist. Copying previous versions to the folder Aborted_runs...\n')
+                                    if ~exist (fullfile(savePath, 'Aborted_runs'), 'dir')
+                                        mkdir (fullfile(savePath, 'Aborted_runs'))
+                                    end
+                                    if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                                    elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                                    elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                                    end
+                                end
+                                fprintf(' >> Done.\n')
                             end
-                            if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
-                                    exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
-                            elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
-                                    ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
-                            elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
-                                copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
-                            end
+                            fprintf ('\n Make sure that bore lights are on. Press spacebar when ready to calibrate.\n')
+                            pause;
+                            
+                            viewDist = GetWithDefault ('Enter viewing distance in mm:', 1065);
+                            screenSize = 32; % screen size at SC3T
+                            Window1ID = 0;
+                            Window2ID = 1;
+                            % raw video acquisition
+                            rawScriptPath = which('RawVideoRec.scpt');
+                            [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(200)));
+                            rawVidStart = GetSecs;
+                            LiveTrack_GazeCalibration(viewDist, screenSize, Window1ID, Window2ID,savePath,saveName)
+                            repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
+                            repeatCal = lower(repeatCal);
+                            save(fullfile(savePath,[saveName '_rawVidStart.mat']), 'rawVidStart');
                         end
-                        fprintf(' >> Done.\n')
-                    end
-                    fprintf ('\n Make sure that bore lights are on. Press spacebar when ready to calibrate.\n')
-                    pause;
-                    viewDist = GetWithDefault ('Enter viewing distance in mm:', 1065);
-                    screenSize = 32; % screen size at SC3T
-                    Window1ID = 0;
-                    Window2ID = 1;
-                    % raw video acquisition
-                    rawScriptPath = which('RawVideoRec.scpt');
-                    [status, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, 200));
-                    rawVidStart = GetSecs;
-                    LiveTrack_GazeCalibration(viewDist, screenSize, Window1ID, Window2ID,savePath,saveName)
-                    repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
-                    repeatCal = lower(repeatCal);
-                    save(fullfile(savePath,[saveName '_rawVidStart.mat']), 'rawVidStart');
+                    case 2
+                        repeatCal = 'y';
+                        while repeatCal == 'y'
+                            savePath = outDir;
+                            saveName = runNames{runNum};
+                            %Check if current file already exists
+                            Files= { ...
+                                '_pupilCal.mov' ...
+                                '_pupilCal_Info.mat'...
+                                };
+                            
+                            for ff =1:length(Files)
+                                if exist (fullfile(savePath, [saveName Files{ff}]), 'file')
+                                    fprintf('Files for this runs already exist. Copying previous versions to the folder Aborted_runs...\n')
+                                    if ~exist (fullfile(savePath, 'Aborted_runs'), 'dir')
+                                        mkdir (fullfile(savePath, 'Aborted_runs'))
+                                    end
+                                    if exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_03']));
+                                    elseif exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file') && ...
+                                            ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_02']));
+                                    elseif ~exist (fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']), 'file')
+                                        copyfile (fullfile(savePath, [saveName Files{ff}]), fullfile(savePath, 'Aborted_runs', [saveName Files{ff} '_ABORTED_01']));
+                                    end
+                                end
+                                fprintf(' >> Done.\n')
+                            end
+                            fprintf ('\n Make sure that bore lights are on. Press spacebar when ready to calibrate.\n')
+                            pause;
+                            
+                            viewDist = GetWithDefault ('Enter viewing distance in mm:', 1065);
+                            screenSize = 32; % screen size at SC3T
+                            Window1ID = 0;
+                            Window2ID = 1;
+                            % raw video acquisition
+                            rawScriptPath = which('RawVideoRec.scpt');
+                            rawVidStart.getSecsPre = GetSecs;
+                            [~, echo2] = system(sprintf(['osascript ' rawScriptPath ' %s %s %s'], savePath, saveName, num2str(50)));
+                            rawVidStart.getSecsPost = GetSecs;
+                            rawVidStart.gDate = str2num(echo2); %not a scalar
+                            [targets, dotTimes] = show9Targets(viewDist, screenSize, Window2ID);
+                            repeatCal = GetWithDefault ('Repeat the calibration [y/n] ?', 'n');
+                            repeatCal = lower(repeatCal);
+                            save(fullfile(savePath,[saveName '_pupilCal_Info.mat']), 'rawVidStart','targets','dotTimes');
+                        end
+                        
                 end
-                
             case 17 % scale calibration
                 disp ('Press spacebar when ready to calibrate.')
                 pause;
@@ -442,7 +554,6 @@ switch sessNum
                 fprintf ('\n>>>> Recorded %d TTL pulses.\n', TTLPulses);
                 [trackedSamples,trackedPct] = CountTrackedSamples (Report);
                 fprintf ('\n>>>> Pupil was tracked in %.2f percent of the samples.\n',trackedPct);
-                
                 
             case 7 % Scale calibration
                 disp ('Press spacebar when ready to calibrate.')
