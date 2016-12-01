@@ -107,7 +107,7 @@ EOF
 	# make "submit job script" for this run
 	submitJobFile="/data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/submit_"$subjName"_"$runName".sh"
 	touch $submitJobFile
-	echo "qsub -l h_vmem=50.2G,s_vmem=50G -e /data/jag/TOME/LOGS -o /data/jag/TOME/LOGS /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/"$subjName"_"$runName".sh" > $submitJobFile
+	echo "qsub -l h_vmem=30.2G,s_vmem=30G -e /data/jag/TOME/LOGS -o /data/jag/TOME/LOGS /data/jag/TOME/$subjName/$clusterSessionDate/eyeTracking_scripts/"$subjName"_"$runName".sh" > $submitJobFile
 
 	echo "Job created."
 done
