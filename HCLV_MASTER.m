@@ -43,7 +43,7 @@
 % qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 % qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,'PreprocessingQA');
-% if ~exist ('qaParams.outDir','dir')
+% if ~exist (qaParams.outDir,'dir')
 %     mkdir (qaParams.outDir)
 % end
 % tomeQA(qaParams)
@@ -92,7 +92,7 @@
 %
 % % copy MPRAGE folder from session one
 % MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-% if exist ('MPRAGEdir','dir')
+% if exist (MPRAGEdir,'dir')
 %     copyfile(MPRAGEdir, params.sessionDir)
 % else
 %     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -114,7 +114,7 @@
 % qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 % qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
 %     params.subjectName,params.sessionDate,'PreprocessingQA');
-% if ~exist ('qaParams.outDir','dir')
+% if ~exist (qaParams.outDir,'dir')
 %     mkdir (qaParams.outDir)
 % end
 % tomeQA(qaParams)
@@ -218,7 +218,7 @@ clusterSessionDate = '081916a';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -263,7 +263,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -284,7 +284,7 @@ clusterSessionDate = '081916b';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -340,7 +340,7 @@ clusterSessionDate = '082616a';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -386,7 +386,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -407,7 +407,7 @@ clusterSessionDate = '082616b';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -464,7 +464,7 @@ clusterSessionDate = '090216';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -511,7 +511,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -532,7 +532,7 @@ clusterSessionDate = '091616';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -593,7 +593,7 @@ clusterSessionDate = '091916';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -641,7 +641,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -662,7 +662,7 @@ clusterSessionDate = '101416b';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -709,7 +709,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -730,7 +730,7 @@ clusterSessionDate = '101416a';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -787,7 +787,7 @@ clusterSessionDate = '092316';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -834,7 +834,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -855,7 +855,7 @@ clusterSessionDate = '100316';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -914,7 +914,7 @@ clusterSessionDate = '101116';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -961,7 +961,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -982,7 +982,7 @@ clusterSessionDate = '101716';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -1039,7 +1039,7 @@ clusterSessionDate = '102116';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -1086,7 +1086,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -1107,7 +1107,7 @@ clusterSessionDate = '103116';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -1164,7 +1164,7 @@ clusterSessionDate = '100716';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -1211,7 +1211,7 @@ create_preprocessing_scripts(params);
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist ('MPRAGEdir','dir')
+if exist (MPRAGEdir,'dir')
     copyfile(MPRAGEdir, params.sessionDir)
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
@@ -1232,7 +1232,7 @@ clusterSessionDate = '102516';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -1291,7 +1291,7 @@ clusterSessionDate = '111116';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
@@ -1304,7 +1304,7 @@ clusterSessionDate = '111116';
 
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
+for rr = 14 :length(runs) %loop in all video files
     fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs
@@ -1350,12 +1350,12 @@ clusterSessionDate = '112816';
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
     params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist ('qaParams.outDir','dir')
+if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
 
-%% TOME_30XX - session 1 - DEINTERLACE VIDEO
+%% TOME_3013 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3013';
 params.sessionDate = '112816';
