@@ -24,7 +24,6 @@
 %
 % params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 % params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-% params.logDir           = logDir;
 % params.jobName          = params.subjectName;
 % create_preprocessing_scripts(params);
 %
@@ -86,7 +85,6 @@
 %
 % params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 % params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-% params.logDir           = logDir;
 % params.jobName          = params.subjectName;
 % create_preprocessing_scripts(params);
 %
@@ -162,7 +160,7 @@ dropboxDir                   = ['/Users/' userName '/Dropbox-Aguirre-Brainard-La
 clusterDir = '/data/jag/TOME'; %cluster must be mounted!
 
 % for preprocessing
-logDir                  = '/data/jag/TOME/LOGS';
+params.logDir           = '/data/jag/TOME/LOGS';
 params.despike          = 1;
 params.slicetiming      = 0;
 params.topup            = 1;
@@ -199,7 +197,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -257,7 +254,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -311,7 +307,21 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3001 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3001';
+clusterSessionDate      = '081916b';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3002 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3002';
 clusterSessionDate = '082616a';
@@ -321,7 +331,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -380,7 +389,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -435,17 +443,30 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3002 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3002';
+clusterSessionDate      = '082616b';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3003 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3003';
-clusterSessionDate = '090216';
+clusterSessionDate      = '090216';
 
 params.numRuns          = 4;
 params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -505,7 +526,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -560,8 +580,21 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3003 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3003';
+clusterSessionDate      = '091616';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3004 - session 1 (partial)- PREPROCESSING
 % the last 2 functional runs of this sessions need to be discarded because
 % there is no TR information for eyetracking data.
@@ -574,7 +607,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -635,7 +667,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -703,7 +734,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -758,7 +788,21 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3004 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3004';
+clusterSessionDate      = '101416a';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3005 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3005';
 clusterSessionDate = '092316';
@@ -768,7 +812,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -828,7 +871,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -895,7 +937,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -955,7 +996,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -1020,7 +1060,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -1080,7 +1119,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -1145,7 +1183,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -1205,7 +1242,6 @@ params.reconall         = 0;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -1272,7 +1308,6 @@ params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
@@ -1331,7 +1366,6 @@ params.reconall         = 1;
 
 params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.logDir           = logDir;
 params.jobName          = params.subjectName;
 create_preprocessing_scripts(params);
 
