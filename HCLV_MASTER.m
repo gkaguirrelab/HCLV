@@ -147,7 +147,7 @@
 
 %% fBIRN QA 
 % make the fBIRN QA plots
-system(['your shell scripts']);
+%system(['your shell scripts']);
 plotFBIRNqa;
 %% Set initial params - EVALUATE ALWAYS BEFORE PROCEEDING
 
@@ -925,7 +925,21 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3005 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3005';
+clusterSessionDate      = '100316';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3006 - no data collected
 
 %% TOME_3007 - session 1 - PREPROCESSING
@@ -1050,10 +1064,24 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3007 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3007';
+clusterSessionDate      = '101716';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3008 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3008';
-clusterSessionDate = '102116';
+clusterSessionDate      = '102116';
 
 params.numRuns          = 4;
 params.reconall         = 0;
@@ -1173,10 +1201,24 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3008 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3008';
+clusterSessionDate      = '103116';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3009 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3009';
-clusterSessionDate = '100716';
+clusterSessionDate      = '100716';
 
 params.numRuns          = 4;
 params.reconall         = 0;
@@ -1296,12 +1338,26 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3009 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3009';
+clusterSessionDate      = '102516';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 %% TOME_3010 - no data collected
 
 %% TOME_3011 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3011';
-clusterSessionDate = '111116';
+clusterSessionDate      = '111116';
 
 params.numRuns          = 4;
 params.reconall         = 1;
