@@ -158,34 +158,33 @@ set(h, 'PaperPosition', [0 0 9 9]);
 set(h, 'PaperSize', [9 9]);
 
 saveas(h, '/Users/giulia/Dropbox-Aguirre-Brainard-Lab/TOME_analysis/medianPupilSize', 'pdf') %Save figure
-close h
+close all
 
 %% plot separately each REST run
 for sj=1:nSubjects
     h = fullFigure;
-    plot([rest{sj,1}]);hold on;
-    plot([rest{sj,2}]);hold on;
-    plot([rest{sj,3}]);hold on;
-    plot([rest{sj,4}]);hold on;
-    ylim ([0 10])
-    legend('Run01', 'Run02' , 'Run03' , 'Run04')
-    xlim ([0 20161])
-    ax = gca;
-    ax.XTick = [0:framesPerTR*10:totalFrames];
-    ax.XTick = [0:framesPerTR*20:totalFrames];
-    ax.XTickLabel = [0:20:420];
-    ax.XTickLabel = [1:20:420];
-    ax.XTickLabel = [1:20-1:420];
-    ax.XTickLabel = [0:20:420];
-    title (['Resting state timeseries - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
-    xlabel ('TR')
-    ylabel('Pupil diameter [mm]')
+    for rr = 1:4
+        subplot(2,2,rr)
+        trackedFrames = length(find(~isnan([rest{sj,rr}])));
+        plot([rest{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([0 10])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['REST run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Pupil diameter [mm]')
+    end
     
     %adjustments
     axesHandles = findobj(h, 'type', 'axes');
     set(axesHandles, 'TickDir', 'out');
-    set(h, 'PaperPosition', [0 0 9 9]);
-    set(h, 'PaperSize', [9 9]);
+    set(h, 'PaperPosition', [0 0 16 9]);
+    set(h, 'PaperSize', [16 9]);
     
     saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_restStateTimeserie']), 'pdf') %Save figure
     close all
@@ -193,29 +192,29 @@ end
 %% MOVIE
 for sj=1:nSubjects
     h = fullFigure;
-    plot([movie{sj,1}]);hold on;
-    plot([movie{sj,2}]);hold on;
-    plot([movie{sj,3}]);hold on;
-    plot([movie{sj,4}]);hold on;
-    ylim ([0 10])
-    legend('Run01', 'Run02' , 'Run03' , 'Run04')
-    xlim ([0 20161])
-    ax = gca;
-    ax.XTick = [0:framesPerTR*10:totalFrames];
-    ax.XTick = [0:framesPerTR*20:totalFrames];
-    ax.XTickLabel = [0:20:420];
-    ax.XTickLabel = [1:20:420];
-    ax.XTickLabel = [1:20-1:420];
-    ax.XTickLabel = [0:20:420];
-    title (['Movie runs timeseries - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
-    xlabel ('TR')
-    ylabel('Pupil diameter [mm]')
+    for rr = 1:4
+        subplot(2,2,rr)
+        trackedFrames = length(find(~isnan([movie{sj,rr}])));
+        plot([movie{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([0 10])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['MOVIE run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Pupil diameter [mm]')
+    end
+    
     
     %adjustments
     axesHandles = findobj(h, 'type', 'axes');
     set(axesHandles, 'TickDir', 'out');
-    set(h, 'PaperPosition', [0 0 9 9]);
-    set(h, 'PaperSize', [9 9]);
+    set(h, 'PaperPosition', [0 0 16 9]);
+    set(h, 'PaperSize', [16 9]);
     
     saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_movieTimeserie']), 'pdf') %Save figure
     close all
@@ -224,29 +223,28 @@ end
 %% retino
 for sj=1:nSubjects
     h = fullFigure;
-    plot([retino{sj,1}]);hold on;
-    plot([retino{sj,2}]);hold on;
-    plot([retino{sj,3}]);hold on;
-    plot([retino{sj,4}]);hold on;
-    ylim ([0 10])
-    legend('Run01', 'Run02' , 'Run03' , 'Run04')
-    xlim ([0 20161])
-    ax = gca;
-    ax.XTick = [0:framesPerTR*10:totalFrames];
-    ax.XTick = [0:framesPerTR*20:totalFrames];
-    ax.XTickLabel = [0:20:420];
-    ax.XTickLabel = [1:20:420];
-    ax.XTickLabel = [1:20-1:420];
-    ax.XTickLabel = [0:20:420];
-    title (['Retino runs timeseries - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
-    xlabel ('TR')
-    ylabel('Pupil diameter [mm]')
+    for rr = 1:4
+        subplot(2,2,rr)
+        trackedFrames = length(find(~isnan([retino{sj,rr}])));
+        plot([retino{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([0 10])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['RETINO run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Pupil diameter [mm]')
+    end
     
     %adjustments
     axesHandles = findobj(h, 'type', 'axes');
     set(axesHandles, 'TickDir', 'out');
-    set(h, 'PaperPosition', [0 0 9 9]);
-    set(h, 'PaperSize', [9 9]);
+    set(h, 'PaperPosition', [0 0 16 9]);
+    set(h, 'PaperSize', [16 9]);
     
     saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_retinoTimeserie']), 'pdf') %Save figure
     close all
@@ -255,27 +253,28 @@ end
 %% flash
 for sj=1:nSubjects
     h = fullFigure;
-    plot([flash{sj,1}]);hold on;
-    plot([flash{sj,2}]);hold on;
-    ylim ([0 10])
-    legend('Run01', 'Run02')
-    xlim ([0 20161])
-    ax = gca;
-    ax.XTick = [0:framesPerTR*10:totalFrames];
-    ax.XTick = [0:framesPerTR*20:totalFrames];
-    ax.XTickLabel = [0:20:420];
-    ax.XTickLabel = [1:20:420];
-    ax.XTickLabel = [1:20-1:420];
-    ax.XTickLabel = [0:20:420];
-    title (['Flash runs timeseries - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
-    xlabel ('TR')
-    ylabel('Pupil diameter [mm]')
+    for rr = 1:2
+        subplot(2,1,rr)
+        trackedFrames = length(find(~isnan([flash{sj,rr}])));
+        plot([flash{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([0 10])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['FLASH run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Pupil diameter [mm]')
+    end
     
     %adjustments
     axesHandles = findobj(h, 'type', 'axes');
     set(axesHandles, 'TickDir', 'out');
-    set(h, 'PaperPosition', [0 0 9 9]);
-    set(h, 'PaperSize', [9 9]);
+    set(h, 'PaperPosition', [0 0 16 9]);
+    set(h, 'PaperSize', [16 9]);
     
     saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_flashTimeserie']), 'pdf') %Save figure
     close all
