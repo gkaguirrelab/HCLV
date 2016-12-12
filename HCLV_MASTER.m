@@ -147,7 +147,7 @@
 
 %% fBIRN QA 
 % make the fBIRN QA plots
-system(['your shell scripts']);
+%system(['your shell scripts']);
 plotFBIRNqa;
 %% Set initial params - EVALUATE ALWAYS BEFORE PROCEEDING
 
@@ -219,7 +219,7 @@ if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
-%% TOME_3001 - session 1 - DEINTERLACE VIDEO - DONE
+%% TOME_3001 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3001';
 params.sessionDate = '081916';
@@ -242,6 +242,44 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3001';
+params.sessionDate = '081916';
+params.sessionTwoDate = '081916';
+params.projectSubfolderTwo = 'session2_spatialStimuli';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
 
 %% TOME_3001 - session 2 - PREPROCESSING
 
@@ -307,6 +345,44 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3001';
+params.sessionDate = '081916';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3001 - session 2 - pRF processing
 
 % Set paths
@@ -322,6 +398,7 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+
 %% TOME_3002 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3002';
 clusterSessionDate = '082616a';
@@ -378,6 +455,45 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
 
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3002';
+params.sessionDate = '082616';
+params.sessionTwoDate = '082616';
+params.projectSubfolderTwo = 'session2_spatialStimuli';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3002 - session 2 - PREPROCESSING
 
 params.subjectName = 'TOME_3002';
@@ -420,7 +536,7 @@ if ~exist (qaParams.outDir,'dir')
 end
 tomeQA(qaParams)
 
-%% TOME_3002 - session 2 - DEINTERLACE VIDEO - DONE
+%% TOME_3002 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
@@ -443,6 +559,44 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3002';
+params.sessionDate = '082616';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response'); 
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3002 - session 2 - pRF processing
 
 % Set paths
@@ -514,6 +668,45 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
 
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3003';
+params.sessionDate = '090216';
+params.sessionTwoDate = '091616';
+params.projectSubfolderTwo = 'session2_spatialStimuli';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3003 - session 2 - PREPROCESSING
 
 params.subjectName = 'TOME_3003';
@@ -580,6 +773,43 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3003';
+params.sessionDate = '091616';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3003 - session 2 - pRF processing
 
 % Set paths
@@ -630,7 +860,7 @@ if ~exist (qaParams.outDir,'dir')
 end
 tomeQA(qaParams)
 
-%% TOME_3004 - session 1 (partial) - DEINTERLACE VIDEO - DONE
+%% TOME_3004 - session 1 (partial) - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '091916';
@@ -653,6 +883,46 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3004';
+params.sessionDate = '091916';
+params.sessionTwoDate = '101416';
+params.projectSubfolderTwo = 'session2_spatialStimuli';
+
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
 
 %% TOME_3004 - session 1 (partial)- PREPROCESSING
 % this is a make up session for the previous session 1. It has only 2
@@ -722,6 +992,46 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
 
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3004';
+params.sessionDate = '101416';
+params.sessionTwoDate = '101416';
+params.projectSubfolderTwo = 'session2_spatialStimuli';
+
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3004 - session 2 - PREPROCESSING 
 
 params.subjectName = 'TOME_3004';
@@ -788,6 +1098,44 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3004';
+params.sessionDate = '101416';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3004 - session 2 - pRF processing
 
 % Set paths
@@ -859,6 +1207,46 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
 
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3005';
+params.sessionDate = '092316';
+params.sessionTwoDate = '100316';
+params.projectSubfolderTwo = 'session2_spatialStimuli';
+
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
 %% TOME_3005 - session 2 - PREPROCESSING
 
 params.subjectName = 'TOME_3005';
@@ -925,7 +1313,60 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3005 - session 2 - pRF processing
 
+<<<<<<< HEAD
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3005';
+params.sessionDate = '100316';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
+=======
+% Set paths
+params.subjectName      = 'TOME_3005';
+clusterSessionDate      = '100316';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+>>>>>>> origin/master
 %% TOME_3006 - no data collected
 
 %% TOME_3007 - session 1 - PREPROCESSING
@@ -983,6 +1424,42 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3007';
+params.sessionDate = '101116';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
 
 %% TOME_3007 - session 2 - PREPROCESSING
 
@@ -1050,10 +1527,64 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3007 - session 2 - pRF processing
 
+% Set paths
+params.subjectName      = 'TOME_3007';
+clusterSessionDate      = '101716';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+<<<<<<< HEAD
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3007';
+params.sessionDate = '101716';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
+=======
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+>>>>>>> origin/master
 %% TOME_3008 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3008';
-clusterSessionDate = '102116';
+clusterSessionDate      = '102116';
 
 params.numRuns          = 4;
 params.reconall         = 0;
@@ -1106,6 +1637,42 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3008';
+params.sessionDate = '102116';
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
 
 %% TOME_3008 - session 2 - PREPROCESSING
 
@@ -1173,10 +1740,64 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3008 - session 2 - pRF processing
 
+<<<<<<< HEAD
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3008';
+params.sessionDate = '103116';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
+=======
+% Set paths
+params.subjectName      = 'TOME_3008';
+clusterSessionDate      = '103116';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+>>>>>>> origin/master
 %% TOME_3009 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3009';
-clusterSessionDate = '100716';
+clusterSessionDate      = '100716';
 
 params.numRuns          = 4;
 params.reconall         = 0;
@@ -1229,6 +1850,43 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3009';
+params.sessionDate = '100716';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
 
 %% TOME_3009 - session 2 - PREPROCESSING
 
@@ -1296,12 +1954,66 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
+%% TOME_3009 - session 2 - pRF processing
 
+<<<<<<< HEAD
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3009';
+params.sessionDate = '102516';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
+=======
+% Set paths
+params.subjectName      = 'TOME_3009';
+clusterSessionDate      = '102516';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+>>>>>>> origin/master
 %% TOME_3010 - no data collected
 
 %% TOME_3011 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3011';
-clusterSessionDate = '111116';
+clusterSessionDate      = '111116';
 
 params.numRuns          = 4;
 params.reconall         = 1;
@@ -1356,10 +2068,50 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
 fprintf('done!\n')
 
 
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3011';
+params.sessionDate = '111116';
+
+
+runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
+
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
+        params.runName = runs(rr).name(1:end-8); %runs
+        
+        % make response struct
+        params.trackType = 'Hybrid';
+        [response] = makeResponseStruct(params,dropboxDir);
+        
+        if ~isempty (response)
+            % save response struct
+            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
+                params.subjectName,params.sessionDate,params.eyeTrackingDir);
+            if ~exist (outputDir,'dir')
+                mkdir (outputDir)
+            end
+            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
+        else
+            continue
+        end
+        clear response;
+    else
+        continue %calibrations
+    end
+end
+
+
+
+
 
 %% TOME_3013 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3013';
-clusterSessionDate = '112816';
+clusterSessionDate = '121216';
 
 params.numRuns          = 4;
 params.reconall         = 1;
