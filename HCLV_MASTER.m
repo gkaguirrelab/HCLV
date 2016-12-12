@@ -1313,9 +1313,6 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
-%% TOME_3005 - session 2 - pRF processing
-
-<<<<<<< HEAD
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -1352,7 +1349,7 @@ for rr = 1 :length(runs) %loop in all video files
     end
 end
 
-=======
+%% TOME_3005 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3005';
 clusterSessionDate      = '100316';
@@ -1366,7 +1363,7 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
->>>>>>> origin/master
+
 %% TOME_3006 - no data collected
 
 %% TOME_3007 - session 1 - PREPROCESSING
@@ -1527,14 +1524,7 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
-%% TOME_3007 - session 2 - pRF processing
 
-% Set paths
-params.subjectName      = 'TOME_3007';
-clusterSessionDate      = '101716';
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-
-<<<<<<< HEAD
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -1572,7 +1562,12 @@ for rr = 1 :length(runs) %loop in all video files
     end
 end
 
-=======
+%% TOME_3007 - session 2 - pRF processing
+% Set paths
+params.subjectName      = 'TOME_3007';
+clusterSessionDate      = '101716';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
 % Project Benson template to subject space
 project_template(params.sessionDir,params.subjectName);
 
@@ -1581,7 +1576,7 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
->>>>>>> origin/master
+
 %% TOME_3008 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3008';
 clusterSessionDate      = '102116';
@@ -1740,9 +1735,7 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
-%% TOME_3008 - session 2 - pRF processing
 
-<<<<<<< HEAD
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -1780,7 +1773,7 @@ for rr = 1 :length(runs) %loop in all video files
     end
 end
 
-=======
+%% TOME_3008 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3008';
 clusterSessionDate      = '103116';
@@ -1794,7 +1787,7 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
->>>>>>> origin/master
+
 %% TOME_3009 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3009';
 clusterSessionDate      = '100716';
@@ -1954,9 +1947,7 @@ copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
     fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
 fprintf('done!\n')
-%% TOME_3009 - session 2 - pRF processing
 
-<<<<<<< HEAD
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -1994,7 +1985,7 @@ for rr = 1 :length(runs) %loop in all video files
     end
 end
 
-=======
+%% TOME_3009 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3009';
 clusterSessionDate      = '102516';
@@ -2008,7 +1999,7 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
->>>>>>> origin/master
+
 %% TOME_3010 - no data collected
 
 %% TOME_3011 - session 1 - PREPROCESSING - DONE
