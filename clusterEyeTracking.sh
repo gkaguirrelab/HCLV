@@ -29,6 +29,12 @@ if [ "$uploadRawNow" == "y" -o "$uploadReportNow" == "y" ]; then
 	read remoteUser
 	echo "Enter your the remote machine IP address or alias (e.g. you@ <170.xxx.xx.xx>)"
 	read remoteIP
+	# special configuration for melchior's dropbox
+	if [ "$remoteIP" == "melchior" ]; then
+		dbRoot="Volumes/Bay_2_data"
+	else
+		dbRoot="Users"
+	fi
 fi
 
 # verify if a session folder with this date exists
@@ -51,11 +57,11 @@ if [ "$uploadRawNow" == "y" ]; then
 	# copy eye tracking files from Dropbox to the cluster
 	echo "Copying eye tracking raw videos from Dropbox to the cluster (will ask password)..."
 	if [ "$sessionNum" == "1" ]; then
-		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
 	elif [ "$sessionNum" == "2" ]; then
-		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
 	elif [ "$sessionNum" == "3" ]; then
-		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_raw.mov /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
 	fi
 	echo "Eye tracking files copied on the cluster."
 fi
@@ -64,11 +70,11 @@ if [ "$uploadReportNow" == "y" ]; then
 	# copy eye tracking files from Dropbox to the cluster
 	echo "Copying LiveTrack reports from Dropbox to the cluster (will ask password)..."
 	if [ "$sessionNum" == "1" ]; then
-		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
 	elif [ "$sessionNum" == "2" ]; then
-		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
 	elif [ "$sessionNum" == "3" ]; then
-		scp -r $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_report.mat /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
 	fi
 	echo "Eye tracking files copied on the cluster."
 fi
