@@ -151,11 +151,19 @@
 plotFBIRNqa;
 %% Set initial params - EVALUATE ALWAYS BEFORE PROCEEDING
 
-% Get user name
-[~, tmpName]            = system('whoami');
-userName                = strtrim(tmpName);
 % Set Dropbox directory
-dropboxDir                   = ['/Users/' userName '/Dropbox-Aguirre-Brainard-Lab'];
+%get hostname (for melchior's special dropbox folder settings)
+[~,hostname] = system('hostname');
+hostname = strtrim(lower(hostname));
+if strcmp(hostname,'melchior.uphs.upenn.edu');
+    dropboxDir = '/Volumes/Bay_2_data/giulia/Dropbox-Aguirre-Brainard-Lab';
+else
+    % Get user name
+    [~, tmpName] = system('whoami');
+    userName = strtrim(tmpName);
+    dropboxDir = ['/Users/' userName '/Dropbox-Aguirre-Brainard-Lab'];
+end
+
 % Set Cluster dir
 clusterDir = '/data/jag/TOME'; %cluster must be mounted!
 
@@ -219,6 +227,7 @@ if ~exist (qaParams.outDir,'dir')
     mkdir (qaParams.outDir)
 end
 tomeQA(qaParams)
+fmriQA(qaParams)
 %% TOME_3001 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3001';
@@ -2121,8 +2130,8 @@ warning('Check on README file if some DICOM series needs to be discarded before 
 %% Run QA after preprocessing
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3013';
-params.sessionDate = '112816';
-clusterSessionDate = '112816';
+params.sessionDate = '121216';
+clusterSessionDate = '121216';
 
 qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
 qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
@@ -2135,12 +2144,12 @@ tomeQA(qaParams)
 %% TOME_3013 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3013';
-params.sessionDate = '112816';
-clusterSessionDate = '112816';
+params.sessionDate = '121216';
+clusterSessionDate = '121216';
 
 runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
+for rr = 8 :length(runs) %loop in all video files
     fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
     if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
         params.runName = runs(rr).name(1:end-8); %runs

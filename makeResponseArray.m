@@ -1,11 +1,20 @@
 function [responseArray] = makeResponseArray(params,dropboxDir)
 
-% Get user name and define path to dropbox folder
-[~, tmpName] = system('whoami');
-userName = strtrim(tmpName);
-dropboxDir = fullfile('/Users', userName, '/Dropbox-Aguirre-Brainard-Lab');
 
-% project paramsRe
+% Set Dropbox directory
+%get hostname (for melchior's special dropbox folder settings)
+[~,hostname] = system('hostname');
+hostname = strtrim(lower(hostname));
+if strcmp(hostname,'melchior.uphs.upenn.edu');
+    dropboxDir = '/Volumes/Bay_2_data/giulia/Dropbox-Aguirre-Brainard-Lab';
+else
+    % Get user name
+    [~, tmpName] = system('whoami');
+    userName = strtrim(tmpName);
+    dropboxDir = ['/Users/' userName '/Dropbox-Aguirre-Brainard-Lab'];
+end
+
+% project params
 params.outputDir = 'CumulativeAnalyses';
 params.projectFolder = 'TOME_analysis';
 params.projectSubfolder = 'session*';
