@@ -203,14 +203,7 @@ clusterSessionDate = '081916a';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -220,37 +213,15 @@ params.subjectName = 'TOME_3001';
 params.sessionDate = '081916';
 clusterSessionDate = '081916a';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
-fmriQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 %% TOME_3001 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3001';
 params.sessionDate = '081916';
 clusterSessionDate = '081916a';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-   deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -261,34 +232,7 @@ params.sessionDate = '081916';
 params.sessionTwoDate = '081916';
 params.projectSubfolderTwo = 'session2_spatialStimuli';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3001 - session 2 - PREPROCESSING
 
@@ -299,11 +243,7 @@ sessionOneDate = '081916a';
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
 if exist (MPRAGEdir,'dir')
@@ -311,10 +251,6 @@ if exist (MPRAGEdir,'dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
 %% Run preprocessing scripts
 
@@ -324,36 +260,15 @@ params.subjectName = 'TOME_3001';
 params.sessionDate = '081916';
 clusterSessionDate = '081916b';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 %% TOME_3001 - session 2 - DEINTERLACE VIDEO - DONE
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3001';
 params.sessionDate = '081916';
 clusterSessionDate = '081916b';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -362,35 +277,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3001';
 params.sessionDate = '081916';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3001 - session 2 - pRF processing
 
@@ -422,14 +309,7 @@ clusterSessionDate = '082616a';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -452,24 +332,9 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
 clusterSessionDate = '082616a';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -480,35 +345,7 @@ params.sessionDate = '082616';
 params.sessionTwoDate = '082616';
 params.projectSubfolderTwo = 'session2_spatialStimuli';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3002 - session 2 - PREPROCESSING
 
@@ -519,11 +356,7 @@ sessionOneDate = '082616a';
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
 if exist (MPRAGEdir,'dir')
@@ -531,10 +364,6 @@ if exist (MPRAGEdir,'dir')
 else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
 
 %% Run preprocessing scripts
 
@@ -544,38 +373,16 @@ params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
 clusterSessionDate = '082616b';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3002 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
 clusterSessionDate = '082616b';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
-
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -584,34 +391,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response'); 
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3002 - session 2 - pRF processing
 
@@ -643,14 +423,7 @@ clusterSessionDate      = '090216';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -660,37 +433,16 @@ params.subjectName = 'TOME_3003';
 params.sessionDate = '090216';
 clusterSessionDate = '090216';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3003 - session 1 - DEINTERLACE VIDEO - DONE
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3003';
 params.sessionDate = '090216';
 clusterSessionDate = '090216';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -701,35 +453,7 @@ params.sessionDate = '090216';
 params.sessionTwoDate = '091616';
 params.projectSubfolderTwo = 'session2_spatialStimuli';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3003 - session 2 - PREPROCESSING
 
@@ -741,10 +465,7 @@ sessionOneDate = '090216';
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
@@ -754,10 +475,6 @@ else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
 
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-
 %% Run preprocessing scripts
 
 %% Run QA after preprocessing
@@ -766,37 +483,16 @@ params.subjectName = 'TOME_3003';
 params.sessionDate = '091616';
 clusterSessionDate = '091616';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3003 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3003';
 params.sessionDate = '091616';
 clusterSessionDate = '091616';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -805,34 +501,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3003';
 params.sessionDate = '091616';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3003 - session 2 - pRF processing
 
@@ -867,14 +536,7 @@ clusterSessionDate = '091916';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -884,37 +546,16 @@ params.subjectName = 'TOME_3004';
 params.sessionDate = '091916';
 clusterSessionDate = '091916';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3004 - session 1 (partial) - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '091916';
 clusterSessionDate = '091916';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -926,35 +567,7 @@ params.sessionTwoDate = '101416';
 params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3004 - session 1 (partial)- PREPROCESSING
 % this is a make up session for the previous session 1. It has only 2
@@ -967,10 +580,7 @@ sessionOneDate = '091916';
 params.numRuns          = 2;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
@@ -980,10 +590,6 @@ else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
 
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-
 %% Run preprocessing scripts
 
 %% Run QA after preprocessing
@@ -992,37 +598,16 @@ params.subjectName = 'TOME_3004';
 params.sessionDate = '101416';
 clusterSessionDate = '101416b';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3004 - session 1 (partial) - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '101416';
 clusterSessionDate = '101416b';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -1033,36 +618,7 @@ params.sessionDate = '101416';
 params.sessionTwoDate = '101416';
 params.projectSubfolderTwo = 'session2_spatialStimuli';
 
-
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3004 - session 2 - PREPROCESSING 
 
@@ -1074,10 +630,7 @@ sessionOneDate = '091916';
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
@@ -1087,10 +640,6 @@ else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
 
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-
 %% Run preprocessing scripts
 
 %% Run QA after preprocessing
@@ -1099,37 +648,15 @@ params.subjectName = 'TOME_3004';
 params.sessionDate = '101416';
 clusterSessionDate = '101416a';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
-
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 %% TOME_3004 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '101416';
 clusterSessionDate = '101416a';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -1138,35 +665,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3004';
 params.sessionDate = '101416';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3004 - session 2 - pRF processing
 
@@ -1198,14 +697,7 @@ clusterSessionDate = '092316';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -1215,37 +707,16 @@ params.subjectName = 'TOME_3005';
 params.sessionDate = '092316';
 clusterSessionDate = '092316';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3005 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3005';
 params.sessionDate = '092316';
 clusterSessionDate = '092316';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -1256,36 +727,7 @@ params.sessionDate = '092316';
 params.sessionTwoDate = '100316';
 params.projectSubfolderTwo = 'session2_spatialStimuli';
 
-
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3005 - session 2 - PREPROCESSING
 
@@ -1297,10 +739,7 @@ sessionOneDate = '092316';
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
@@ -1310,10 +749,6 @@ else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
 
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-
 %% Run preprocessing scripts
 
 %% Run QA after preprocessing
@@ -1322,37 +757,17 @@ params.subjectName = 'TOME_3005';
 params.sessionDate = '100316';
 clusterSessionDate = '100316';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3005 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3005';
 params.sessionDate = '100316';
 clusterSessionDate = '100316';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
+
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -1360,34 +775,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3005';
 params.sessionDate = '100316';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3005 - session 2 - pRF processing
 % Set paths
@@ -1420,14 +808,7 @@ clusterSessionDate = '101116';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -1437,37 +818,16 @@ params.subjectName = 'TOME_3007';
 params.sessionDate = '101116';
 clusterSessionDate = '101116';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3007 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3007';
 params.sessionDate = '101116';
 clusterSessionDate = '101116';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -1476,34 +836,7 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3007';
 params.sessionDate = '101116';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3007 - session 2 - PREPROCESSING
 
@@ -1515,10 +848,7 @@ sessionOneDate = '101116';
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
@@ -1528,10 +858,6 @@ else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
 
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-
 %% Run preprocessing scripts
 
 %% Run QA after preprocessing
@@ -1540,37 +866,16 @@ params.subjectName = 'TOME_3007';
 params.sessionDate = '101716';
 clusterSessionDate = '101716';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3007 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3007';
 params.sessionDate = '101716';
 clusterSessionDate = '101716';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -1579,35 +884,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3007';
 params.sessionDate = '101716';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3007 - session 2 - pRF processing
 % Set paths
@@ -1638,14 +915,7 @@ clusterSessionDate      = '102116';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -1655,13 +925,7 @@ params.subjectName = 'TOME_3008';
 params.sessionDate = '102116';
 clusterSessionDate = '102116';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3008 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1669,24 +933,9 @@ params.subjectName = 'TOME_3008';
 params.sessionDate = '102116';
 clusterSessionDate = '102116';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+copyToCluster = 1;
 
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -1694,34 +943,7 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3008';
 params.sessionDate = '102116';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3008 - session 2 - PREPROCESSING
 
@@ -1733,10 +955,7 @@ sessionOneDate = '102116';
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
@@ -1746,10 +965,6 @@ else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
 
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-
 %% Run preprocessing scripts
 
 %% Run QA after preprocessing
@@ -1758,13 +973,7 @@ params.subjectName = 'TOME_3008';
 params.sessionDate = '103116';
 clusterSessionDate = '103116';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3008 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1772,23 +981,9 @@ params.subjectName = 'TOME_3008';
 params.sessionDate = '103116';
 clusterSessionDate = '103116';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -1797,35 +992,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3008';
 params.sessionDate = '103116';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3008 - session 2 - pRF processing
 % Set paths
@@ -1856,14 +1023,7 @@ clusterSessionDate      = '100716';
 params.numRuns          = 4;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -1873,38 +1033,16 @@ params.subjectName = 'TOME_3009';
 params.sessionDate = '100716';
 clusterSessionDate = '100716';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3009 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3009';
 params.sessionDate = '100716';
 clusterSessionDate = '100716';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
-
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -1912,35 +1050,7 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3009';
 params.sessionDate = '100716';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3009 - session 2 - PREPROCESSING
 
@@ -1948,14 +1058,10 @@ params.subjectName = 'TOME_3009';
 clusterSessionDate = '102516';
 sessionOneDate = '100716';
 
-
 params.numRuns          = 10;
 params.reconall         = 0;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 % copy MPRAGE folder from session one
 MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
@@ -1965,10 +1071,6 @@ else
     warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
 end
 
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
-
 %% Run preprocessing scripts
 
 %% Run QA after preprocessing
@@ -1977,13 +1079,7 @@ params.subjectName = 'TOME_3009';
 params.sessionDate = '102516';
 clusterSessionDate = '102516';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3009 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1991,24 +1087,9 @@ params.subjectName = 'TOME_3009';
 params.sessionDate = '102516';
 clusterSessionDate = '102516';
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+copyToCluster = 1;
 
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
 
 %% Make Pupil Response Structs
@@ -2016,35 +1097,7 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3009';
 params.sessionDate = '102516';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3009 - session 2 - pRF processing
 % Set paths
@@ -2077,14 +1130,7 @@ clusterSessionDate      = '111116';
 params.numRuns          = 4;
 params.reconall         = 1;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -2094,38 +1140,16 @@ params.subjectName = 'TOME_3011';
 params.sessionDate = '111116';
 clusterSessionDate = '111116';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3011 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3011';
 params.sessionDate = '111116';
 clusterSessionDate = '111116';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 14 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
-
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
 
@@ -2134,39 +1158,7 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3011';
 params.sessionDate = '111116';
 
-
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-
-for rr = 1 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-        
-        % make response struct
-        params.trackType = 'Hybrid';
-        [response] = makeResponseStruct(params,dropboxDir);
-        
-        if ~isempty (response)
-            % save response struct
-            outputDir = fullfile(dropboxDir, 'TOME_analysis', params.projectSubfolder, ...
-                params.subjectName,params.sessionDate,params.eyeTrackingDir);
-            if ~exist (outputDir,'dir')
-                mkdir (outputDir)
-            end
-            save(fullfile(outputDir,[params.runName '_response.mat']),'response')
-        else
-            continue
-        end
-        clear response;
-    else
-        continue %calibrations
-    end
-end
-
-
-
-
+pupilRespStructWrapper (params,dropboxDir)
 
 %% TOME_3013 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3013';
@@ -2175,14 +1167,7 @@ clusterSessionDate = '121216';
 params.numRuns          = 4;
 params.reconall         = 1;
 
-params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-params.outDir           = fullfile(params.sessionDir,'preprocessing_scripts');
-params.jobName          = params.subjectName;
-create_preprocessing_scripts(params);
-
-% also run dicom_sort, so that faulty runs can be identified easily
-dicom_sort(fullfile(params.sessionDir, 'DICOMS'))
-warning('Check on README file if some DICOM series needs to be discarded before preprocessing.')
+fmriPreprocessingWrapper(params, clusterDir, clusterSessionDate)
 
 %% Run preprocessing scripts
 
@@ -2192,35 +1177,14 @@ params.subjectName = 'TOME_3013';
 params.sessionDate = '121216';
 clusterSessionDate = '121216';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3013 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3013';
 params.sessionDate = '121216';
 clusterSessionDate = '121216';
+copyToCluster = 1;
 
-runs = dir(fullfile(dropboxDir, params.projectFolder, params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*.mov'));
-for rr = 8 :length(runs) %loop in all video files
-    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
-    if regexp(runs(rr).name, regexptranslate('wildcard','*_raw.mov'))
-        params.runName = runs(rr).name(1:end-8); %runs
-    else
-        params.runName = runs(rr).name(1:end-4); %calibrations
-    end
-    deinterlaceVideo (params, dropboxDir)
-end
-% copy over all deinterlaced videos
-fprintf ('\nCopying deinterlaced videos to the cluster (will take a while)...')
-copyfile (fullfile(dropboxDir,params.outputDir,params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*') , ...
-    fullfile(clusterDir,params.subjectName,clusterSessionDate,params.eyeTrackingDir))
-fprintf('done!\n')
+deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
 
