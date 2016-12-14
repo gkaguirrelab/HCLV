@@ -408,6 +408,13 @@ makePRFshellScripts(params);
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3002 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3002';
 clusterSessionDate = '082616a';
@@ -621,6 +628,14 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3003 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3003';
 clusterSessionDate      = '090216';
@@ -834,6 +849,14 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3004 - session 1 (partial)- PREPROCESSING
 % the last 2 functional runs of this sessions need to be discarded because
 % there is no TR information for eyetracking data.
@@ -1160,6 +1183,14 @@ makePRFshellScripts(params);
 
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3005 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3005';
 clusterSessionDate = '092316';
@@ -1373,6 +1404,13 @@ makePRFshellScripts(params);
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3006 - no data collected
 
 %% TOME_3007 - session 1 - PREPROCESSING
@@ -1586,6 +1624,13 @@ makePRFshellScripts(params);
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3008 - session 1 - PREPROCESSING - DONE
 params.subjectName      = 'TOME_3008';
 clusterSessionDate      = '102116';
@@ -1797,6 +1842,13 @@ makePRFshellScripts(params);
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3009 - session 1 - PREPROCESSING
 params.subjectName      = 'TOME_3009';
 clusterSessionDate      = '100716';
@@ -2009,6 +2061,13 @@ makePRFshellScripts(params);
 %%% Run the pRF scipts %%%
 % e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
 
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 %% TOME_3010 - no data collected
 
 %% TOME_3011 - session 1 - PREPROCESSING - DONE
