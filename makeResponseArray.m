@@ -1,4 +1,4 @@
-function [responseArray] = makeResponseArray(params,dropboxDir)
+function [responseArray] = makeResponseArray
 
 
 % Set Dropbox directory
