@@ -319,13 +319,7 @@ params.subjectName = 'TOME_3002';
 params.sessionDate = '082616';
 clusterSessionDate = '082616a';
 
-qaParams.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-qaParams.outDir = fullfile(dropboxDir,'TOME_analysis',params.projectSubfolder, ...
-    params.subjectName,params.sessionDate,'PreprocessingQA');
-if ~exist (qaParams.outDir,'dir')
-    mkdir (qaParams.outDir)
-end
-tomeQA(qaParams)
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3002 - session 1 - DEINTERLACE VIDEO - DONE
 params.projectSubfolder = 'session1_restAndStructure';
