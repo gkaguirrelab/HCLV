@@ -30,10 +30,16 @@ case $start in
 	read remoteUser
 	echo "Enter your the remote machine IP address or alias (e.g. you@ <170.xxx.xx.xx>)"
 	read remoteIP
+	# special configuration for melchior's dropbox
+	if [ "$remoteIP" == "melchior" ]; then
+		dbRoot="Volumes/Bay_2_data"
+	else
+		dbRoot="Users"
+	fi
 	echo "Copying FBIRN DICOMS on Dropbox"
-	ssh $remoteUser@$remoteIP "mkdir /Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/FBIRN/$sessionDate/"
+	ssh $remoteUser@$remoteIP "mkdir /$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/FBIRN/$sessionDate/"
 	echo "Copying files..."
-	scp -r /data/jag/TOME/FBIRN/$sessionDate/DICOMS $remoteUser@$remoteIP:/Users/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/FBIRN/$sessionDate/
+	scp -r /data/jag/TOME/FBIRN/$sessionDate/DICOMS $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_data/FBIRN/$sessionDate/
 	echo "FBIRN DICOMs copied on Dropbox."
 ;;
 	
