@@ -1,4 +1,4 @@
-function deinterlaceWrapper (params,dropboxDir,clusterSessionDate,copyToCluster)
+function deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 % this function is a wrapper for use in HCLV_MASTER. This helps reducing the
 % dimension of the master scripts and ease the changes of code across
 % subjects.

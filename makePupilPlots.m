@@ -32,7 +32,9 @@ for st=1:nSessTypes
                             warning(['TimeBase problem for ' responseArray{st,sj,ss,rr,1}{1,5}.metadata.subjectName responseArray{st,sj,ss,rr,1}{1,5}.metadata.runName ])
                         else
                             % trim the response
-                            rest{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            restSize{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            restPol{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazePol(zeroFrame : zeroFrame + totalFrames);
+                            restEcc{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazeEcc(zeroFrame : zeroFrame + totalFrames);
                             restCT = restCT+1;
                         end
                     elseif regexp(responseArray{st,sj,ss,rr,1}{4},regexptranslate('wildcard','*MOVIE*'))
@@ -42,7 +44,9 @@ for st=1:nSessTypes
                             warning(['TimeBase problem for ' responseArray{st,sj,ss,rr,1}{1,5}.metadata.subjectName responseArray{st,sj,ss,rr,1}{1,5}.metadata.runName ])
                         else
                             % trim the response
-                            movie{sj,movieCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            movieSize{sj,movieCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            moviePol{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazePol(zeroFrame : zeroFrame + totalFrames);
+                            movieEcc{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazeEcc(zeroFrame : zeroFrame + totalFrames);
                             movieCT = movieCT+1;
                         end
                     elseif regexp(responseArray{st,sj,ss,rr,1}{4},regexptranslate('wildcard','*RETINO*'))
@@ -52,7 +56,9 @@ for st=1:nSessTypes
                             warning(['TimeBase problem for ' responseArray{st,sj,ss,rr,1}{1,5}.metadata.subjectName responseArray{st,sj,ss,rr,1}{1,5}.metadata.runName ])
                         else
                             % trim the response
-                            retino{sj,retinoCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            retinoSize{sj,retinoCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            retinoPol{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazePol(zeroFrame : zeroFrame + totalFrames);
+                            retinoEcc{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazeEcc(zeroFrame : zeroFrame + totalFrames);
                             retinoCT = retinoCT+1;
                         end
                     elseif regexp(responseArray{st,sj,ss,rr,1}{4},regexptranslate('wildcard','*FLASH*'))
@@ -62,7 +68,9 @@ for st=1:nSessTypes
                             warning(['TimeBase problem for ' responseArray{st,sj,ss,rr,1}{1,5}.metadata.subjectName responseArray{st,sj,ss,rr,1}{1,5}.metadata.runName ])
                         else
                             % trim the response
-                            flash{sj,flashCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            flashSize{sj,flashCT} = responseArray{st,sj,ss,rr,1}{1,5}.pupilSize(zeroFrame : zeroFrame + totalFrames);
+                            flashPol{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazePol(zeroFrame : zeroFrame + totalFrames);
+                            flashEcc{sj,restCT} = responseArray{st,sj,ss,rr,1}{1,5}.gazeEcc(zeroFrame : zeroFrame + totalFrames);
                             flashCT = flashCT+1;
                         end
                     end
@@ -80,17 +88,17 @@ end
 %% calculate and plot the median and the std for every subject
 for sj=1:nSubjects
     if ~isempty(responseArray{1,sj})
-        restMedian{sj} = nanmedian([rest{sj,:}]);
-        restStd{sj} = nanstd([rest{sj,:}]);
+        restMedian{sj} = nanmedian([restSize{sj,:}]);
+        restStd{sj} = nanstd([restSize{sj,:}]);
         xtickrest{sj} = responseArray{1,sj}{2};
     end
     if ~isempty(responseArray{2,sj})
-        movieMedian{sj} = nanmedian([movie{sj,:}]);
-        movieStd{sj} = nanstd([movie{sj,:}]);
-        retinoMedian{sj} = nanmedian([retino{sj,:}]);
-        retinoStd{sj} = nanstd([retino{sj,:}]);
-        flashMedian{sj} = nanmedian([flash{sj,:}]);
-        flashStd{sj} = nanstd([flash{sj,:}]);
+        movieMedian{sj} = nanmedian([movieSize{sj,:}]);
+        movieStd{sj} = nanstd([movieSize{sj,:}]);
+        retinoMedian{sj} = nanmedian([retinoSize{sj,:}]);
+        retinoStd{sj} = nanstd([retinoSize{sj,:}]);
+        flashMedian{sj} = nanmedian([flashSize{sj,:}]);
+        flashStd{sj} = nanstd([flashSize{sj,:}]);
         xtickTwo{sj} = responseArray{1,sj}{2};
     end
 end
@@ -157,16 +165,18 @@ set(axesHandles, 'TickDir', 'out');
 set(h, 'PaperPosition', [0 0 9 9]);
 set(h, 'PaperSize', [9 9]);
 
-saveas(h, '/Users/giulia/Dropbox-Aguirre-Brainard-Lab/TOME_analysis/medianPupilSize', 'pdf') %Save figure
+saveas(h, '/Volumes/Bay_2_data/giulia/Dropbox-Aguirre-Brainard-Lab/TOME_analysis/medianPupilSize', 'pdf') %Save figure
 close all
 
 %% plot separately each REST run
+
+% pupil size
 for sj=1:nSubjects
     h = fullFigure;
     for rr = 1:4
         subplot(2,2,rr)
-        trackedFrames = length(find(~isnan([rest{sj,rr}])));
-        plot([rest{sj,rr}])
+        trackedFrames = length(find(~isnan([restSize{sj,rr}])));
+        plot([restSize{sj,rr}])
         str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
         text(1000,2,str)
         ylim ([0 10])
@@ -189,13 +199,60 @@ for sj=1:nSubjects
     saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_restStateTimeserie']), 'pdf') %Save figure
     close all
 end
+
+% gaze
+for sj=1:nSubjects
+    h = fullFigure;
+    for rr = 1:4
+        % eccentricity
+        subplot(2,4,rr)
+        trackedFrames = length(find(~isnan([restSize{sj,rr}])));
+        plot([restEcc{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([-2 20])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['REST run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Eccentricity')
+        % polar angle
+        subplot(2,4,rr+4)
+        trackedFrames = length(find(~isnan([restSize{sj,rr}])));
+        plot([restPol{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([0 360])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['REST run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Polar Angle')
+    end
+    
+    %adjustments
+    axesHandles = findobj(h, 'type', 'axes');
+    set(axesHandles, 'TickDir', 'out');
+    set(h, 'PaperPosition', [0 0 16 9]);
+    set(h, 'PaperSize', [16 9]);
+    
+    saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_restGAZETimeserie']), 'pdf') %Save figure
+    close all
+end
+
 %% MOVIE
 for sj=1:nSubjects
     h = fullFigure;
     for rr = 1:4
-        subplot(2,2,rr)
-        trackedFrames = length(find(~isnan([movie{sj,rr}])));
-        plot([movie{sj,rr}])
+        subplot(2,4,rr)
+        trackedFrames = length(find(~isnan([movieSize{sj,rr}])));
+        plot([movieSize{sj,rr}])
         str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
         text(1000,2,str)
         ylim ([0 10])
@@ -220,13 +277,60 @@ for sj=1:nSubjects
     close all
 end
 
+
+% gaze
+for sj=1:nSubjects
+    h = fullFigure;
+    for rr = 1:4
+        % eccentricity
+        subplot(2,4,rr)
+        trackedFrames = length(find(~isnan([restSize{sj,rr}])));
+        plot([movieEcc{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([-5 30])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['MOVIE run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Eccentricity')
+        % polar angle
+        subplot(2,4,rr+4)
+        trackedFrames = length(find(~isnan([restSize{sj,rr}])));
+        plot([moviePol{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([0 360])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['MOVIE run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Polar Angle')
+    end
+    
+    %adjustments
+    axesHandles = findobj(h, 'type', 'axes');
+    set(axesHandles, 'TickDir', 'out');
+    set(h, 'PaperPosition', [0 0 16 9]);
+    set(h, 'PaperSize', [16 9]);
+    
+    saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_movieGAZETimeserie']), 'pdf') %Save figure
+    close all
+end
+
 %% retino
 for sj=1:nSubjects
     h = fullFigure;
     for rr = 1:4
         subplot(2,2,rr)
-        trackedFrames = length(find(~isnan([retino{sj,rr}])));
-        plot([retino{sj,rr}])
+        trackedFrames = length(find(~isnan([retinoSize{sj,rr}])));
+        plot([retinoSize{sj,rr}])
         str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
         text(1000,2,str)
         ylim ([0 10])
@@ -250,13 +354,62 @@ for sj=1:nSubjects
     close all
 end
 
+
+% gaze
+for sj=1:nSubjects
+    h = fullFigure;
+    for rr = 1:4
+        % eccentricity
+        subplot(2,4,rr)
+        trackedFrames = length(find(~isnan([restSize{sj,rr}])));
+        plot([retinoEcc{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+        ylim ([-20 20])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['RETINO run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Eccentricity')
+        % polar angle
+        subplot(2,4,rr+4)
+        trackedFrames = length(find(~isnan([restSize{sj,rr}])));
+        plot([retinoPol{sj,rr}])
+        str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+        text(1000,2,str)
+%         ylim ([0 10])
+        xlim ([0 20161])
+        ax = gca;
+        ax.XTick = [0:framesPerTR*10:totalFrames];
+        ax.XTick = [0:framesPerTR*20:totalFrames];
+        ax.XTickLabel = [0:20:420];
+        title (['RETINO run ' num2str(rr) ' - ' responseArray{1,sj}{2}], 'Interpreter' , 'none')
+        xlabel ('TR')
+        ylabel('Polar Angle')
+    end
+    
+    %adjustments
+    axesHandles = findobj(h, 'type', 'axes');
+    set(axesHandles, 'TickDir', 'out');
+    set(h, 'PaperPosition', [0 0 16 9]);
+    set(h, 'PaperSize', [16 9]);
+    
+    saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray{1,sj}{2} '_retinoGAZETimeserie']), 'pdf') %Save figure
+    close all
+end
+
+
+
 %% flash
 for sj=1:nSubjects
     h = fullFigure;
     for rr = 1:2
         subplot(2,1,rr)
-        trackedFrames = length(find(~isnan([flash{sj,rr}])));
-        plot([flash{sj,rr}])
+        trackedFrames = length(find(~isnan([flashSize{sj,rr}])));
+        plot([flashSize{sj,rr}])
         str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
         text(1000,2,str)
         ylim ([0 10])
