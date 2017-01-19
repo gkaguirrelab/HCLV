@@ -1240,7 +1240,14 @@ copyToCluster = 1;
 
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
+%% Run Tracking scripts on the cluster
 
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3013';
+params.sessionDate = '121216';
+
+pupilRespStructWrapper (params,dropboxDir)
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3013 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TOME_3013 - session 2 - PREPROCESSING
