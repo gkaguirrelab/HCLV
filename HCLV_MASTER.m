@@ -181,6 +181,7 @@ params.sigList          = 0.5:0.1:10;
 params.projectFolder = 'TOME_data';
 params.outputDir = 'TOME_processing';
 params.eyeTrackingDir = 'EyeTracking';
+params.analysisDir = 'TOME_analysis';
 
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3001 SESSION 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1258,7 +1259,7 @@ params.sessionDate = '012017';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-%% TOME_3001 - session 2 - pRF processing
+%% TOME_3011 - session 2 - pRF processing
 
 % Set paths
 params.subjectName      = 'TOME_3011';
