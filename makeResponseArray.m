@@ -15,7 +15,7 @@ else
 end
 
 % project params
-params.outputDir = 'CumulativeAnalyses';
+params.outputDir = 'TOME_processing';
 params.projectFolder = 'TOME_analysis';
 params.projectSubfolder = 'session*';
 params.subjNaming = 'TOME_3*';
@@ -58,5 +58,5 @@ for cc = 1 : length(sessions) % loop in sessions
 end
 
 % save respons array
-save (fullfile(dropboxDir, params.projectFolder,'responseArray.mat'),'responseArray')
+save (fullfile(dropboxDir, params.outputDir,'responseArray.mat'),'responseArray')
                     
