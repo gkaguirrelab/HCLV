@@ -7,6 +7,13 @@ function eyetrackingQA (dropboxDir, params)
 runs = dir(fullfile(dropboxDir, params.analysisDir, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*response.mat'));
 
+% define eyeTrackingQAfilder
+eyeQAdir = fullfile(dropboxDir, params.analysisDir, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate, 'EyeTrackingQA');
+if ~exist (eyeQAdir, 'dir')
+    mkdir (eyeQAdir)
+end
+
 % load all runs in an array
 for rr = 1 :length(runs) %loop in runs
     responseArray(rr) = load(fullfile(dropboxDir, params.analysisDir, params.projectSubfolder, ...
@@ -72,7 +79,7 @@ for tt = 1: length(runType)
     set(h, 'PaperSize', [16 9]);
     
     if runCT ~= 0
-        saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_Timeseries']), 'pdf') %Save figure
+        saveas(h, fullfile(eyeQAdir, [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_Timeseries']), 'pdf') %Save figure
     end
     close all
 end
@@ -106,6 +113,7 @@ for tt = 1: length(runType)
                     'MarkerFaceAlpha', 0.01);
                 title ([responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName], 'Interpreter' , 'none')
                 axis equal
+                axis ij
                 ylim ([-300 300])
                 xlim ([-500 500])
                 xlabel ('Viewfield x dimention [mm]')
@@ -120,9 +128,9 @@ for tt = 1: length(runType)
     set(h, 'PaperPosition', [0 0 16 9]);
     set(h, 'PaperSize', [16 9]);
     
-    
-    saveas(h, fullfile('/Users/giulia/Desktop/TEST/', [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_gaze']), 'pdf') %Save figure
-    
+    if runCT ~= 0
+    saveas(gcf, fullfile(eyeQAdir, [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_gaze']), 'png') %Save figure
+    end
     close all
 end
 

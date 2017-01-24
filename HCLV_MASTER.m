@@ -52,6 +52,8 @@
 % params.sessionDate = 'mmddyy';
 % 
 % pupilRespStructWrapper (params,dropboxDir)
+% 
+% eyetrackingQA (dropboxDir, params)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%% SESSION 2 TEMPLATE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -102,6 +104,8 @@
 % params.sessionDate = 'mmddyy';
 % 
 % pupilRespStructWrapper (params,dropboxDir)
+% 
+% eyetrackingQA (dropboxDir, params)
 % 
 % %% TOME_3001 - session 2 - pRF processing
 % 
@@ -223,7 +227,7 @@ params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3001 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TOME_3001 - session 2 - PREPROCESSING
 
@@ -269,6 +273,8 @@ params.subjectName = 'TOME_3001';
 params.sessionDate = '081916';
 
 pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
 
 %% TOME_3001 - session 2 - pRF processing
 
@@ -335,6 +341,7 @@ params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3002 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -384,6 +391,7 @@ params.sessionDate = '082616';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3002 - session 2 - pRF processing
 
 % Set paths
@@ -449,7 +457,7 @@ params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3003 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TOME_3003 - session 2 - PREPROCESSING
@@ -500,6 +508,7 @@ params.sessionDate = '091616';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3003 - session 2 - pRF processing
 
 % Set paths
@@ -569,7 +578,7 @@ params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3004 SESSION 1 (partial) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TOME_3004 - session 1 (partial)- PREPROCESSING
@@ -623,7 +632,7 @@ params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3004 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TOME_3004 - session 2 - PREPROCESSING 
@@ -673,6 +682,7 @@ params.sessionDate = '101416';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3004 - session 2 - pRF processing
 
 % Set paths
@@ -739,7 +749,7 @@ params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3005 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -791,6 +801,7 @@ params.sessionDate = '100316';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3005 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3005';
@@ -859,7 +870,7 @@ params.sessionDate = '101116';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3007 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -911,6 +922,7 @@ params.sessionDate = '101716';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3007 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3007';
@@ -974,7 +986,7 @@ params.sessionDate = '102116';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3008 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1027,6 +1039,7 @@ params.sessionDate = '103116';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3008 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3008';
@@ -1089,7 +1102,7 @@ params.sessionDate = '100716';
 
 pupilRespStructWrapper (params,dropboxDir)
 
-
+eyetrackingQA (dropboxDir, params)
 
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3009 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1140,6 +1153,7 @@ params.sessionDate = '102516';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3009 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3009';
@@ -1209,6 +1223,7 @@ params.sessionDate = '111116';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3011 Session 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% TOME_3011 - session 2 - PREPROCESSING
@@ -1258,6 +1273,8 @@ params.subjectName = 'TOME_3011';
 params.sessionDate = '012017';
 
 pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
 
 %% TOME_3011 - session 2 - pRF processing
 
@@ -1323,6 +1340,7 @@ params.sessionDate = '121216';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3013 SESSION 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TOME_3013 - session 2 - PREPROCESSING
 
@@ -1371,6 +1389,7 @@ params.sessionDate = '011117';
 
 pupilRespStructWrapper (params,dropboxDir)
 
+eyetrackingQA (dropboxDir, params)
 %% TOME_3013 - session 2 - pRF processing
 % Set paths
 params.subjectName      = 'TOME_3013';
