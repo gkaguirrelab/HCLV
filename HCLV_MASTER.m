@@ -146,7 +146,7 @@ plotFBIRNqa;
 %get hostname (for melchior's special dropbox folder settings)
 [~,hostname] = system('hostname');
 hostname = strtrim(lower(hostname));
-if strcmp(hostname,'melchior.uphs.upenn.edu');
+if strcmp(hostname,'melchior.uphs.upenn.edu')
     dropboxDir = '/Volumes/Bay_2_data/giulia/Dropbox-Aguirre-Brainard-Lab';
 else
     % Get user name
