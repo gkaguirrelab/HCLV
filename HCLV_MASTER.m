@@ -983,6 +983,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3008';
 params.sessionDate = '102116';
+params.sessionTwoDate = '103116';
+params.projectSubfolderTwo = 'session2_spatialStimuli';
 
 pupilRespStructWrapper (params,dropboxDir)
 
