@@ -41,12 +41,12 @@ for tt = 1: length(runType)
     runCT = 0;
     h = fullFigure;
     for rr= 1 :length(runs)
-        if regexp(responseArray(rr).response.metadata.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
+        if regexp(responseArray(rr).response.metaData.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
             runCT = runCT+1;
             % find zero in timebase
-            zeroFrame = find (~responseArray(rr).response.timeBase);
+            zeroFrame = find (~responseArray(rr).response.timebase);
             if isempty(zeroFrame)
-                warning(['TimeBase problem for ' responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName ])
+                warning(['TimeBase problem for ' responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName ])
             else
                 if strcmp( runType(tt) , 'FLASH')
                     subplot(2,1,runCT)
@@ -57,8 +57,8 @@ for tt = 1: length(runType)
                 medianSize = nanmedian(responseArray(rr).response.pupilSize(zeroFrame : zeroFrame + totalFrames));
                 stdSize = nanstd(responseArray(rr).response.pupilSize(zeroFrame : zeroFrame + totalFrames));
                 plot([responseArray(rr).response.pupilSize(zeroFrame : zeroFrame + totalFrames)])
-                str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
-                str2 = ['Median pupil size ' setstr(177) ' SD = ' num2str(medianSize) setstr(177) num2str(stdSize)];
+                str = [num2str(round(trackedFrames/totalFrames *100)) '% of samples tracked'];
+                str2 = ['Median pupil size ' setstr(177) ' SD = ' num2str(round(medianSize,2)) setstr(177) num2str(round(stdSize,2))];
                 text(1000,2,str)
                 text(1000,1,str2)
                 ylim ([0 10])
@@ -67,7 +67,7 @@ for tt = 1: length(runType)
                 ax.XTick = [0:framesPerTR*10:totalFrames];
                 ax.XTick = [0:framesPerTR*20:totalFrames];
                 ax.XTickLabel = [0:20:420];
-                title ([responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName], 'Interpreter' , 'none')
+                title ([responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName], 'Interpreter' , 'none')
                 xlabel ('TR')
                 ylabel('Pupil diameter [mm]')
             end
@@ -80,7 +80,7 @@ for tt = 1: length(runType)
     set(h, 'PaperSize', [16 9]);
     
     if runCT ~= 0
-        saveas(h, fullfile(eyeQAdir, [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_Timeseries']), 'pdf') %Save figure
+        saveas(h, fullfile(eyeQAdir, [responseArray(rr).response.metaData.subjectName '_' runType{tt} '_Timeseries']), 'pdf') %Save figure
     end
     close all
 end
@@ -91,12 +91,12 @@ for tt = 1: length(runType)
     runCT = 0;
     h = fullFigure;
     for rr= 1 :length(runs)
-        if regexp(responseArray(rr).response.metadata.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
+        if regexp(responseArray(rr).response.metaData.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
             runCT = runCT+1;
             % find zero in timebase
-            zeroFrame = find (~responseArray(rr).response.timeBase);
+            zeroFrame = find (~responseArray(rr).response.timebase);
             if isempty(zeroFrame)
-                warning(['TimeBase problem for ' responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName ])
+                warning(['TimeBase problem for ' responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName ])
             else
                 if strcmp( runType(tt) , 'FLASH')
                     subplot(2,1,runCT)
@@ -117,10 +117,10 @@ for tt = 1: length(runType)
                     medianGazeX = nanmedian(responseArray(rr).response.gazeX(zeroFrame : zeroFrame + totalFrames));
                     medianGazeY = nanmedian(responseArray(rr).response.gazeY(zeroFrame : zeroFrame + totalFrames));
                     plot(medianGazeX,medianGazeY, '.k')
-                    val = [' ( ' num2str(medianGazeX) ' , ' num2str(medianGazeY) ' )'];
+                    val = [' ( ' num2str(round(medianGazeX,2)) ' , ' num2str(round(medianGazeY,2)) ' )'];
                     text(medianGazeX,medianGazeY, val)
                 end
-                title ([responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName], 'Interpreter' , 'none')
+                title ([responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName], 'Interpreter' , 'none')
                 axis equal
                 axis ij
                 ylim ([-300 300])
@@ -138,7 +138,7 @@ for tt = 1: length(runType)
     set(h, 'PaperSize', [16 9]);
     
     if runCT ~= 0
-        saveas(gcf, fullfile(eyeQAdir, [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_gaze']), 'png') %Save figure
+        saveas(gcf, fullfile(eyeQAdir, [responseArray(rr).response.metaData.subjectName '_' runType{tt} '_gaze']), 'png') %Save figure
     end
     close all
 end
@@ -148,12 +148,12 @@ for tt = 1: length(runType)
     runCT = 0;
     h = fullFigure;
     for rr= 1 :length(runs)
-        if regexp(responseArray(rr).response.metadata.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
+        if regexp(responseArray(rr).response.metaData.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
             runCT = runCT+1;
             % find zero in timebase
-            zeroFrame = find (~responseArray(rr).response.timeBase);
+            zeroFrame = find (~responseArray(rr).response.timebase);
             if isempty(zeroFrame)
-                warning(['TimeBase problem for ' responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName ])
+                warning(['TimeBase problem for ' responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName ])
             else
                 if strcmp( runType(tt) , 'FLASH')
                     subplot(2,1,runCT)
@@ -164,7 +164,7 @@ for tt = 1: length(runType)
                 plot([responseArray(rr).response.gazeX(zeroFrame : zeroFrame + totalFrames)])
                 hold on
                 plot([responseArray(rr).response.gazeY(zeroFrame : zeroFrame + totalFrames)])
-                str = [num2str(trackedFrames/totalFrames *100) '% of samples tracked'];
+                str = [num2str(round(trackedFrames/totalFrames *100,2)) '% of samples tracked'];
                 text(1000,-450,str)
                 ylim ([-500 500])
                 xlim ([0 20161])
@@ -172,7 +172,7 @@ for tt = 1: length(runType)
                 ax.XTick = [0:framesPerTR*10:totalFrames];
                 ax.XTick = [0:framesPerTR*20:totalFrames];
                 ax.XTickLabel = [0:20:420];
-                title ([responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName], 'Interpreter' , 'none')
+                title ([responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName], 'Interpreter' , 'none')
                 legend('X position of the Gaze', 'Y position of the gaze')
                 xlabel ('TR')
                 ylabel('Distance from center of the screen [mm]')
@@ -186,7 +186,7 @@ for tt = 1: length(runType)
     set(h, 'PaperSize', [16 9]);
     
     if runCT ~= 0
-        saveas(h, fullfile(eyeQAdir, [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_GazeTimeseries']), 'pdf') %Save figure
+        saveas(h, fullfile(eyeQAdir, [responseArray(rr).response.metaData.subjectName '_' runType{tt} '_GazeTimeseries']), 'pdf') %Save figure
     end
     close all
 end
@@ -198,12 +198,12 @@ for tt = 1: length(runType)
     runCT = 0;
     h = fullFigure;
     for rr= 1 :length(runs)
-        if regexp(responseArray(rr).response.metadata.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
+        if regexp(responseArray(rr).response.metaData.runName,regexptranslate('wildcard',['*' runType{tt} '*']))
             runCT = runCT+1;
             % find zero in timebase
-            zeroFrame = find (~responseArray(rr).response.timeBase);
+            zeroFrame = find (~responseArray(rr).response.timebase);
             if isempty(zeroFrame)
-                warning(['TimeBase problem for ' responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName ])
+                warning(['TimeBase problem for ' responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName ])
             else
                 if strcmp( runType(tt) , 'FLASH')
                     subplot(2,1,runCT)
@@ -219,7 +219,7 @@ for tt = 1: length(runType)
                     hold on
                     polar(deg2rad([responseArray(rr).response.gazePol(zeroFrame : zeroFrame + totalFrames)]),[responseArray(rr).response.gazeEcc(zeroFrame : zeroFrame + totalFrames)], ...
                         '.');
-                    title ([responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName], 'Interpreter' , 'none')
+                    title ([responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName], 'Interpreter' , 'none')
                     view([180 90])
                     view ([90, - 90])
                 else
@@ -231,15 +231,22 @@ for tt = 1: length(runType)
                         'MarkerEdgeColor', 'none', ...
                         'MarkerFaceColor', [255 0 0]/255, ...
                         'MarkerFaceAlpha', 0.01);
-                    title ([responseArray(rr).response.metadata.subjectName responseArray(rr).response.metadata.runName], 'Interpreter' , 'none')
+                    if strcmp( runType(tt) , 'RETINO')
+                        hold on
+                        medianGazeEcc = nanmedian(responseArray(rr).response.gazeEcc(zeroFrame : zeroFrame + totalFrames));
+                        medianGazePol = nanmedian(responseArray(rr).response.gazePol(zeroFrame : zeroFrame + totalFrames));
+                        polarplot(deg2rad(medianGazePol),medianGazeEcc, '.k')
+                        val = [' ( ' num2str(round(medianGazeEcc,2)) ' , ' num2str(round(medianGazePol,2)) ' )'];
+                        text(deg2rad(medianGazePol),medianGazeEcc, val)
+                    end
+                    
+                    title ([responseArray(rr).response.metaData.subjectName responseArray(rr).response.metaData.runName], 'Interpreter' , 'none')
                     ax = gca;
                     d = ax.ThetaDir;
                     ax.ThetaDir = 'clockwise';
                     ax.ThetaZeroLocation= 'top';
                     ax.RLim = [0 30];
-                end
-                
-                
+                end  
             end
         end
     end
@@ -250,7 +257,7 @@ for tt = 1: length(runType)
     set(h, 'PaperSize', [16 9]);
     
     if runCT ~= 0
-        saveas(gcf, fullfile(eyeQAdir, [responseArray(rr).response.metadata.subjectName '_' runType{tt} '_gazePol']), 'png') %Save figure
+        saveas(gcf, fullfile(eyeQAdir, [responseArray(rr).response.metaData.subjectName '_' runType{tt} '_gazePol']), 'png') %Save figure
     end
     close all
 end
