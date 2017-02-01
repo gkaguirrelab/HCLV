@@ -1,0 +1,10 @@
+tkmedit started: Thu Jan 12 12:00:53 2017
+
+	/Applications/freesurfer/tktools/tkmedit.bin R3398 brainmask.mgz -aux T1.mgz -surfs 
+
+$Id: tkmedit.c,v 1.343 2011/03/01 01:41:22 nicks Exp $ $Name: stable5 $
+Set user home dir to /Users/giulia/Documents/MATLAB/Analysis/HCLV
+Set subject home dir to /data/jag/TOME/freesurfer_subjects/R3398
+Using interface file /Applications/freesurfer/tktools/tkmedit.tcl
+Tcl: Successfully parsed tkmedit.tcl
+Tcl: Successfully parsed tkm_functional.tcl
