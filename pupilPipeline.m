@@ -37,14 +37,15 @@ params.inVideo = fullfile(outDir,[params.runName '_60hz.avi']);
 params.outVideo = fullfile(outDir,[params.runName '_pupilTrack.avi']);
 params.outMat = fullfile(outDir, [params.runName '_pupilTrack.mat']);
 
-trackPupil(params);
+[~,~,params] = trackPupil(params);
+save(fullfile(outDir,[params.runName '_trackingParams.mat']), 'params');
 
 %% Remove the 60Hz video (it is no longer needed)
 delete(params.inVideo);
 
 %% get timeBase and save it
-params.ltRes = [360 240]; % resolution of the LiveTrack video (half original size)
-params.ptRes = [400 300]; % resolution of the pupilTrack video
+params.ltRes = [320 240]; % resolution of the LiveTrack video (half original size)
+params.ptRes = [320 240]; % resolution of the pupilTrack video
 params.ltThr = 0.1; % threshold for liveTrack glint position
 params.pupilTrackFile = params.outMat;
 
