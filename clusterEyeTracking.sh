@@ -6,23 +6,32 @@ echo "   "
 echo "Do you want to submit all eye tracking jobs at the end of this script?[y/n]"
 read submitNow
 
-echo "Do you need to upload the eye tracking raw videos from dropbox?[y/n]"
-read uploadRawNow
-
 echo "Do you need to upload the LiveTrack reports from dropbox?[y/n]"
 read uploadReportNow
-
-echo "Do you need to do deinterlacing before tracking?[y/n]"
-read deinterlaceNow
 
 echo "Do you need to upload the deinterlaced videos from dropbox?[y/n]"
 read uploadDeinterlacedNow
 
+if [ "$uploadDeinterlacedNow" == "y" ]; then
+	echo "Do you need to upload the eye tracking raw videos from dropbox?[y/n]"
+	read uploadRawNow
+
+	echo "Do you need to do deinterlacing before tracking?[y/n]"
+	read deinterlaceNow
+elif [ "$uploadDeinterlacedNow" == "y" ]; then
+	uploadRawNow="n"
+	deinterlaceNow="n"
+end
+ 
 #enter subject and session details
 echo "Enter subject name (TOME_3xxx):"
 read subjName
 echo "Enter session date (mmddyy) :"
 read sessionDate
+
+# enter ellipse threshold for this subject
+echo "Enter circle mask thresholding value ( default [0.5 0.9] )"
+read circleThreshold
 
 # enter ellipse threshold for this subject
 echo "Enter ellipse thresholding value ( default [0.97 0.9] )"
@@ -128,7 +137,7 @@ for runName in "${runs[@]%_report.mat}"; do
 	fi
 		cat <<EOF >$jobFile
 		#!/bin/bash
-		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.ellipseThresh=$ellipseThreshold;pupilPipeline (params, mainDir);"
+		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.ellipseThresh=$ellipseThreshold;params.threshVals=$circleThreshold;pupilPipeline (params, mainDir);"
 EOF
 		
 	# make "submit job script" for this run
