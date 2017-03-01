@@ -15,6 +15,10 @@ function pupilPipeline (params, mainDir)
 % params.sessionDate = '103116';
 % params.runName = 'tfMRI_FLASH_AP_run01';
 % params.deinterlace = 1;
+%
+% tracking params
+% params.ellipseThresh = [0.95 0.9]
+% 
 % 
 % % project params (fixed)
 % params.outputDir = 'TOME';

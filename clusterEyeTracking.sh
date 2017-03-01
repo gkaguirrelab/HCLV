@@ -79,6 +79,9 @@ if [ "$uploadReportNow" == "y" ]; then
 	echo "Eye tracking files copied on the cluster."
 fi
 
+echo "Enter ellipse thresholding value ( default [0.97 0.9] )"
+read ellipseThreshold
+
 ### No user interaction is required from this point on. ###
 
 
@@ -107,7 +110,7 @@ for runName in "${runs[@]%_report.mat}"; do
 	fi
 		cat <<EOF >$jobFile
 		#!/bin/bash
-		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';pupilPipeline (params, mainDir);"
+		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.ellipseThresh=$ellipseThreshold;pupilPipeline (params, mainDir);"
 EOF
 		
 	# make "submit job script" for this run
