@@ -15,6 +15,12 @@ read uploadReportNow
 echo "Do you need to do deinterlacing before tracking?[y/n]"
 read deinterlaceNow
 
+echo "Do you need to upload the deinterlaced videos from dropbox?[y/n]"
+read uploadDeinterlacedNow
+
+echo "Enter ellipse thresholding value ( default [0.97 0.9] )"
+read ellipseThreshold
+
 #enter subject and session details
 echo "Enter subject name (TOME_3xxx):"
 read subjName
@@ -79,8 +85,19 @@ if [ "$uploadReportNow" == "y" ]; then
 	echo "Eye tracking files copied on the cluster."
 fi
 
-echo "Enter ellipse thresholding value ( default [0.97 0.9] )"
-read ellipseThreshold
+if [ "$uploadRawNow" == "y" ]; then
+	# copy eye tracking files from Dropbox to the cluster
+	echo "Copying eye tracking deinterlaced videos from Dropbox to the cluster (will ask password)..."
+	if [ "$sessionNum" == "1" ]; then
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_processing/session1_restAndStructure/$subjName/$sessionDate/EyeTracking/*_60hz.avi /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+	elif [ "$sessionNum" == "2" ]; then
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_processing/session2_spatialStimuli/$subjName/$sessionDate/EyeTracking/*_60hz.avi /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+	elif [ "$sessionNum" == "3" ]; then
+		scp -r $remoteUser@$remoteIP:/$dbRoot/$remoteUser/Dropbox-Aguirre-Brainard-Lab/TOME_processing/session3_OneLight/$subjName/$sessionDate/EyeTracking/*_60hz.avi /data/jag/TOME/$subjName/$clusterSessionDate/EyeTracking/
+	fi
+	echo "Eye tracking files copied on the cluster."
+fi
+
 
 ### No user interaction is required from this point on. ###
 

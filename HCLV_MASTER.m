@@ -1718,7 +1718,7 @@ pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
 
-%% TOME_3001 - session 2 - pRF processing
+%% TOME_3014 - session 2 - pRF processing
 
 % Set paths
 params.subjectName      = 'TOME_3014';
