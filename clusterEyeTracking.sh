@@ -18,16 +18,17 @@ read deinterlaceNow
 echo "Do you need to upload the deinterlaced videos from dropbox?[y/n]"
 read uploadDeinterlacedNow
 
-echo "Enter ellipse thresholding value ( default [0.97 0.9] )"
-read ellipseThreshold
-
 #enter subject and session details
 echo "Enter subject name (TOME_3xxx):"
 read subjName
 echo "Enter session date (mmddyy) :"
 read sessionDate
 
-if [ "$uploadRawNow" == "y" -o "$uploadReportNow" == "y" ]; then
+# enter ellipse threshold for this subject
+echo "Enter ellipse thresholding value ( default [0.97 0.9] )"
+read ellipseThreshold
+
+if [ "$uploadRawNow" == "y" -o "$uploadReportNow" == "y"  -o "$uploadDeinterlacedNow" == "y" ]; then
 	echo "Enter session number (1, 2 or 3):"
 	read sessionNum
 	# enter credentials to remote in machine with read access to Dropbox
@@ -85,7 +86,7 @@ if [ "$uploadReportNow" == "y" ]; then
 	echo "Eye tracking files copied on the cluster."
 fi
 
-if [ "$uploadRawNow" == "y" ]; then
+if [ "$uploadDeinterlacedNow" == "y" ]; then
 	# copy eye tracking files from Dropbox to the cluster
 	echo "Copying eye tracking deinterlaced videos from Dropbox to the cluster (will ask password)..."
 	if [ "$sessionNum" == "1" ]; then
