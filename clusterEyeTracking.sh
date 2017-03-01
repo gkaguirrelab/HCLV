@@ -18,7 +18,7 @@ if [ "$uploadDeinterlacedNow" == "y" ]; then
 
 	echo "Do you need to do deinterlacing before tracking?[y/n]"
 	read deinterlaceNow
-elif [ "$uploadDeinterlacedNow" == "y" ]; then
+elif [ "$uploadDeinterlacedNow" == "n" ]; then
 	uploadRawNow="n"
 	deinterlaceNow="n"
 end
