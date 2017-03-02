@@ -12,16 +12,25 @@ read uploadReportNow
 echo "Do you need to upload the deinterlaced videos from dropbox?[y/n]"
 read uploadDeinterlacedNow
 
-if [ "$uploadDeinterlacedNow" == "y" ]; then
+if [ "$uploadDeinterlacedNow" == "n" ]; then
 	echo "Do you need to upload the eye tracking raw videos from dropbox?[y/n]"
 	read uploadRawNow
 
 	echo "Do you need to do deinterlacing before tracking?[y/n]"
 	read deinterlaceNow
-elif [ "$uploadDeinterlacedNow" == "n" ]; then
+elif [ "$uploadDeinterlacedNow" == "y" ]; then
 	uploadRawNow="n"
 	deinterlaceNow="n"
 fi
+
+echo "Do you want to remove the deinterlaced videos after tracking (large files!)?[y/n]"
+read removeDeinterlaced
+if [ "$removeDeinterlaced" == "y" ]; then
+	remDeint=1
+else
+	remDeint=0
+fi
+
  
 #enter subject and session details
 echo "Enter subject name (TOME_3xxx):"
@@ -30,7 +39,7 @@ echo "Enter session date (mmddyy) :"
 read sessionDate
 
 # enter ellipse threshold for this subject
-echo "Enter circle mask thresholding value ( default [0.5 0.9] )"
+echo "Enter circle mask thresholding value ( default [0.05 0.999] )"
 read circleThreshold
 
 # enter ellipse threshold for this subject
@@ -137,7 +146,7 @@ for runName in "${runs[@]%_report.mat}"; do
 	fi
 		cat <<EOF >$jobFile
 		#!/bin/bash
-		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.ellipseThresh=$ellipseThreshold;params.threshVals=$circleThreshold;pupilPipeline (params, mainDir);"
+		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.removeDeint=$remDeint;params.ellipseThresh=$ellipseThreshold;params.threshVals=$circleThreshold;pupilPipeline (params, mainDir);"
 EOF
 		
 	# make "submit job script" for this run

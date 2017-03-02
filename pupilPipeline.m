@@ -1,6 +1,6 @@
 function pupilPipeline (params, mainDir)
 % This function is a wrapper to run the full pupilTrack pipeline for a
-% single video. 
+% single video.
 % The deinterlace step is optional, as the cluster is not able to process
 % .mov videos. All deinterlaced video should be saved as .avi
 
@@ -18,13 +18,13 @@ function pupilPipeline (params, mainDir)
 %
 % tracking params
 % params.ellipseThresh = [0.95 0.9]
-% 
-% 
+%
+%
 % % project params (fixed)
 % params.outputDir = 'TOME';
 % params.projectFolder = 'TOME';
 % params.eyeTrackingDir = 'EyeTracking';
-% 
+%
 % pupilPipeline (params, mainDir)
 
 %% set outDir
@@ -33,7 +33,7 @@ outDir = fullfile(mainDir,params.outputDir, ...
 
 %% deinterlace
 if params.deinterlace == 1
-deinterlaceVideo (params, mainDir);
+    deinterlaceVideo (params, mainDir);
 end
 %% track with pupilTrack
 params.acqRate = 60;
@@ -45,7 +45,13 @@ params.outMat = fullfile(outDir, [params.runName '_pupilTrack.mat']);
 save(fullfile(outDir,[params.runName '_trackingParams.mat']), 'params');
 
 %% Remove the 60Hz video (it is no longer needed)
-delete(params.inVideo);
+if ~isfield(params,'removeDeint')
+    params.removeDeint =0;
+end
+
+if params.removeDeint == 1
+    delete(params.inVideo);
+end
 
 %% get timeBase and save it
 params.ltRes = [320 240]; % resolution of the LiveTrack video (half original size)
