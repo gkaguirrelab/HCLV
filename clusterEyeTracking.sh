@@ -21,7 +21,7 @@ if [ "$uploadDeinterlacedNow" == "y" ]; then
 elif [ "$uploadDeinterlacedNow" == "n" ]; then
 	uploadRawNow="n"
 	deinterlaceNow="n"
-end
+fi
  
 #enter subject and session details
 echo "Enter subject name (TOME_3xxx):"

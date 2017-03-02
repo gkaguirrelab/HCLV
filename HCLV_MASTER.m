@@ -1742,5 +1742,44 @@ for i = 1:length(hemis)
     avgPRFmaps(params)
 end
 
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3015 session1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% TOME_3015 - session 1 - FMRI PREPROCESSING
+params.subjectName      = 'TOME_3015';
+clusterSessionDate = '030117';
+
+params.numRuns          = 4;
+params.reconall         = 1;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3015';
+params.sessionDate = '030117';
+clusterSessionDate = '030117';
+
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+%% TOME_3015 - session 1 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3015';
+params.sessionDate = '030117';
+clusterSessionDate = '030117';
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3015';
+params.sessionDate = '030117';
+
+pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
 
