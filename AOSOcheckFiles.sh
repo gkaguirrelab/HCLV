@@ -1,12 +1,23 @@
 #!/bin/bash
 #set -ex  #uncomment just for debugging
 
+echo "Checking username. If not familiar, will just assume standard dropbox location"
+echo "Username:"
+echo $USER
+
+# special user cases
+if [ $USER == "GKALab" ]; then
+	dbRoot="Volumes/External\ GKA20\ Drive"
+else
+	dbRoot="Users"
+fi
+
 echo "Checking if all AOSO sessions on Dropbox contain all needed files..."
 echo "   "
 echo "   "
-echo "List of all existing subjects in /Users/$USER/Dropbox (Aguirre-Brainard Lab)/AOSO_data/connectomeRetinaData/:"
-ls /Users/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/AOSO_data/connectomeRetinaData/
-subjs=(/Users/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/AOSO_data/connectomeRetinaData/*)
+echo "List of all existing subjects in /$dbRoot/$USER/Dropbox (Aguirre-Brainard Lab)/AOSO_data/connectomeRetinaData/:"
+ls /$dbRoot/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/AOSO_data/connectomeRetinaData/
+subjs=(/$dbRoot/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/AOSO_data/connectomeRetinaData/*)
 for subjDir in "${subjs[@]}"; do
 	echo "   "
 	echo "   "
