@@ -7,7 +7,7 @@ echo $USER
 
 # special user cases
 if [ $USER == "GKALab" ]; then
-	dbRoot="Volumes/External\ GKA20\ Drive"
+	dbRoot="Volumes/External\ \GKA20\ \Drive"
 else
 	dbRoot="Users"
 fi
