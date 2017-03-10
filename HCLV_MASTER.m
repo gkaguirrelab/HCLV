@@ -140,7 +140,6 @@
 % make the fBIRN QA plots
 plotFBIRNqa;
 
-
 %% Set initial params - EVALUATE ALWAYS BEFORE PROCEEDING
 
 % Set Dropbox directory
@@ -1778,6 +1777,51 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3015';
 params.sessionDate = '030117';
+
+pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
+
+
+
+
+
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3016 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% TOME_3016 - session 1 - FMRI PREPROCESSING
+params.subjectName      = 'TOME_3016';
+clusterSessionDate = '031017';
+
+params.numRuns          = 4;
+params.reconall         = 1;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3016';
+params.sessionDate = '031017';
+clusterSessionDate = '031017';
+
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+%% TOME_3016 - session 1 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3016';
+params.sessionDate = '031017';
+clusterSessionDate = '031017';
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
+
+%% Run Tracking scripts on the cluster
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3016';
+params.sessionDate = '031017';
 
 pupilRespStructWrapper (params,dropboxDir)
 
