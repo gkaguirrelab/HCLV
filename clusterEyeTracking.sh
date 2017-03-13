@@ -146,7 +146,7 @@ for runName in "${runs[@]%_report.mat}"; do
 	fi
 		cat <<EOF >$jobFile
 		#!/bin/bash
-		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.removeDeint=$remDeint;params.ellipseThresh=$ellipseThreshold;params.threshVals=$circleThreshold;pupilPipeline (params, mainDir);"
+		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.removeDeint=$remDeint;params.ellipseThresh=$ellipseThreshold;params.circleThresh=$circleThreshold;pupilPipeline (params, mainDir);"
 EOF
 		
 	# make "submit job script" for this run
