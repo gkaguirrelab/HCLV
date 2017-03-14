@@ -1110,6 +1110,8 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3009';
 params.sessionDate = '100716';
 
+plotTrackingTimeseries (dropboxDir, params)
+
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
@@ -1161,6 +1163,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3009';
 params.sessionDate = '102516';
+
+plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
@@ -1232,6 +1236,8 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3011';
 params.sessionDate = '111116';
 
+plotTrackingTimeseries (dropboxDir, params)
+
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
@@ -1283,6 +1289,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3011';
 params.sessionDate = '012017';
+
+plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
@@ -1541,6 +1549,8 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3012';
 params.sessionDate = '020317';
 
+plotTrackingTimeseries (dropboxDir, params)
+
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
@@ -1615,7 +1625,9 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3012';
-params.sessionDate = '020117';
+params.sessionDate = '021017';
+
+plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
