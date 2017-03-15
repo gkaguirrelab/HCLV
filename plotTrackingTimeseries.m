@@ -53,9 +53,9 @@ for tt = 1: length(runType)
                 subplot(2,2,runCT)
             end
             % plot glint X
-            plot(trackData.glint.X, 'b')
+            plot(trackData.glint.X, 'color', [0.4 0.6 0.6])
             hold on
-            plot (trackData.glint.Y, ':b')
+            plot (trackData.glint.Y, 'color', [1 0.4 0.4])
             hold off
             str = [num2str(round(length(find(~isnan(trackData.glint.X)))/length(trackData.glint.X) *100)) '% of samples tracked'];
             text(1000,40,str)
@@ -78,7 +78,7 @@ for tt = 1: length(runType)
         
     end
         if runCT ~= 0
-            saveas(h, fullfile(eyeQAdir, [params.subjectName '_' runType{tt} '_GLINT_rawTimeseries']), 'pdf') %Save figure
+            saveas(h, fullfile(eyeQAdir, [params.subjectName '_' runType{tt} '_glint_rawTimeseries']), 'pdf') %Save figure
         end
 
         close all
@@ -88,7 +88,11 @@ end
 
 for tt = 1: length(runType)
     runCT = 0;
-    h = fullFigure;
+    h = fullFigure;    
+    % set double axes colors
+    left_color = [0 0.4 0.4];
+    right_color = [1 0.2 0.4];
+    set(h,'defaultAxesColorOrder',[left_color; right_color]);
     for ii = 1 : length(trackFiles)
         % load variables
         trackData = load(fullfile(dropboxDir, 'TOME_processing', params.projectSubfolder, ...
@@ -97,25 +101,22 @@ for tt = 1: length(runType)
             params.subjectName,params.sessionDate,params.eyeTrackingDir,paramsFiles(ii).name));
         
         % bin data according to flags
-        red = find(trackData.pupil.flags.highCutError);
-        yellow = find(trackData.pupil.flags.cutPupil);
-        green = find (trackData.pupil.flags.cutPupil == 0);
         
-        redTrackX = nan(length(trackData.pupil.X),1);
-        yellowTrackX = nan(length(trackData.pupil.X),1);
-        greenTrackX = nan(length(trackData.pupil.X),1);
+        cut = find(trackData.pupil.flags.cutPupil);
+        full = find (trackData.pupil.flags.cutPupil == 0);
         
-        redTrackY = nan(length(trackData.pupil.X),1);
-        yellowTrackY = nan(length(trackData.pupil.X),1);
-        greenTrackY = nan(length(trackData.pupil.X),1);
+        cutX = nan(length(trackData.pupil.X),1);
+        fullX = nan(length(trackData.pupil.X),1);
+              
+        cutY = nan(length(trackData.pupil.X),1);
+        fullY = nan(length(trackData.pupil.X),1);
         
-        redTrackX(red) = trackData.pupil.X(red);
-        yellowTrackX(yellow) = trackData.pupil.X(yellow);
-        greenTrackX(green) = trackData.pupil.X(green);
+        cutX(cut) = trackData.pupil.X(cut);
+        fullX(full) = trackData.pupil.X(full);
         
-        redTrackY(red) = trackData.pupil.Y(red);
-        yellowTrackY(yellow) = trackData.pupil.Y(yellow);
-        greenTrackY(green) = trackData.pupil.Y(green);
+        cutY(cut) = trackData.pupil.Y(cut);
+        fullY(full) = trackData.pupil.Y(full);
+        
         % bin plots according to type
         if regexp(trackFiles(ii).name,regexptranslate('wildcard',['*' runType{tt} '*']))
             runCT = runCT+1;
@@ -125,34 +126,39 @@ for tt = 1: length(runType)
             else
                 subplot(2,2,runCT)
             end
-            % plot glint X
-            plot(greenTrackX, 'g')
+  
+            yyaxis left
+            % plot pupil position
+            plot(fullX, 'LineWidth', 2)%, 'color', [0.4 0.4 0.4])
             hold on
-            plot(yellowTrackX, 'y')
+            plot(cutX, '-')%, 'color', [1 0.4 0.2])
+            hold on 
+            plot (fullY, '-k','LineWidth', 2)%,'color', [0.4 0.4 0.4])
             hold on
-            plot(redTrackX, 'r')
-            hold on
-            plot (greenTrackY, ':g')
-            hold on
-            plot(yellowTrackY, ':y')
-            hold on
-            plot(redTrackY, ':r')
-            hold on
-            plot(trackData.pupil.distanceErrorMetric, 'b', 'LineWidth', 2)
-            hold on
-            plot(trackData.pupil.cutDistanceErrorMetric, 'k', 'LineWidth', 2)
-            
+            plot(cutY, '-k')%,'color', [1 0.4 0.2])
             hold off
             str = [num2str(round(length(find(~isnan(trackData.glint.X)))/length(trackData.glint.X) *100)) '% of samples tracked'];
             text(1000,40,str)
             ylim ([0 320])
+            ylabel('pixels')
+            
+            yyaxis right
+            area(trackData.pupil.cutDistanceErrorMetric,'EdgeColor', 'none','FaceColor','r','FaceAlpha',.3,'EdgeAlpha',.1)
+            hold off
+            ylabel('Error Metric on cut pupil')
+            ylim([0 30])
+            
+%             plot(trackData.pupil.cutDistanceErrorMetric, 'color', [0.2 0.4 0.6])
+            
+            hold off
+
             xlim ([0 length(trackData.glint.X)])
             title ([trackParams.params.subjectName ' ' trackParams.params.runName], 'Interpreter' , 'none')
             xlabel ('frames')
-            ylabel('pixels')
-            legend ('X position (uncut pupil)', 'X position (cut pupil)', 'X position (high error after cut pupil)', ...
-                'Y position (uncut pupil)', 'Y position (cut pupil)', 'Y position (high error after cut pupil)', ...
-                'Uncut pupil Error', 'Cut pupil Error')
+           
+            legend ('X position (uncut pupil)', 'X position (cut pupil)', ...
+                'Y position (uncut pupil)', 'Y position (cut pupil)',  ...
+                'Cut pupil Error')
             
         end
         %adjustments
@@ -166,7 +172,7 @@ for tt = 1: length(runType)
         
     end
         if runCT ~= 0
-            saveas(h, fullfile(eyeQAdir, [params.subjectName '_' runType{tt} '_PUPIL_rawTimeseries']), 'pdf') %Save figure
+            saveas(h, fullfile(eyeQAdir, [params.subjectName '_' runType{tt} '_pupil_rawTimeseries']), 'pdf') %Save figure
         end
 
         close all
@@ -224,9 +230,9 @@ for tt = 1: length(runType)
             hold on
             plot(redTrackRatio, 'r')
             hold on
-            plot(trackData.pupil.distanceErrorMetric, 'b', 'LineWidth', 2)
+            area(trackData.pupil.distanceErrorMetric ./100, 'EdgeColor', 'none','FaceColor','g','FaceAlpha',.1)
             hold on
-            plot(trackData.pupil.cutDistanceErrorMetric, 'k', 'LineWidth', 2)
+            area(trackData.pupil.cutDistanceErrorMetric ./100, 'EdgeColor', 'none','FaceColor','k','FaceAlpha',.1)
             hold off
             str = [num2str(round(length(find(~isnan(trackData.glint.X)))/length(trackData.glint.X) *100)) '% of samples tracked'];
             text(1000,0.2,str)
@@ -236,7 +242,7 @@ for tt = 1: length(runType)
             xlabel ('frames')
             ylabel('Axes ratio (minor axis/major axis)')
             legend ('uncut pupil', 'cut pupil', 'high error after cut pupil',...
-                'Uncut pupil Error', 'Cut pupil Error')
+                'Uncut pupil Error/100', 'Cut pupil Error/100')
         end
         %adjustments
         axesHandles = findobj(h, 'type', 'axes');
@@ -257,8 +263,7 @@ end
 
 
 
-
-%% 
+%% Plot ellipse area
 for tt = 1: length(runType)
     runCT = 0;
     h = fullFigure;
@@ -270,29 +275,28 @@ for tt = 1: length(runType)
             params.subjectName,params.sessionDate,params.eyeTrackingDir,paramsFiles(ii).name));
         
         % bin data according to flags
-        red = find(trackData.pupil.flags.highCutError);
-        yellow = find(trackData.pupil.flags.cutPupil);
-        green = find (trackData.pupil.flags.cutPupil == 0);
+        cut = find(trackData.pupil.flags.cutPupil);
+        full = find (trackData.pupil.flags.cutPupil == 0);
         
-        redTrackRatio = nan(length(trackData.pupil.X),1);
-        yellowTrackRatio = nan(length(trackData.pupil.X),1);
-        greenTrackRatio = nan(length(trackData.pupil.X),1);
+        
+        cutArea = nan(length(trackData.pupil.X),1);
+        fullArea = nan(length(trackData.pupil.X),1);
         
         bigRad = trackData.pupil.explicitEllipseParams(:,3);
         smallRad = trackData.pupil.explicitEllipseParams(:,4);
-        radRatio = smallRad./ bigRad;
+        fA = pi .* smallRad .* bigRad;
         
         bigRadCut = trackData.pupil.cutExplicitEllipseParams(:,3);
         smallRadCut = trackData.pupil.cutExplicitEllipseParams(:,4);
-        radRatioCut = smallRadCut./ bigRadCut;
+        cA = pi .* smallRadCut .* bigRadCut;
         
-        redTrackRatio(red) = radRatioCut(red);
-        yellowTrackRatio(yellow) = radRatioCut(yellow);
-        greenTrackRatio(green) = radRatio(green);
         
-        redTrackY(red) = trackData.pupil.Y(red);
-        yellowTrackY(yellow) = trackData.pupil.Y(yellow);
-        greenTrackY(green) = trackData.pupil.Y(green);
+        cutArea(cut) = cA(cut);
+        fullArea(full) = fA(full);
+        % set double axes colors
+        left_color = [0 0.4 0.4];
+        right_color = [1 0.2 0.4];
+        set(h,'defaultAxesColorOrder',[left_color; right_color]);
         % bin plots according to type
         if regexp(trackFiles(ii).name,regexptranslate('wildcard',['*' runType{tt} '*']))
             runCT = runCT+1;
@@ -302,26 +306,30 @@ for tt = 1: length(runType)
             else
                 subplot(2,2,runCT)
             end
-            % plot glint X
-            plot(greenTrackRatio,  'g')
+            % plot 
+            
+            yyaxis left
+            plot(fullArea,'LineWidth', 1)
             hold on
-            plot(yellowTrackRatio, 'y')
-            hold on
-            plot(redTrackRatio, 'r')
-            hold on
-            plot(trackData.pupil.distanceErrorMetric, 'b', 'LineWidth', 2)
-            hold on
-            plot(trackData.pupil.cutDistanceErrorMetric, 'k', 'LineWidth', 2)
+            plot(cutArea, '-k', 'LineWidth', 1)%,'Color',[1 0.4 0.2])
             hold off
             str = [num2str(round(length(find(~isnan(trackData.glint.X)))/length(trackData.glint.X) *100)) '% of samples tracked'];
-            text(1000,0.2,str)
-            ylim ([0 1.1])
+            text(1000,200,str)
+            ylim([0 5000])
+            ylabel('Square Pixels')
+            legend ('uncut pupil area', 'cut pupil area')
+            
+            yyaxis right
+            area(trackData.pupil.cutDistanceErrorMetric,'EdgeColor', 'none','FaceColor','r','FaceAlpha',.3,'EdgeAlpha',.1)
+            ylabel('Error Metric on cut pupil')
+            ylim([0 30])
+            
             xlim ([0 length(trackData.glint.X)])
             title ([trackParams.params.subjectName ' ' trackParams.params.runName], 'Interpreter' , 'none')
             xlabel ('frames')
-            ylabel('Axes ratio (minor axis/major axis)')
-            legend ('uncut pupil', 'cut pupil', 'high error after cut pupil',...
-                'Uncut pupil Error', 'Cut pupil Error')
+            
+            
+                
         end
         %adjustments
         axesHandles = findobj(h, 'type', 'axes');
@@ -330,7 +338,7 @@ for tt = 1: length(runType)
         set(h, 'PaperSize', [16 9]);
         
                 % clear variables
-        clear trackData trackParams redTrackRatio yellowTrackRatio greenTrackRatio
+        clear trackData trackParams fullArea cutArea full cut
         
     end
         if runCT ~= 0

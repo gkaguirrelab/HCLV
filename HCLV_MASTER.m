@@ -993,6 +993,8 @@ params.sessionDate = '102116';
 params.sessionTwoDate = '103116';
 params.projectSubfolderTwo = 'session2_spatialStimuli';
 
+plotTrackingTimeseries (dropboxDir, params)
+
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
@@ -1046,6 +1048,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3008';
 params.sessionDate = '103116';
+
+plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
@@ -1358,6 +1362,8 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3013';
 params.sessionDate = '121216';
 
+plotTrackingTimeseries (dropboxDir, params)
+
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
@@ -1407,6 +1413,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3013';
 params.sessionDate = '011117';
+
+plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
@@ -1493,6 +1501,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3012';
 params.sessionDate = '020117';
+
+plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
@@ -1670,6 +1680,8 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3014';
 params.sessionDate = '021517';
 
+plotTrackingTimeseries (dropboxDir, params)
+
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
@@ -1724,6 +1736,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3014';
 params.sessionDate = '021717';
+
+plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
