@@ -315,7 +315,7 @@ for tt = 1: length(runType)
             hold off
             str = [num2str(round(length(find(~isnan(trackData.glint.X)))/length(trackData.glint.X) *100)) '% of samples tracked'];
             text(1000,200,str)
-            ylim([0 5000])
+            ylim([0 7000])
             ylabel('Square Pixels')
             legend ('uncut pupil area', 'cut pupil area')
             

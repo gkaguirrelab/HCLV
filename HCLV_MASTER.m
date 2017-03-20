@@ -805,6 +805,8 @@ params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3005';
 params.sessionDate = '100316';
 
+plotTrackingTimeseries (dropboxDir, params)
+
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
@@ -1163,6 +1165,14 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
 
+%% Compute calibration matrix
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3009';
+params.sessionDate = '102516';
+params.ellipseThresh   = [0.985 0.9];
+params.circleThresh = [0.025 0.999];
+
+calibrationWrapper(dropboxDir, params)
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3009';
@@ -1554,6 +1564,14 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 
 %% Run Tracking scripts on the cluster
 
+%% Compute calibration matrix
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3012';
+params.sessionDate = '020317';
+params.ellipseThresh   = [0.985 0.9];
+params.circleThresh = [0.025 0.999];
+
+calibrationWrapper(dropboxDir, params)
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3012';
