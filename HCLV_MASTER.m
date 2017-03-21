@@ -988,6 +988,17 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
 
+%% get calibration factors
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3008';
+params.sessionDate = '102116';
+
+sizeCalibration(params);
+
+params.ellipseThresh   = [0.985 0.9];
+params.circleThresh = [0.025 0.999];
+
+calibrationWrapper(dropboxDir, params)
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3008';
@@ -1046,6 +1057,17 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 
 %% Run Tracking scripts on the cluster
 
+%% get calibration factors
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3008';
+params.sessionDate = '103116';
+
+sizeCalibration(params);
+
+params.ellipseThresh   = [0.985 0.9];
+params.circleThresh = [0.025 0.999];
+
+calibrationWrapper(dropboxDir, params)
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3008';
