@@ -993,7 +993,7 @@ params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3008';
 params.sessionDate = '102116';
 
-sizeCalibration(params);
+sizeCalibration(dropboxDir,params);
 
 params.ellipseThresh   = [0.985 0.9];
 params.circleThresh = [0.025 0.999];
