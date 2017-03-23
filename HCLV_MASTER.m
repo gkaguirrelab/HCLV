@@ -45,6 +45,22 @@
 % deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 % 
 % %% Run Tracking scripts on the cluster
+% % params.ellipseThresh   = [0.xx 0.9];
+% % params.circleThresh = [0.0xx 0.999];
+% 
+% %% Compute calibration for pupil and gaze
+% params.projectSubfolder = 'session1_restAndStructure';
+% params.subjectName = 'TOME_30xx';
+% params.sessionDate = 'mmddyy';
+% 
+% sizeCalibration(dropboxDir,params);
+% 
+% params.trackGazeVideos = 1;
+% params.ellipseThresh   = [0.98 0.9];
+% params.circleThresh = [0.02 0.999];
+% 
+% 
+% calibrationWrapper(dropboxDir, params)
 % 
 % %% Make Pupil Response Structs
 % params.projectSubfolder = 'session1_restAndStructure';
@@ -98,7 +114,8 @@
 % deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 % 
 % %% Run Tracking scripts on the cluster
-% 
+% % params.ellipseThresh   = [0.xx 0.9];
+% % params.circleThresh = [0.0xx 0.999];
 % 
 % %% Compute calibration for pupil and gaze
 % params.projectSubfolder = 'session2_spatialStimuli';
@@ -108,10 +125,12 @@
 % sizeCalibration(dropboxDir,params);
 % 
 % params.trackGazeVideos = 1;
-% params.ellipseThresh   = [0.95 0.9];
-% params.circleThresh = [0.05 0.999];
+% params.ellipseThresh   = [0.98 0.9];
+% params.circleThresh = [0.02 0.999];
+% 
 % 
 % calibrationWrapper(dropboxDir, params)
+% 
 % %% Make Pupil Response Structs
 % params.projectSubfolder = 'session2_spatialStimuli';
 % params.subjectName = 'TOME_30XX';
@@ -1000,6 +1019,8 @@ copyToCluster = 1;
 
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.9 0.9];
+% params.circleThresh = [0.085 0.999];
 
 %% get calibration factors
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1069,6 +1090,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.9 0.9];
+% params.circleThresh = [0.06 0.999];
 
 %% get calibration factors
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1146,6 +1169,8 @@ copyToCluster = 1;
 
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.952 0.9];
+% params.circleThresh = [0.05 0.999];
 
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1200,6 +1225,8 @@ copyToCluster = 1;
 
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.968 0.9];
+% params.circleThresh = [0.025 0.999];
 
 %% Compute calibration factors for pupil and gaze
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1249,8 +1276,7 @@ end
 
 
 
-%% TOME_3010 - no data collected
-
+%%  %%%%%%%%%%%%%%%%%%%%%%  TOME_3010 - no data collected %%%%%%%%%%%%%%%%%
 
 
 
@@ -1284,6 +1310,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.92 0.9];
+% params.circleThresh = [0.067 0.999];
 
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1338,7 +1366,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
-
+% params.ellipseThresh   = [0.95 0.9];
+% params.circleThresh = [0.05 0.999];
 
 %% Compute calibration for pupil and gaze
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1420,6 +1449,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.95 0.9];
+% params.circleThresh = [0.04 0.999];
 
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1472,7 +1503,8 @@ copyToCluster = 1;
 
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
-
+% params.ellipseThresh   = [0.965 0.9];
+% params.circleThresh = [0.04 0.999];
 
 %% Compute calibration factors for pupil and gaze
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1574,6 +1606,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.95 0.9];
+% params.circleThresh = [0.045 0.999];
 
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1631,6 +1665,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.97 0.9];
+% params.circleThresh = [0.04 0.999];
 
 %% Compute calibration for pupil and gaze
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1721,6 +1757,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.96 0.9];
+% params.circleThresh = [0.035 0.999];
 
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1764,7 +1802,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
-
+% params.ellipseThresh   = [0.936 0.9];
+% params.circleThresh = [0.07 0.999];
 
 %% Compute calibration for pupil and gaze
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1835,7 +1874,22 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.97 0.9];
+% params.circleThresh = [0.035 0.999];
 
+%% Compute calibration for pupil and gaze
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3014';
+params.sessionDate = '021717';
+
+sizeCalibration(dropboxDir,params);
+
+params.trackGazeVideos = 1;
+params.ellipseThresh   = [0.98 0.9];
+params.circleThresh = [0.02 0.999];
+
+
+calibrationWrapper(dropboxDir, params)
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3014';
@@ -2017,6 +2071,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.97 0.9];
+% params.circleThresh = [0.04 0.999];
 
 %% Compute calibration for pupil and gaze
 params.projectSubfolder = 'session2_spatialStimuli';
