@@ -61,7 +61,7 @@ for tt = 1: length(runType)
                 str2 = ['Median pupil size ' setstr(177) ' SD = ' num2str(round(medianSize,2)) setstr(177) num2str(round(stdSize,2))];
                 text(1000,2,str)
                 text(1000,1,str2)
-                ylim ([0 13])
+                ylim ([0 11])
                 xlim ([0 20161])
                 ax = gca;
                 ax.XTick = [0:framesPerTR*10:totalFrames];
