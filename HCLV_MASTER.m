@@ -1029,6 +1029,7 @@ params.sessionDate = '102116';
 
 sizeCalibration(dropboxDir,params);
 
+params.trackGazeVideos = 0;
 params.ellipseThresh   = [0.985 0.9];
 params.circleThresh = [0.025 0.999];
 
@@ -1169,8 +1170,9 @@ copyToCluster = 1;
 
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 %% Run Tracking scripts on the cluster
-% params.ellipseThresh   = [0.952 0.9];
-% params.circleThresh = [0.05 0.999];
+% params.ellipseThresh   = [0.948 0.9];
+% params.circleThresh = [0.045 0.999];
+% params.gammaCorrection =  0.7;
 
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1514,8 +1516,8 @@ params.sessionDate = '011117';
 sizeCalibration(dropboxDir,params);
 
 params.trackGazeVideos = 1;
-params.ellipseThresh   = [0.97 0.9];
-params.circleThresh = [0.02 0.999];
+params.ellipseThresh   = [0.98 0.9];
+params.circleThresh = [0.015 0.999];
 
 calibrationWrapper(dropboxDir, params)
 
@@ -1760,6 +1762,20 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 % params.ellipseThresh   = [0.96 0.9];
 % params.circleThresh = [0.035 0.999];
 
+%% Compute calibration for pupil and gaze
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3012';
+params.sessionDate = '021017';
+
+sizeCalibration(dropboxDir,params);
+
+params.trackGazeVideos = 1;
+params.ellipseThresh   = [0.98 0.9];
+params.circleThresh = [0.02 0.999];
+
+
+calibrationWrapper(dropboxDir, params)
+
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3012';
@@ -1812,7 +1828,7 @@ params.sessionDate = '021517';
 
 sizeCalibration(dropboxDir,params);
 
-params.trackGazeVideos = 1;
+params.trackGazeVideos = 0;
 params.ellipseThresh   = [0.94 0.9];
 params.circleThresh = [0.02 0.999];
 
@@ -1874,8 +1890,8 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
-% params.ellipseThresh   = [0.97 0.9];
-% params.circleThresh = [0.035 0.999];
+% params.ellipseThresh   = [0.96 0.9];
+% params.circleThresh = [0.03 0.999];
 
 %% Compute calibration for pupil and gaze
 params.projectSubfolder = 'session2_spatialStimuli';
@@ -1968,7 +1984,100 @@ eyetrackingQA (dropboxDir, params)
 
 
 
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3015 SESSION 2  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% TOME_3015 - session 2 - PREPROCESSING
+
+params.subjectName = 'TOME_3015';
+clusterSessionDate = '032417';
+sessionOneDate = '030117';
+
+
+params.numRuns          = 8; % skipped last 2 runs
+params.reconall         = 0;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+% copy MPRAGE folder from session one
+MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
+if exist (MPRAGEdir,'dir')
+    params.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+    copyfile(MPRAGEdir, fullfile(params.sessionDir,'MPRAGE'))
+else
+    warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
+end
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3015';
+params.sessionDate = '032417';
+clusterSessionDate = '032417';
+
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+%% TOME_3015 - session 2 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3015';
+params.sessionDate = '032417';
+clusterSessionDate = '032417';
+
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
+
+%% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.97 0.9];
+% params.circleThresh = [0.04 0.999];
+
+%% Compute calibration for pupil and gaze
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3015';
+params.sessionDate = '032417';
+
+sizeCalibration(dropboxDir,params);
+
+params.trackGazeVideos = 1;
+params.ellipseThresh   = [0.94 0.999];
+params.circleThresh = [0.02 0.9999];
+
+calibrationWrapper(dropboxDir, params)
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3015';
+params.sessionDate = '032417';
+
+plotTrackingTimeseries (dropboxDir, params)
+
+pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
+
+%% TOME_3016 - session 2 - pRF processing
+
+% Set paths
+params.subjectName      = 'TOME_3015';
+clusterSessionDate      = '032417';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3016 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2009,7 +2118,7 @@ params.sessionDate = '031017';
 
 sizeCalibration(dropboxDir,params);
 
-params.trackGazeVideos = 1;
+params.trackGazeVideos = 0;
 params.ellipseThresh   = [0.9 0.9];
 params.circleThresh = [0.015 0.999];
 
@@ -2081,7 +2190,7 @@ params.sessionDate = '032017';
 
 sizeCalibration(dropboxDir,params);
 
-params.trackGazeVideos = 1;
+params.trackGazeVideos = 0;
 params.ellipseThresh   = [0.92 0.999];
 params.circleThresh = [0.02 0.9999];
 
@@ -2121,3 +2230,5 @@ for i = 1:length(hemis)
     params.baseName     = hemis{i};
     avgPRFmaps(params)
 end
+
+

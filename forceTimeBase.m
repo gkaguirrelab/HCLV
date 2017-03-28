@@ -605,11 +605,41 @@ for rr = 1 :length(runs) %loop in all video files
     end
 end
 
-%% TOME_3013 - session 1 - Force TimeBase
+%% TOME_3013 - session 2 - Force TimeBase
 params.projectSubfolder = 'session2_spatialStimuli';
 params.subjectName = 'TOME_3013';
 params.sessionDate = '011117';
 clusterSessionDate = '011117';
+
+runs = dir(fullfile(dropboxDir, params.outputDir, params.projectSubfolder, ...
+    params.subjectName,params.sessionDate,params.eyeTrackingDir,'*pupilTrack.mat'));
+for rr = 1 :length(runs) %loop in all video files
+    fprintf ('\nProcessing video %d of %d\n',rr,length(runs))
+    if regexp(runs(rr).name, regexptranslate('wildcard','*_pupilTrack.mat'))
+        params.runName = runs(rr).name(1:end-15); %runs
+        params.ltRes = [360 240]; % resolution of the LiveTrack video (half original size)
+        params.ptRes = [400 300]; % resolution of the pupilTrack video
+        params.acqRate = 60;
+        params.ltThr = 0.1;
+         params.reportSanityCheck = 0;
+        [timeBase] = getPupilTimebase(params,dropboxDir);
+%         if ~exist(fullfile(dropboxDir, params.outputDir, params.projectSubfolder, ...
+%             params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '_timeBase.mat']),'file')
+        save (fullfile(dropboxDir, params.outputDir, params.projectSubfolder, ...
+            params.subjectName,params.sessionDate,params.eyeTrackingDir,[params.runName '_timeBase.mat']), 'timeBase')
+%         end
+        clear timeBase
+    else
+        continue
+    end
+end
+
+
+%% TOME_3014 - session 2 - Force TimeBase
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3014';
+params.sessionDate = '021717';
+clusterSessionDate = '021717';
 
 runs = dir(fullfile(dropboxDir, params.outputDir, params.projectSubfolder, ...
     params.subjectName,params.sessionDate,params.eyeTrackingDir,'*pupilTrack.mat'));
