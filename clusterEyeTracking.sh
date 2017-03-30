@@ -46,6 +46,10 @@ read circleThreshold
 echo "Enter ellipse thresholding value ( default [0.97 0.9] )"
 read ellipseThreshold
 
+# enter ellipse threshold for this subject
+echo "Enter gamma correction value ( default 1 )"
+read gammaCorrection
+
 if [ "$uploadRawNow" == "y" -o "$uploadReportNow" == "y"  -o "$uploadDeinterlacedNow" == "y" ]; then
 	echo "Enter session number (1, 2 or 3):"
 	read sessionNum
@@ -146,7 +150,7 @@ for runName in "${runs[@]%_report.mat}"; do
 	fi
 		cat <<EOF >$jobFile
 		#!/bin/bash
-		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.removeDeint=$remDeint;params.ellipseThresh=$ellipseThreshold;params.circleThresh=$circleThreshold;pupilPipeline (params, mainDir);"
+		matlab -nodisplay -nosplash -r "mainDir='/data/jag';params.subjectName='$subjName';params.deinterlace=$deintYN;params.sessionDate='$clusterSessionDate';params.runName='$runName';params.outputDir='TOME';params.projectFolder='TOME';params.eyeTrackingDir='EyeTracking';params.removeDeint=$remDeint;params.ellipseThresh=$ellipseThreshold;params.circleThresh=$circleThreshold;params.gammaCorrection=$gammaCorrection;pupilPipeline (params, mainDir);"
 EOF
 		
 	# make "submit job script" for this run

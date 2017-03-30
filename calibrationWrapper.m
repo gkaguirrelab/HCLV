@@ -25,7 +25,7 @@ if params.trackGazeVideos
         params.calName = LTruns(rr).name(1:end-10); %runs
         outDir = fullfile(dropboxDir,'TOME_processing',params.projectSubfolder,params.subjectName,params.sessionDate,'EyeTracking');
         params.acqRate = 60;
-        params.pupilFit = 'ellipse';
+        params.pupilFit = 'bestPupilCut';
 %         params.pupilFit = 'circle';
         params.inVideo = fullfile(outDir,[params.calName '_60hz.avi']);
         params.outVideo = fullfile(outDir,[params.calName '_calTrack.avi']);
