@@ -776,6 +776,10 @@ copyToCluster = 1;
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
 
 %% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.90 0.9];
+% params.circleThresh = [0.05 0.999];
+% params.gammaCorrection = 1.4;
+
 
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
@@ -1819,7 +1823,8 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 
 %% Run Tracking scripts on the cluster
 % params.ellipseThresh   = [0.936 0.9];
-% params.circleThresh = [0.07 0.999];
+% params.circleThresh = [0.08 0.999];
+% params.gammaCorrection = 1.4;
 
 %% Compute calibration for pupil and gaze
 params.projectSubfolder = 'session1_restAndStructure';
@@ -2231,4 +2236,59 @@ for i = 1:length(hemis)
     avgPRFmaps(params)
 end
 
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3017 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% TOME_3017 - session 1 - FMRI PREPROCESSING
+params.subjectName      = 'TOME_3017';
+clusterSessionDate = '032917';
+
+params.numRuns          = 4;
+params.reconall         = 1;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3017';
+params.sessionDate = '032917';
+clusterSessionDate = '032917';
+
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+%% TOME_3017 - session 1 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3017';
+params.sessionDate = '032917';
+clusterSessionDate = '032917';
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
+
+%% Run Tracking scripts on the cluster
+
+%% Compute calibration for pupil and gaze
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3017';
+params.sessionDate = '032917';
+
+sizeCalibration(dropboxDir,params);
+
+params.trackGazeVideos = 1;
+params.ellipseThresh   = [0.985 0.9];
+params.circleThresh = [0.03 0.999];
+params.gammaCorrection = 1;
+
+calibrationWrapper(dropboxDir, params)
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3017';
+params.sessionDate = '032917';
+
+plotTrackingTimeseries (dropboxDir, params)
+
+pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
 
