@@ -2332,7 +2332,7 @@ fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
 %% TOME_3017 - session 2 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session2_spatialStimuli';
-params.subjectName = 'TOME_3016';
+params.subjectName = 'TOME_3017';
 params.sessionDate = '033117';
 clusterSessionDate = '033117';
 
@@ -2517,73 +2517,6 @@ pupilRespStructWrapper (params,dropboxDir)
 eyetrackingQA (dropboxDir, params)
 
 
-%% %%%%%%%%%%%%%%%%%%%%%% TOME_3018 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% TOME_3018 - session 1 - FMRI PREPROCESSING
-params.subjectName      = 'TOME_3018';
-clusterSessionDate = '040717';
-
-params.numRuns          = 4;
-params.reconall         = 1;
-
-fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
-
-% we could not acquire a T1 this session. Copying it from subsequent
-% session
-sessionOneDate = '041817';
-MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist (MPRAGEdir,'dir')
-    params.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-    copyfile(MPRAGEdir, fullfile(params.sessionDir,'MPRAGE'))
-else
-    warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
-end
-
-
-%% Run preprocessing scripts
-
-%% Run QA after preprocessing
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-clusterSessionDate = '040717';
-
-fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
-
-%% TOME_3018 - session 1 - DEINTERLACE VIDEO
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-clusterSessionDate = '040717';
-copyToCluster = 1;
-
-deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
-
-%% Run Tracking scripts on the cluster
-
-%% Compute calibration for pupil and gaze
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-
-sizeCalibration(dropboxDir,params);
-
-params.trackGazeVideos = 1;
-params.ellipseThresh   = [0.985 0.9];
-params.circleThresh = [0.03 0.999];
-params.gammaCorrection = 1;
-
-calibrationWrapper(dropboxDir, params)
-%% Make Pupil Response Structs
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-
-plotTrackingTimeseries (dropboxDir, params)
-
-pupilRespStructWrapper (params,dropboxDir)
-
-eyetrackingQA (dropboxDir, params)
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3018 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -2646,8 +2579,8 @@ eyetrackingQA (dropboxDir, params)
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3019 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% TOME_3019 - session 1 - FMRI PREPROCESSING
-params.subjectName      = 'TOME_3018';
-clusterSessionDate = '042617';
+params.subjectName      = 'TOME_3019';
+clusterSessionDate = '042617a';
 
 params.numRuns          = 4;
 params.reconall         = 1;
@@ -2659,16 +2592,27 @@ fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
 %% Run QA after preprocessing
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3019';
-params.sessionDate = '042617';
-clusterSessionDate = '042617';
+params.sessionDate = '042617a';
+clusterSessionDate = '042617a';
 
 fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+% we had to interrupt the session, so the MPRAGE folder needs to be copied
+% over
+sessionOneDate = '041817b';
+MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
+if exist (MPRAGEdir,'dir')
+    params.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+    copyfile(MPRAGEdir, fullfile(params.sessionDir,'MPRAGE'))
+else
+    warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
+end
 
 %% TOME_3019 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3019';
-params.sessionDate = '042617';
-clusterSessionDate = '042617';
+params.sessionDate = '042617a';
+clusterSessionDate = '042617a';
 copyToCluster = 1;
 
 deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
@@ -2678,7 +2622,7 @@ deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluste
 %% Compute calibration for pupil and gaze
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3019';
-params.sessionDate = '042617';
+params.sessionDate = '042617a';
 
 sizeCalibration(dropboxDir,params);
 
@@ -2691,12 +2635,72 @@ calibrationWrapper(dropboxDir, params)
 %% Make Pupil Response Structs
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3019';
-params.sessionDate = '042617';
+params.sessionDate = '042617a';
 
 plotTrackingTimeseries (dropboxDir, params)
 
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
+
+
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3020 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% TOME_3020 - session 1 - FMRI PREPROCESSING
+params.subjectName      = 'TOME_3020';
+clusterSessionDate = '042817';
+
+params.numRuns          = 4;
+params.reconall         = 1;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '042817';
+clusterSessionDate = '042817';
+
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+
+%% TOME_3020 - session 1 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '042817';
+clusterSessionDate = '042817';
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
+
+%% Run Tracking scripts on the cluster
+
+%% Compute calibration for pupil and gaze
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '042817';
+
+sizeCalibration(dropboxDir,params);
+
+params.trackGazeVideos = 1;
+params.ellipseThresh   = [0.985 0.9];
+params.circleThresh = [0.03 0.999];
+params.gammaCorrection = 1;
+
+calibrationWrapper(dropboxDir, params)
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session1_restAndStructure';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '042817';
+
+plotTrackingTimeseries (dropboxDir, params)
+
+pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
+
+
 
 
