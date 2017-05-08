@@ -2460,13 +2460,14 @@ pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
 
-%% %%%%%%%%%%%%%%%%%%%%%% TOME_3018 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3018 SESSION 1 (2)  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% TOME_3018 - session 1 - FMRI PREPROCESSING
 params.subjectName      = 'TOME_3018';
-clusterSessionDate = '040717';
+clusterSessionDate = '041817';
 
-params.numRuns          = 4;
+params.numRuns          = 3;
 params.reconall         = 1;
 
 fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
@@ -2476,64 +2477,6 @@ fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
 %% Run QA after preprocessing
 params.projectSubfolder = 'session1_restAndStructure';
 params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-clusterSessionDate = '040717';
-
-fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
-
-%% TOME_3018 - session 1 - DEINTERLACE VIDEO
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-clusterSessionDate = '040717';
-copyToCluster = 1;
-
-deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
-
-%% Run Tracking scripts on the cluster
-
-%% Compute calibration for pupil and gaze
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-
-sizeCalibration(dropboxDir,params);
-
-params.trackGazeVideos = 1;
-params.ellipseThresh   = [0.985 0.9];
-params.circleThresh = [0.03 0.999];
-params.gammaCorrection = 1;
-
-calibrationWrapper(dropboxDir, params)
-%% Make Pupil Response Structs
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
-params.sessionDate = '040717';
-
-plotTrackingTimeseries (dropboxDir, params)
-
-pupilRespStructWrapper (params,dropboxDir)
-
-eyetrackingQA (dropboxDir, params)
-
-
-
-%% %%%%%%%%%%%%%%%%%%%%%% TOME_3018 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% TOME_3018 - session 1 - FMRI PREPROCESSING
-params.subjectName      = 'TOME_3018';
-clusterSessionDate = '041817';
-
-params.numRuns          = 3;
-params.reconall         = 0;
-
-fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
-
-%% Run preprocessing scripts
-
-%% Run QA after preprocessing
-params.projectSubfolder = 'session1_restAndStructure';
-params.subjectName = 'TOME_3018';
 params.sessionDate = '041817';
 clusterSessionDate = '041817';
 
@@ -2576,7 +2519,7 @@ eyetrackingQA (dropboxDir, params)
 
 
 
-%% %%%%%%%%%%%%%%%%%%%%%% TOME_3019 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3019 SESSION 1 a %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% TOME_3019 - session 1 - FMRI PREPROCESSING
 params.subjectName      = 'TOME_3019';
@@ -2586,6 +2529,18 @@ params.numRuns          = 4;
 params.reconall         = 1;
 
 fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+% we had to interrupt the session, so the MPRAGE folder needs to be copied
+% over
+sessionOneDate = '042617b';
+MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
+if exist (MPRAGEdir,'dir')
+    params.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+    copyfile(MPRAGEdir, fullfile(params.sessionDir,'MPRAGE'))
+else
+    warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
+end
+
 
 %% Run preprocessing scripts
 
@@ -2597,16 +2552,6 @@ clusterSessionDate = '042617a';
 
 fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
 
-% we had to interrupt the session, so the MPRAGE folder needs to be copied
-% over
-sessionOneDate = '041817b';
-MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
-if exist (MPRAGEdir,'dir')
-    params.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
-    copyfile(MPRAGEdir, fullfile(params.sessionDir,'MPRAGE'))
-else
-    warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
-end
 
 %% TOME_3019 - session 1 - DEINTERLACE VIDEO
 params.projectSubfolder = 'session1_restAndStructure';
@@ -2642,6 +2587,115 @@ plotTrackingTimeseries (dropboxDir, params)
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
+
+
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3019 SESSION 1 b %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% TOME_3019 - session 1 - FMRI PREPROCESSING
+params.subjectName      = 'TOME_3019';
+clusterSessionDate = '042617b';
+
+params.numRuns          = 0;
+params.reconall         = 1;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3019 SESSION 2  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% TOME_3019 - session 2 - PREPROCESSING
+
+params.subjectName = 'TOME_3019';
+clusterSessionDate = '050317';
+sessionOneDate = '042617b';
+
+
+params.numRuns          = 10;
+params.reconall         = 0;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+% copy MPRAGE folder from session one
+MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
+if exist (MPRAGEdir,'dir')
+    params.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+    copyfile(MPRAGEdir, fullfile(params.sessionDir,'MPRAGE'))
+else
+    warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
+end
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3019';
+params.sessionDate = '050317';
+clusterSessionDate = '050317';
+
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+%% TOME_3019 - session 2 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3019';
+params.sessionDate = '050317';
+clusterSessionDate = '050317';
+
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
+
+%% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.97 0.9];
+% params.circleThresh = [0.04 0.999];
+
+%% Compute calibration for pupil and gaze
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3019';
+params.sessionDate = '050317';
+
+sizeCalibration(dropboxDir,params);
+
+params.trackGazeVideos = 0;
+params.ellipseThresh   = [0.92 0.999];
+params.circleThresh = [0.02 0.9999];
+
+calibrationWrapper(dropboxDir, params)
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3019';
+params.sessionDate = '050317';
+
+plotTrackingTimeseries (dropboxDir, params)
+
+pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
+
+%% TOME_3019 - session 2 - pRF processing
+
+% Set paths
+params.subjectName      = 'TOME_3019';
+clusterSessionDate      = '050317';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
+
 
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3020 SESSION 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2700,6 +2754,102 @@ plotTrackingTimeseries (dropboxDir, params)
 pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
+
+%% %%%%%%%%%%%%%%%%%%%%%% TOME_3020 SESSION 2  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% TOME_3019 - session 2 - PREPROCESSING
+
+params.subjectName = 'TOME_3020';
+clusterSessionDate = '050517';
+sessionOneDate = '042817';
+
+
+params.numRuns          = 10;
+params.reconall         = 0;
+
+fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
+
+% copy MPRAGE folder from session one
+MPRAGEdir = fullfile(clusterDir,params.subjectName,sessionOneDate,'MPRAGE');
+if exist (MPRAGEdir,'dir')
+    params.sessionDir = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+    copyfile(MPRAGEdir, fullfile(params.sessionDir,'MPRAGE'))
+else
+    warning('No MPRAGE folder found in session 1. Run preprocessing for session one and then copy the MPRAGE folder')
+end
+
+%% Run preprocessing scripts
+
+%% Run QA after preprocessing
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '050517';
+clusterSessionDate = '050517';
+
+fmriQAWrapper(params, dropboxDir, clusterDir, clusterSessionDate)
+
+%% TOME_3020 - session 2 - DEINTERLACE VIDEO
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '050517';
+clusterSessionDate = '050517';
+
+copyToCluster = 1;
+
+deinterlaceWrapper (params,dropboxDir,clusterDir,clusterSessionDate,copyToCluster)
+
+%% Run Tracking scripts on the cluster
+% params.ellipseThresh   = [0.97 0.9];
+% params.circleThresh = [0.04 0.999];
+
+%% Compute calibration for pupil and gaze
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '050517';
+
+sizeCalibration(dropboxDir,params);
+
+params.trackGazeVideos = 0;
+params.ellipseThresh   = [0.92 0.999];
+params.circleThresh = [0.02 0.9999];
+
+calibrationWrapper(dropboxDir, params)
+
+%% Make Pupil Response Structs
+params.projectSubfolder = 'session2_spatialStimuli';
+params.subjectName = 'TOME_3020';
+params.sessionDate = '050517';
+
+plotTrackingTimeseries (dropboxDir, params)
+
+pupilRespStructWrapper (params,dropboxDir)
+
+eyetrackingQA (dropboxDir, params)
+
+%% TOME_3019 - session 2 - pRF processing
+
+% Set paths
+params.subjectName      = 'TOME_3020';
+clusterSessionDate      = '050517';
+params.sessionDir       = fullfile(clusterDir,params.subjectName,clusterSessionDate);
+
+% Project Benson template to subject space
+project_template(params.sessionDir,params.subjectName);
+
+% Make pRF scripts
+makePRFshellScripts(params);
+
+%%% Run the pRF scipts %%%
+% e.g. sh <path_to_sessionDir>/pRF_scripts/submitPRFs.sh
+
+% Average maps after pRF scripts have finished
+params.inDir            = fullfile(params.sessionDir,'pRFs');
+params.outDir           = fullfile(params.sessionDir,'pRFs');
+for i = 1:length(hemis)
+    params.baseName     = hemis{i};
+    avgPRFmaps(params)
+end
+
 
 
 
