@@ -206,7 +206,7 @@ params.task             = 0;
 params.localWM          = 1;
 params.anat             = 1;
 params.amem             = 20;
-params.fmem             = 50;
+params.fmem             = 44;
 
 % for pRF scripts
 hemis                   = {'lh' 'rh'};
@@ -2399,7 +2399,7 @@ params.subjectName      = 'TOME_3018';
 clusterSessionDate = '040717';
 
 params.numRuns          = 4;
-params.reconall         = 1;
+params.reconall         = 0;
 
 fmriPreprocessingWrapper(params, clusterDir,clusterSessionDate)
 
@@ -2757,7 +2757,7 @@ eyetrackingQA (dropboxDir, params)
 
 %% %%%%%%%%%%%%%%%%%%%%%% TOME_3020 SESSION 2  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% TOME_3019 - session 2 - PREPROCESSING
+%% TOME_3020 - session 2 - PREPROCESSING
 
 params.subjectName = 'TOME_3020';
 clusterSessionDate = '050517';
@@ -2826,7 +2826,7 @@ pupilRespStructWrapper (params,dropboxDir)
 
 eyetrackingQA (dropboxDir, params)
 
-%% TOME_3019 - session 2 - pRF processing
+%% TOME_3020 - session 2 - pRF processing
 
 % Set paths
 params.subjectName      = 'TOME_3020';
