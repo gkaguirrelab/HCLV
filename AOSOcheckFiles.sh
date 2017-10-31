@@ -8,16 +8,21 @@ echo $USER
 # special user cases
 if [ $USER == "GKALab" ]; then
 	dbRoot="Volumes/External\ \GKA20\ \Drive"
+	dbFolder="Dropbox\ \(Aguirre-Brainard\ Lab\)"
+elif [ $USER == "giulia" ]; then
+	dbRoot="Volumes/Bay_2_data"
+	dbFolder="Dropbox-Aguirre-Brainard-Lab"
 else
 	dbRoot="Users"
+	dbFolder="Dropbox\ \(Aguirre-Brainard\ Lab\)"
 fi
 
 echo "Checking if all AOSO sessions on Dropbox contain all needed files..."
 echo "   "
 echo "   "
 echo "List of all existing subjects in /$dbRoot/$USER/Dropbox (Aguirre-Brainard Lab)/AOSO_data/connectomeRetinaData/:"
-ls /$dbRoot/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/AOSO_data/connectomeRetinaData/
-subjs=(/$dbRoot/$USER/Dropbox\ \(Aguirre-Brainard\ Lab\)/AOSO_data/connectomeRetinaData/*)
+ls /$dbRoot/$USER/$dbFolder/AOSO_data/connectomeRetinaData/
+subjs=(/$dbRoot/$USER/$dbFolder/AOSO_data/connectomeRetinaData/*)
 for subjDir in "${subjs[@]}"; do
 	echo "   "
 	echo "   "
