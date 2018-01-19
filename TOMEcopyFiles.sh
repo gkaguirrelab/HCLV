@@ -270,9 +270,11 @@ EOF
 		
 		DATA COLLECTED AT SC3T ON xx/xx/xx (tech:xx, sc:xx, eo:xx, so:xx)
 
-​ 		Subject was TOME_30xx, running the Connectome Session x protocol. Subject's eyes were <uncorrected/corrected by contacts or lens/ patched>
+​ 		Subject was TOME_30xx, running the Connectome Session x protocol. 
+        Subject's eyes were <uncorrected/corrected by contacts or lens/ patched>
 
-		Eye tracking data was acquired using the LiveTrack device, raw videos of the eye were acquired concurrently using the VTOP device.
+		Eye tracking data was acquired using the LiveTrack device, raw videos of the eye 
+		were acquired concurrently using the VTOP device.
 		
 		<Any subject issue here>
 		
@@ -282,7 +284,6 @@ EOF
 
 		The order of the acquired protocols is as follows:
 
-		... 
 		<specify all runs as they are reported in the final page of the protocol pdf and 
 		the calibrations. Add all relevant comment to the run, i.e. subject sleepy, stopped
 		hardware error etc>
