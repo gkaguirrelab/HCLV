@@ -54,7 +54,7 @@ EOF
 	Copy the DICOMS:
 	
 	1. Open a new terminal window and access rico, the scanner computer typing:
-	ssh aguirrelab@rico
+	ssh aguirrelab@10.150.146.50
 	
 	2. Navigate in the dicom folder on rico. For the standard DICOM path type:
 	cd /mnt/rtexport/RTexport_current/
@@ -71,7 +71,7 @@ EOF
 EOF
 	read dicomSource
 	echo "Copying DICOM files in the local folder..."
-	scp aguirrelab@rico:$dicomSource/* ~/Desktop/$subjName/$sessionDate/DICOMS/
+	scp aguirrelab@10.150.146.50:$dicomSource/* ~/Desktop/$subjName/$sessionDate/DICOMS/
 	echo " "
 	echo "DICOMs copied!"
 	echo " "
@@ -109,7 +109,7 @@ EOF
 	Copy pulseOx files:
 	
 	1. Open a new terminal window and access rico, the scanner computer, typing:
-	ssh aguirrelab@rico
+	ssh aguirrelab@10.150.146.50
 	
 	2. Copy and paste:
 	cd /mnt/disk_c/MedCom/log/Physio
@@ -123,7 +123,7 @@ EOF
 	read pulseOxFiles
 	echo "Copying PulseOx files in the local folder..."
 	mkdir ~/Desktop/$subjName/$sessionDate/ScannerFiles/PulseOx
-	scp aguirrelab@rico:/mnt/disk_c/MedCom/log/Physio/$pulseOxFiles*PULS.log ~/Desktop/$subjName/$sessionDate/ScannerFiles/PulseOx/
+	scp aguirrelab@10.150.146.50:/mnt/disk_c/MedCom/log/Physio/$pulseOxFiles*PULS.log ~/Desktop/$subjName/$sessionDate/ScannerFiles/PulseOx/
 	echo "PulseOx files copied!"
 	
 	# copy Protocols Files locally
@@ -142,8 +142,8 @@ EOF
 	read protocolFiles
 	echo "Copying protocol files..."
 	mkdir ~/Desktop/$subjName/$sessionDate/ScannerFiles/Protocols
-	scp -r aguirrelab@rico:/mnt/disk_c/MedCom/User/Aguirre/$protocolFiles* ~/Desktop/$subjName/$sessionDate/ScannerFiles/Protocols/
-	scp aguirrelab@rico:/mnt/disk_c/MedCom/MriSiteData/GradientCoil/coeff.grad ~/Desktop/$subjName/$sessionDate/ScannerFiles/
+	scp -r aguirrelab@10.150.146.50:/mnt/disk_c/MedCom/User/Aguirre/$protocolFiles* ~/Desktop/$subjName/$sessionDate/ScannerFiles/Protocols/
+	scp aguirrelab@10.150.146.50:/mnt/disk_c/MedCom/MriSiteData/GradientCoil/coeff.grad ~/Desktop/$subjName/$sessionDate/ScannerFiles/
 	echo "Protocol files copied!"
 	echo "Do you want to write the README.md file now?[y/n]"
 	read readme
@@ -222,7 +222,7 @@ EOF
 	Copy pulseOx files:
 	
 	1. Open a new terminal window and access rico, the scanner computer, typing:
-	ssh aguirrelab@rico
+	ssh aguirrelab@10.150.146.50
 	
 	2. Copy and paste:
 	cd /mnt/disk_c/MedCom/log/Physio
@@ -235,7 +235,7 @@ EOF
 EOF
 	read pulseOxFiles
 	echo "Copying PulseOx files in the dropbox folder..."
-	scp aguirrelab@rico:/mnt/disk_c/MedCom/log/Physio/$pulseOxFiles*PULS.log $dropboxPath/TOME_data/$sessionName/$subjName/$sessionDate/ScannerFiles/PulseOx/
+	scp aguirrelab@10.150.146.50:/mnt/disk_c/MedCom/log/Physio/$pulseOxFiles*PULS.log $dropboxPath/TOME_data/$sessionName/$subjName/$sessionDate/ScannerFiles/PulseOx/
 	echo "PulseOx files copied!"
 	
 	# copy Protocols Files on dropbox
@@ -253,8 +253,8 @@ EOF
 EOF
 	read protocolFiles
 	echo "Copying protocol files..."
-	scp -r aguirrelab@rico:/mnt/disk_c/MedCom/User/Aguirre/$protocolFiles* $dropboxPath/TOME_data/$sessionName/$subjName/$sessionDate/ScannerFiles/Protocols/
-	scp aguirrelab@rico:/mnt/disk_c/MedCom/MriSiteData/GradientCoil/coeff.grad $dropboxPath/TOME_data/$sessionName/$subjName/$sessionDate/ScannerFiles/
+	scp -r aguirrelab@10.150.146.50:/mnt/disk_c/MedCom/User/Aguirre/$protocolFiles* $dropboxPath/TOME_data/$sessionName/$subjName/$sessionDate/ScannerFiles/Protocols/
+	scp aguirrelab@10.150.146.50:/mnt/disk_c/MedCom/MriSiteData/GradientCoil/coeff.grad $dropboxPath/TOME_data/$sessionName/$subjName/$sessionDate/ScannerFiles/
 	echo "Protocol files copied!"
 	
 	# readme file
@@ -312,7 +312,7 @@ EOF
 	
 	                         HELP for TOMEcopyFiles.sh
 	
-	This script is used to retrieve data from the scanner computer (aguirrelab@rico) and
+	This script is used to retrieve data from the scanner computer (aguirrelab@10.150.146.50) and
 	back it up according to the standard TOME procedures.
 	
 	In order to work, this script needs to be run on a machine with ssh access to the
